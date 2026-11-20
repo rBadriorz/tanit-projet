@@ -19,7 +19,9 @@ Notation : problème 15 %, solution et déploiement 35 %, prototype fonctionnel 
 - Architecture cible : voir `ARCHITECTURE.md`.
 
 ## Agents dans l'appli (v0.5, `src/legacy/agents.js`)
-- **Mes droits** (`#droits`, onglet « Mes droits ») : 4 étapes visibles à l'écran. 1) l'IA lit l'avis d'imposition (photo, ou avis d'exemple fictif dessiné en canvas), 2) le moteur de règles calcule les aides (barèmes simplifiés 2026, à remplacer par OpenFisca) et l'IA n'écrit que les explications, 3) l'IA remplit le formulaire (sources : document, vous, calcul, à compléter), 4) le citoyen coche « j'ai relu » et valide (envoi simulé). L'agent pose une question si une info manque (loyer, situation, âge).
+- **Mes droits** (`#droits`, onglet « Mes droits ») : 4 étapes visibles à l'écran. 1) l'IA lit l'avis d'imposition (photo, ou avis d'exemple fictif dessiné en canvas), 2) le simulateur officiel OpenFisca calcule les aides (`src/routes/api/openfisca.ts`, API publique sans clé ; repli sur les barèmes simplifiés de `rules()` s'il ne répond pas) et l'IA n'écrit que les explications, 3) l'IA remplit le formulaire (sources : document, vous, calcul, à compléter), 4) le citoyen coche « j'ai relu » et valide (envoi simulé). L'agent pose une question si une info manque (loyer, situation, âge).
+- FranceConnect reste simulé (habilitation nécessaire) : c'est la cible, pas une intégration réelle.
+- Pour ajouter ou modifier un agent : skill `.claude/skills/tanit-agents`.
 - **Veille** : boutons « ma situation change » (naissance, déménagement, baisse de revenus, perte d'emploi, retraite) → nouveau calcul, alertes (accueil + écran Mes droits).
 - **Suivi de dossier** (Compte → Mes démarches) : pièces à cocher, bouton « avancer de 15 jours (démo) », rappel automatique si des pièces manquent, message de relance prêt (le citoyen l'envoie lui-même).
 - **Agent Tanit** : relevé trimestriel d'exemple expliqué (écran Capital) et résumé neutre des options avant le vote (écran Vote).
@@ -41,4 +43,4 @@ veille-sondages, benchmark-international, analyse-juridique (relecture Carmen), 
 - Compte GitHub : **rBadriorz uniquement, jamais PA-Andries.** L'identité git et l'authentification (`gh`, compte rBadriorz) sont réglées dans la config locale de ce dépôt : ne pas les changer. Avant chaque push, vérifier que `gh api user --jq .login` renvoie `rBadriorz`.
 - **Toujours faire `git pull` avant de commencer**, car Lovable peut avoir poussé des changements entre-temps.
 - Après chaque modification validée, faire soi-même `git add`, `git commit` et `git push` sur `main`.
-- Respecter AGENTS.md (règles de Lovable) : jamais de force push, de rebase ni d'amend sur des commits déjà poussés ; garder `main` dans un état qui fonctionne ; ne pas toucher aux fichiers générés ni aux secrets.
+- Respecter AGENTS.md (règles de Lovable) : jamais de force push, de rebase ni d'amend sur des commits déjà poussés ; garder `main` dans un état qui fonctionne ; ne pas toucher aux fichiers générés ni aux secrets.

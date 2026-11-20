@@ -22,7 +22,7 @@ fr:{
  sit:{seul:"seul(e)",couple:"en couple"},
  lg_unread:"Je n'arrive pas à lire ce document. Essayez une photo plus nette, à plat, bien éclairée.",
  ask_h:"Il me manque une information", ask_rent:"Quel est votre loyer par mois, charges comprises ? Mettez 0 si vous êtes propriétaire ou hébergé.", ask_act:"Quelle est votre situation professionnelle ?", ask_age:"Votre âge", ask_go:"Continuer",
- lg_rules:"Moteur de règles : barèmes simplifiés 2026", lg_check:"Vérification", lg_excl:"non retenue", lg_total:"Total estimé", lg_ai_explain:"L'IA explique chaque résultat en mots simples…",
+ lg_rules:"Moteur de règles : barèmes simplifiés 2026", lg_of:"Simulateur officiel OpenFisca (la législation codée en open source)…", lg_of_ok:"Montants calculés par le simulateur officiel OpenFisca", lg_of_ko:"Simulateur officiel injoignable : j'utilise les barèmes simplifiés", src_of:"OpenFisca", src_rules:"barème simplifié", lg_check:"Vérification", lg_excl:"non retenue", lg_total:"Total estimé", lg_ai_explain:"L'IA explique chaque résultat en mots simples…",
  lg_pick:"Je prépare le dossier le plus utile", lg_fill:"Je remplis le formulaire…", lg_fields:"champs remplis", lg_todo:"à compléter par vous", lg_missing:"Pièces à fournir",
  lg_wait_you:"À vous : relisez et validez.",
  permonth:"/ mois", about:"environ", health:"Frais de santé réduits",
@@ -67,7 +67,7 @@ en:{
  sit:{seul:"single",couple:"couple"},
  lg_unread:"I can't read this document. Try a sharper photo, flat and well lit.",
  ask_h:"I need one more thing", ask_rent:"What is your monthly rent, including charges? Put 0 if you own your home or live with someone.", ask_act:"What is your work situation?", ask_age:"Your age", ask_go:"Continue",
- lg_rules:"Rules engine: simplified 2026 scales", lg_check:"Checking", lg_excl:"not eligible", lg_total:"Estimated total", lg_ai_explain:"The AI explains each result in plain words…",
+ lg_rules:"Rules engine: simplified 2026 scales", lg_of:"Official OpenFisca simulator (French law as open-source code)…", lg_of_ok:"Amounts calculated by the official OpenFisca simulator", lg_of_ko:"Official simulator unreachable: using simplified scales", src_of:"OpenFisca", src_rules:"simplified scale", lg_check:"Checking", lg_excl:"not eligible", lg_total:"Estimated total", lg_ai_explain:"The AI explains each result in plain words…",
  lg_pick:"I'm preparing the most useful application", lg_fill:"Filling in the form…", lg_fields:"fields filled in", lg_todo:"for you to complete", lg_missing:"Documents to provide",
  lg_wait_you:"Your turn: read and approve.",
  permonth:"/ month", about:"about", health:"Lower health costs",
@@ -136,7 +136,8 @@ function stepper(box, titles){
 }
 
 /* ---------------- moteur de règles (barèmes simplifiés, ordres de grandeur) ----------------
-   Dans la version cible, ce rôle est tenu par OpenFisca (le simulateur officiel open source).
+   Les montants viennent d'abord du simulateur officiel OpenFisca (/api/openfisca). Ces barèmes servent de repli
+   s'il est injoignable, et pour les aides qu'il ne calcule pas ici (complémentaire santé, chèque énergie).
    Ici : formules simplifiées 2026, prudentes, pour montrer le principe « les règles calculent ». */
 const AIDS = {
  pa:  {fr:["Prime d'activité","CAF",["Bulletins de salaire des 3 derniers mois","RIB"]], en:["In-work benefit (prime d'activité)","CAF benefits office",["Payslips for the last 3 months","Bank details (RIB)"]]},
@@ -194,6 +195,24 @@ function named(r){
   return {...r, aide, organisme, pieces: [...pieces], pourquoi: typeof why === 'function' ? why(r.eligibilite) : why};
 }
 const ALL_RULES = ['pa','rsa','apl','asf','af','css','ce','aspa'];
+
+/** Outil « simulateur officiel » : OpenFisca, appelé par notre serveur (/api/openfisca). */
+async function officialCalc(p){
+  try {
+    const r = await fetch('/api/openfisca', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({profil: p}), signal: AbortSignal.timeout(15000)});
+    if (!r.ok) return null; const d = await r.json(); return d && d.ok && Array.isArray(d.aides) ? d.aides : null;
+  } catch { return null; }
+}
+/** Les montants officiels remplacent nos barèmes pour les aides qu'OpenFisca a calculées. */
+function mergeOfficial(raw, of){
+  const byId = new Map(raw.map(r => [r.id, r]));
+  for (const o of of){
+    if (!(o.montant_mensuel > 0)) { byId.delete(o.id); continue; }
+    byId.set(o.id, {id:o.id, eligibilite: o.id === 'apl' || o.id === 'asf' ? 'possible' : 'probable', montant_mensuel: o.montant_mensuel, regle:'openfisca:' + o.variable, src:'of'});
+  }
+  const order = {probable:0, possible:1, 'peu probable':2};
+  return [...byId.values()].sort((a, b) => order[a.eligibilite] - order[b.eligibilite] || (b.montant_mensuel || 0) - (a.montant_mensuel || 0));
+}
 const total = list => list.reduce((s, a) => s + (a.eligibilite !== 'peu probable' && a.montant_mensuel ? a.montant_mensuel : 0), 0);
 
 /* ---------------- avis d'imposition d'exemple (fictif) ---------------- */
@@ -325,6 +344,7 @@ function renderResults(list, onPick, picked){
     const row = mk('div', 'aid-row' + (picked && a.id === picked.id ? ' on' : ''));
     const top = mk('div', 'row'); top.style.justifyContent = 'space-between';
     top.append(mk('b', '', a.aide), mk('span', 'tag ' + (a.eligibilite === 'probable' ? 'ok' : 'warn'), t('elig')[a.eligibilite]));
+    top.append(mk('span', 'src ' + (a.src === 'of' ? 'src-document' : ''), a.src === 'of' ? t('src_of') : t('src_rules')));
     row.append(top, mk('div', 'amt', a.montant_mensuel ? t('about') + ' ' + eur(a.montant_mensuel) + ' ' + t('permonth') : t('health')), mk('p', 'small muted', a.pourquoi));
     if (onPick && picked && a.id !== picked.id){ const b = mk('button', 'ghost sm', t('other_aid') + ' ' + a.aide); b.onclick = () => onPick(a); row.append(b); }
     box.append(row);
@@ -385,11 +405,16 @@ async function runAgent(opts = {}){
 
     /* Étape 2 : calculer les aides (règles) puis les expliquer (IA) */
     S.start(1);
-    await S.log(1, t('lg_rules'), 'regles.charger()');
-    const raw = rules(p), keep = new Set(raw.map(r => r.id));
+    await S.log(1, t('lg_of'), 'openfisca.calculate()');
+    const of = await officialCalc(p); if (my !== run) return;
+    let raw = rules(p);
+    if (of && of.length){ raw = mergeOfficial(raw, of); await S.log(1, t('lg_of_ok'), 'openfisca.ok'); }
+    else await S.log(1, t('lg_of_ko'), 'regles.charger()').then(li => li.classList.add('dim'));
+    const keep = new Set(raw.map(r => r.id));
     for (const id of ALL_RULES){
       const r = raw.find(x => x.id === id), name = AIDS[id][L()][0];
-      await S.log(1, name + sep() + (r ? t('elig')[r.eligibilite] + (r.montant_mensuel ? ', ' + t('about') + ' ' + eur(r.montant_mensuel) + ' ' + t('permonth') : '') : t('lg_excl')), 'regles.' + id + '()').then(li => { if (!keep.has(id)) li.classList.add('dim'); });
+      const tool = r && r.src === 'of' ? 'openfisca.' + r.regle.split(':')[1] + '()' : 'regles.' + id + '()';
+      await S.log(1, name + sep() + (r ? t('elig')[r.eligibilite] + (r.montant_mensuel ? ', ' + t('about') + ' ' + eur(r.montant_mensuel) + ' ' + t('permonth') : '') : t('lg_excl')), tool).then(li => { if (!keep.has(id)) li.classList.add('dim'); });
     }
     found = raw.map(named);
     if (live()){ await S.log(1, t('lg_ai_explain'), 'claude.expliquer()'); found = await explainAides(found, p, my); if (my !== run) return; }

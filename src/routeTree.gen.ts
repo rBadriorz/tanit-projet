@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiHealthRouteImport } from './routes/api/health'
 import { Route as ApiJsonRouteImport } from './routes/api/json'
+import { Route as ApiOpenfiscaRouteImport } from './routes/api/openfisca'
 import { Route as ApiSampleRouteImport } from './routes/api/sample'
 
 const IndexRoute = IndexRouteImport.update({
@@ -29,6 +30,11 @@ const ApiJsonRoute = ApiJsonRouteImport.update({
   path: '/api/json',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiOpenfiscaRoute = ApiOpenfiscaRouteImport.update({
+  id: '/api/openfisca',
+  path: '/api/openfisca',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiSampleRoute = ApiSampleRouteImport.update({
   id: '/api/sample',
   path: '/api/sample',
@@ -39,12 +45,14 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/api/health': typeof ApiHealthRoute
   '/api/json': typeof ApiJsonRoute
+  '/api/openfisca': typeof ApiOpenfiscaRoute
   '/api/sample': typeof ApiSampleRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/api/health': typeof ApiHealthRoute
   '/api/json': typeof ApiJsonRoute
+  '/api/openfisca': typeof ApiOpenfiscaRoute
   '/api/sample': typeof ApiSampleRoute
 }
 export interface FileRoutesById {
@@ -52,20 +60,29 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/api/health': typeof ApiHealthRoute
   '/api/json': typeof ApiJsonRoute
+  '/api/openfisca': typeof ApiOpenfiscaRoute
   '/api/sample': typeof ApiSampleRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/api/health' | '/api/json' | '/api/sample'
+  fullPaths:
+    '/' | '/api/health' | '/api/json' | '/api/openfisca' | '/api/sample'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/api/health' | '/api/json' | '/api/sample'
-  id: '__root__' | '/' | '/api/health' | '/api/json' | '/api/sample'
+  to: '/' | '/api/health' | '/api/json' | '/api/openfisca' | '/api/sample'
+  id:
+    | '__root__'
+    | '/'
+    | '/api/health'
+    | '/api/json'
+    | '/api/openfisca'
+    | '/api/sample'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ApiHealthRoute: typeof ApiHealthRoute
   ApiJsonRoute: typeof ApiJsonRoute
+  ApiOpenfiscaRoute: typeof ApiOpenfiscaRoute
   ApiSampleRoute: typeof ApiSampleRoute
 }
 
@@ -92,6 +109,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiJsonRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/openfisca': {
+      id: '/api/openfisca'
+      path: '/api/openfisca'
+      fullPath: '/api/openfisca'
+      preLoaderRoute: typeof ApiOpenfiscaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/sample': {
       id: '/api/sample'
       path: '/api/sample'
@@ -106,6 +130,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ApiHealthRoute: ApiHealthRoute,
   ApiJsonRoute: ApiJsonRoute,
+  ApiOpenfiscaRoute: ApiOpenfiscaRoute,
   ApiSampleRoute: ApiSampleRoute,
 }
 export const routeTree = rootRouteImport
