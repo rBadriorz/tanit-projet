@@ -46,6 +46,101 @@ const SCHEMAS: Record<string, { effort: string; schema: object; unwrap: (d: any)
     },
     unwrap: (d) => d.aides,
   },
+  // Agent « Mes droits », étape 1 : lecture de l'avis d'imposition.
+  avis: {
+    effort: "low",
+    schema: {
+      type: "object",
+      properties: {
+        type: { type: "string" },
+        annee_revenus: num,
+        salaires_annuels: num,
+        revenu_fiscal_reference: num,
+        nombre_parts: num,
+        enfants_a_charge: num,
+        vie: { anyOf: [{ type: "string", enum: ["seul", "couple"] }, { type: "null" }] },
+        lisible: { type: "boolean" },
+      },
+      required: ["type", "annee_revenus", "salaires_annuels", "revenu_fiscal_reference", "nombre_parts", "enfants_a_charge", "vie", "lisible"],
+      additionalProperties: false,
+    },
+    unwrap: (d) => d,
+  },
+  // Agent « Mes droits », étape 3 : formulaire pré-rempli.
+  formulaire: {
+    effort: "low",
+    schema: {
+      type: "object",
+      properties: {
+        champs: {
+          type: "array",
+          items: {
+            type: "object",
+            properties: {
+              libelle: { type: "string" },
+              valeur: { type: "string" },
+              source: { type: "string", enum: ["document", "vous", "calcul", "a_completer"] },
+            },
+            required: ["libelle", "valeur", "source"],
+            additionalProperties: false,
+          },
+        },
+        pieces_manquantes: { type: "array", items: { type: "string" } },
+      },
+      required: ["champs", "pieces_manquantes"],
+      additionalProperties: false,
+    },
+    unwrap: (d) => d,
+  },
+  // Agent Tanit : résumé neutre des options avant le vote.
+  vote: {
+    effort: "low",
+    schema: {
+      type: "object",
+      properties: {
+        votes: {
+          type: "array",
+          items: {
+            type: "object",
+            properties: {
+              options: {
+                type: "array",
+                items: {
+                  type: "object",
+                  properties: { option: { type: "string" }, gain: { type: "string" }, risque: { type: "string" } },
+                  required: ["option", "gain", "risque"],
+                  additionalProperties: false,
+                },
+              },
+            },
+            required: ["options"],
+            additionalProperties: false,
+          },
+        },
+      },
+      required: ["votes"],
+      additionalProperties: false,
+    },
+    unwrap: (d) => d.votes,
+  },
+  // Agent décideurs : note préparatoire.
+  note: {
+    effort: "medium",
+    schema: {
+      type: "object",
+      properties: {
+        objet: { type: "string" },
+        synthese: { type: "string" },
+        risque: { type: "string", enum: ["faible", "moyen", "élevé"] },
+        risques: { type: "array", items: { type: "string" } },
+        questions: { type: "array", items: { type: "string" } },
+        recommandation: { type: "string" },
+      },
+      required: ["objet", "synthese", "risque", "risques", "questions", "recommandation"],
+      additionalProperties: false,
+    },
+    unwrap: (d) => d,
+  },
 };
 
 const IMG_TYPES = new Set(["image/jpeg", "image/png", "image/webp", "image/gif"]);

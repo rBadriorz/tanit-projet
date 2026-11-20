@@ -17,6 +17,14 @@ Notation : problème 15 %, solution et déploiement 35 %, prototype fonctionnel 
 - L'IA respecte les consentements : `aiOn()` et `consent().doc`.
 - Architecture cible : voir `ARCHITECTURE.md`.
 
+## Agents dans l'appli (v0.5, `src/legacy/agents.js`)
+- **Mes droits** (`#droits`, onglet « Mes droits ») : 4 étapes visibles à l'écran. 1) l'IA lit l'avis d'imposition (photo, ou avis d'exemple fictif dessiné en canvas), 2) le moteur de règles calcule les aides (barèmes simplifiés 2026, à remplacer par OpenFisca) et l'IA n'écrit que les explications, 3) l'IA remplit le formulaire (sources : document, vous, calcul, à compléter), 4) le citoyen coche « j'ai relu » et valide (envoi simulé). L'agent pose une question si une info manque (loyer, situation, âge).
+- **Veille** : boutons « ma situation change » (naissance, déménagement, baisse de revenus, perte d'emploi, retraite) → nouveau calcul, alertes (accueil + écran Mes droits).
+- **Suivi de dossier** (Compte → Mes démarches) : pièces à cocher, bouton « avancer de 15 jours (démo) », rappel automatique si des pièces manquent, message de relance prêt (le citoyen l'envoie lui-même).
+- **Agent Tanit** : relevé trimestriel d'exemple expliqué (écran Capital) et résumé neutre des options avant le vote (écran Vote).
+- **Agent décideurs** (écran État) : scénario → 4 critères Eurostat → risques → note téléchargeable (.txt).
+- Sans clé API ou si l'IA est refusée : « mode démo », mêmes étapes avec des réponses d'exemple, étiquette visible. Schémas JSON côté serveur : `avis`, `formulaire`, `vote`, `note` dans `src/routes/api/json.ts`.
+
 ## Règles
 - Thème clair uniquement : fond blanc, cartes plates à filet fin, pas d'ombres ni de dégradés. Pas de mode sombre.
 - Accessible à tous les âges : gros boutons (52 px min), contrastes forts, phrases courtes, focus visible.

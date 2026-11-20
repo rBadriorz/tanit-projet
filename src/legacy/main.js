@@ -1,4 +1,5 @@
 import { sample as aiSample, tts as aiTts, aiReady } from './claude.js';
+import { AGENT_L, initAgents, agentsOnLang, agentsOnRoute, agentsOnCapital } from './agents.js';
 
 // Script de tanit-citoyen.html, inchangé sauf : cet import, schema:... sur les 2 appels JSON, et le démarrage en bas.
 const L = {
@@ -80,7 +81,7 @@ fr:{
      ["Comment sont-elles protégées ?","Chiffrement pendant le transfert et le stockage, hébergement en France sur un cloud qualifié, accès tracés, tests de sécurité réguliers."],
      ["Et l'IA décide-t-elle pour moi ?","Non. L'IA estime et prépare. Vous validez, et l'organisme décide. Aucune décision n'est prise automatiquement."],
      ["Vos droits","Accès, rectification, effacement, portabilité, opposition et retrait du consentement, depuis votre compte. Vous pouvez aussi saisir la CNIL."]],
- kept:{lang:"Langue choisie",session:"Compte",consent:"Vos choix de confidentialité",v1:"Vote 1",v2:"Vote 2",v3:"Vote 3",dossiers:"Démarches",big:"Taille du texte",theme:"Apparence",onb:"Présentation vue"}, nothing:"Rien pour l'instant.",
+ kept:{lang:"Langue choisie",session:"Compte",consent:"Vos choix de confidentialité",v1:"Vote 1",v2:"Vote 2",v3:"Vote 3",dossiers:"Démarches",big:"Taille du texte",theme:"Apparence",veille:"Veille de mes droits",alertes:"Alertes de l'agent",agent_profil:"Situation donnée à l'agent",onb:"Présentation vue"}, nothing:"Rien pour l'instant.",
  ai_lang:"Réponds en français.", bigOn:"A−", bigOff:"A+", langSwitch:"English"
 },
 en:{
@@ -161,7 +162,7 @@ en:{
      ["How is it protected?","Encryption in transit and at rest, hosting in France on a certified cloud, logged access, regular security testing."],
      ["Does the AI decide for me?","No. The AI estimates and prepares. You approve, and the office decides. No decision is made automatically."],
      ["Your rights","Access, correction, erasure, portability, objection and withdrawal of consent, from your account. You can also complain to the CNIL, the French data protection authority."]],
- kept:{lang:"Chosen language",session:"Account",consent:"Your privacy choices",v1:"Vote 1",v2:"Vote 2",v3:"Vote 3",dossiers:"Applications",big:"Text size",theme:"Appearance",onb:"Introduction seen"}, nothing:"Nothing yet.",
+ kept:{lang:"Chosen language",session:"Account",consent:"Your privacy choices",v1:"Vote 1",v2:"Vote 2",v3:"Vote 3",dossiers:"Applications",big:"Text size",theme:"Appearance",veille:"Rights watch",alertes:"Agent alerts",agent_profil:"Situation given to the agent",onb:"Introduction seen"}, nothing:"Nothing yet.",
  ai_lang:"Write your whole answer in English, and explain any French benefit name in a few words.", bigOn:"A−", bigOff:"A+", langSwitch:"Français"
 }};
 const EX = {
@@ -175,6 +176,9 @@ const EX = {
      {aide:"Energy voucher (chèque énergie)",organisme:"State",eligibilite:"probable",montant_mensuel:12,pourquoi:"Granted according to household taxable income.",pieces:["Tax notice"]}]
 };
 
+// Textes des agents (agents.js), ajoutés aux textes de l'appli.
+Object.assign(L.fr, AGENT_L.fr); Object.assign(L.en, AGENT_L.en);
+
 const $ = id => document.getElementById(id);
 const store = { get(k){try{return localStorage.getItem(k)}catch{return null}}, set(k,v){try{localStorage.setItem(k,v)}catch{}} };
 let lang = store.get('lang') === 'en' ? 'en' : store.get('lang') === 'fr' ? 'fr' : null;
@@ -186,7 +190,7 @@ function say(btn, getText){ if (!tts) return; btn.hidden = false; btn.onclick = 
 function mk(tag, cls, text){ const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
 
 /* ---------- langue et navigation ---------- */
-const VIEWS = ['accueil','capital','vote','aides','assistant','etat','compte','politique'];
+const VIEWS = ['accueil','capital','vote','droits','aides','assistant','etat','compte','politique'];
 const GATES = ['lang','intro','login','consent'];
 function applyLang(){
   document.documentElement.lang = lang || 'fr';
@@ -197,6 +201,7 @@ function applyLang(){
   buildOpts('v2', t('v2')); buildOpts('v3', t('v3'));
   if (!profilReel) aides = EX[lang || 'fr'];
   renderAides(); capital(); vote(); etat();
+  agentsOnLang();
 }
 function route(){
   const h = location.hash.slice(1), g = gate();
@@ -205,6 +210,7 @@ function route(){
   $('tools').hidden = !lang; $('nav').hidden = !!g || v === 'politique';
   $('acct').hidden = !session(); renderAccountBits();
   if (v === 'intro') renderIntro(); if (v === 'consent') renderConsent(); if (v === 'compte') renderAccount(); if (v === 'politique') renderPolicy();
+  agentsOnRoute(v);
   document.querySelectorAll('nav a').forEach(a => a.getAttribute('href') === '#'+v ? a.setAttribute('aria-current','page') : a.removeAttribute('aria-current'));
   window.scrollTo(0,0);
   const h1 = document.querySelector('#v-' + v + ' h1');
@@ -235,8 +241,7 @@ function capital(){
   const comp = t('comp');
   $('allocImg').setAttribute('aria-label', comp.map((c,i) => c + ' ' + SHARES[i]*100 + ' %').join(', '));
   $('legend').replaceChildren(...comp.flatMap((name,i) => [mk('span','sw c'+(i+1)), mk('span','',name), mk('b','',SHARES[i]*100 + ' %')]));
-  const q = c/4;
-  $('relTable').replaceChildren(mk('span'), mk('b','',t('rel_in')), mk('b','',eur(q)), ...comp.flatMap((name,i) => [mk('span','sw c'+(i+1)), mk('span','',name), mk('b','',eur(q*SHARES[i]))]));
+  agentsOnCapital();
 }
 $('cRev').oninput = $('cAge').oninput = capital;
 async function write(btn, out, prompt, sayBtn, tier){
@@ -252,8 +257,7 @@ async function write(btn, out, prompt, sayBtn, tier){
 const TANIT = "Tanit est une proposition (pas encore une réalité) de fonds national de capital public français : une contribution de 1 à 4 % du revenu, prise sur des prélèvements existants (pas un prélèvement en plus), devient des parts détenues par chaque citoyen, investies à long terme dans les infrastructures (35 %), les entreprises stratégiques (30 %), l'innovation et les PME (20 %) et la solidarité (15 %), avec une poche européenne. Gestion par des professionnels indépendants, État minoritaire, vote des citoyens sur les grandes orientations, relevé trimestriel, aucune garantie de l'État sur le capital ou le rendement. ";
 $('cExplain').onclick = () => write($('cExplain'), $('cOut'),
   TANIT + "Explique à un citoyen de tout âge, en 90 mots maximum, avec des mots très simples, sans Markdown, cette simulation : revenu net " + cap.rev + " € par mois, " + cap.age + " ans, contribution de " + cap.tx*100 + " %, capital estimé à 64 ans " + Math.round(cap.a) + " € contre " + Math.round(cap.b) + " € sur un livret. Dis clairement que c'est une simulation et que le capital peut baisser.", $('cSay'));
-$('relBtn').onclick = () => write($('relBtn'), $('relOut'),
-  TANIT + "Rédige le résumé d'un relevé trimestriel d'exemple pour un citoyen, en 80 mots maximum, mots très simples, sans Markdown. Données : versé ce trimestre " + Math.round(cap.c/4) + " €, réparti selon les quatre compartiments ci-dessus. Explique en une phrase ce que finance chaque compartiment. N'invente aucune performance chiffrée : dis que le rendement réel sera indiqué sur le vrai relevé.", $('relSay'));
+// « Résumer mon relevé » : voir l'agent Tanit dans agents.js.
 
 /* ---------- VOTE ---------- */
 function buildOpts(id, labels){
@@ -265,8 +269,7 @@ $('vR').oninput = vote;
 if (store.get('v1')) { $('vR').value = store.get('v1'); $('vDone').hidden = false; }
 const picked = id => (document.querySelector('input[name='+id+']:checked') || {}).value ?? '1';
 $('vGo').onclick = () => { store.set('v1', $('vR').value); store.set('v2', picked('v2')); store.set('v3', picked('v3')); $('vDone').hidden = false; };
-$('vExplain').onclick = () => write($('vExplain'), $('vOut'),
-  TANIT + "Les citoyens votent sur trois choix : (1) la part entre transition écologique et industrie souveraine, (2) le secteur à renforcer en premier parmi énergie, transports, technologies critiques, batteries et hydrogène, défense, (3) le niveau de risque du fonds. Présente les enjeux de façon strictement neutre, sans recommander de choix, avec des mots très simples, sans Markdown, 150 mots maximum : pour chaque vote, ce qu'on gagne et ce qu'on risque. Ne cite aucun chiffre que tu ne peux pas justifier.");
+// « Comprendre les enjeux » : voir l'agent Tanit dans agents.js (résumé neutre, option par option).
 
 /* ---------- AIDES ---------- */
 let aides = EX.fr, profilReel = false;
@@ -362,10 +365,7 @@ function etat(){
   $('eTag').className = 'tag ' + (ok ? 'ok' : 'warn'); $('eTag').textContent = ok ? t('e_ok') : t('e_ko');
 }
 $('eC').oninput = etat; ['k1','k2','k3','k4'].forEach(k => $(k).onchange = etat);
-$('eBtn').onclick = () => write($('eBtn'), $('eOut'),
-  TANIT + "Tu es un agent d'analyse pour un décideur public. Paramètres testés : collecte de " + $('eC').value + " Md€ par an ; " +
-  ['k1','k2','k3','k4'].map(k => L.fr[k] + " : " + ($(k).checked ? "oui" : "NON")).join(" ; ") +
-  ". En 170 mots maximum, sans Markdown : 1) le risque de classement du fonds dans les administrations publiques au sens du SEC 2010 avec ces paramètres, 2) les deux points les plus fragiles (par exemple l'origine fiscale de la contribution, le contrôle public), 3) trois questions à poser à l'INSEE et à Eurostat. Ne conclus jamais que le montage est conforme : c'est une analyse préparatoire.", null, 'default');
+// « Lancer le test » : voir l'agent décideurs dans agents.js (4 étapes, puis une note).
 
 
 /* ---------- compte, connexion, consentement ---------- */
@@ -414,12 +414,7 @@ const fmtDate = ts => new Intl.DateTimeFormat(lang === 'en' ? 'en-GB' : 'fr-FR',
 function renderAccount(){
   const s = session() || {}; $('pAv').textContent = initials(s.name); $('pName').textContent = s.name || '';
   $('pMeta').textContent = t('since') + ' ' + ({fc:t('m_fc'), mail:t('m_mail'), demo:t('m_demo')}[s.method] || '');
-  const l = jget('dossiers') || [];
-  $('dosList').replaceChildren(...(l.length ? l.map(d => {
-    const c = mk('div','card'); c.append(mk('h2','',d.name), mk('p','small muted',fmtDate(d.at)));
-    const ol = mk('ol','timeline'); t('steps').forEach((st,i) => ol.append(mk('li', i <= d.step ? 'done' : '', st)));
-    c.append(ol, mk('p','small muted',t('ac_sent_note'))); return c;
-  }) : [mk('div','card empty', t('ac_dos_empty'))]));
+  // Mes démarches : rendu par l'agent de suivi (agents.js).
   consentRows($('acCons'), 'ac_', consent());
   $('acCons').querySelectorAll('input').forEach(i => i.onchange = () => jset('consent', readRows('ac_')));
   const kept = t('kept'), keys = Object.keys(kept).filter(k => store.get(k));
@@ -437,13 +432,15 @@ $('segSize').onclick = e => { const b = e.target.closest('button'); if (!b) retu
 function applyTheme(){ document.documentElement.removeAttribute('data-theme'); try { localStorage.removeItem('theme'); } catch {} }
 $('wipeBtn').onclick = () => { $('wipeBox').hidden = false; $('wipeBtn').hidden = true; };
 $('wipeNo').onclick = () => { $('wipeBox').hidden = true; $('wipeBtn').hidden = false; };
-$('wipeYes').onclick = () => { ['lang','onb','session','consent','dossiers','v1','v2','v3','big','theme'].forEach(k => { try { localStorage.removeItem(k); } catch {} }); lang = null; slide = 0; document.documentElement.classList.remove('big'); applyTheme(); location.hash = ''; applyLang(); route(); };
+$('wipeYes').onclick = () => { ['lang','onb','session','consent','dossiers','v1','v2','v3','big','theme','veille','alertes','agent_profil'].forEach(k => { try { localStorage.removeItem(k); } catch {} }); lang = null; slide = 0; document.documentElement.classList.remove('big'); applyTheme(); location.hash = ''; applyLang(); route(); };
 $('logoutBtn').onclick = () => { try { localStorage.removeItem('session'); } catch {} location.hash = ''; route(); };
 function renderPolicy(){ $('poBody').replaceChildren(...t('po').flatMap(([h, p]) => [mk('h2','',h), mk('p','',p)])); }
 $('poBack').onclick = () => { if (history.length > 1) history.back(); else { location.hash = '#accueil'; } };
 
 /* ---------- démarrage ---------- */
 if (store.get('big')) document.documentElement.classList.add('big');
+initAgents({ t, mk, eur, jget, jset, lang: () => lang, sample: () => sample, tts: () => tts, aiOn, consent, session, errCopy, say, fmtDate,
+  cap: () => cap, TANIT, fv: (c, n) => fv(c, R_TANIT, n) });
 applyTheme(); applyLang(); route();
 (async () => {
   // Avant : window.claude.use('sample') et ('tts'), qui ne marchaient que dans claude.ai.

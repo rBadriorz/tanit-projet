@@ -51,8 +51,9 @@
     <h2 data-t="home_aid"></h2>
     <div class="big" id="homeAides">—</div>
     <p class="muted small" data-t="home_aid_p"></p>
-    <a class="btn ghost" href="#aides" data-t="home_aid_btn"></a>
+    <a class="btn" href="#droits" data-t="home_aid_btn"></a>
   </div>
+  <div class="card" id="homeAgent" hidden aria-live="polite"></div>
   <a class="btn ghost" href="#etat" data-t="home_etat"></a>
 </section>
 
@@ -82,13 +83,13 @@
     <p class="small muted" data-t="cap_eu"></p>
   </div>
   <div class="card">
-    <span class="tag" data-t="tag_ex"></span>
+    <span class="tag" data-t="tn_h"></span>
     <h2 data-t="rel_h"></h2>
-    <p class="small muted" data-t="rel_p"></p>
-    <div class="legend" id="relTable"></div>
-    <button id="relBtn" class="ghost" data-t="rel_btn"></button>
-    <div class="out" id="relOut" aria-live="polite"></div>
-    <button id="relSay" class="ghost sm" hidden data-t="listen"></button>
+    <div id="tnStmt" class="stmt-box"></div>
+    <button id="tnBtn" class="ghost" data-t="tn_btn"></button>
+    <ol class="agent mini" id="tnSteps" hidden></ol>
+    <div class="out" id="tnOut" aria-live="polite"></div>
+    <button id="tnSay" class="ghost sm" hidden data-t="listen"></button>
   </div>
   <p class="small muted" data-t="cap_hyp"></p>
 </section>
@@ -97,6 +98,13 @@
 <section id="v-vote" class="view" hidden style="display:contents">
   <h1 data-t="vote_h1"></h1>
   <p class="muted" data-t="vote_intro"></p>
+  <div class="card">
+    <span class="tag" data-t="tn_h"></span>
+    <h2 data-t="vt_h"></h2>
+    <p class="small muted" data-t="vt_p"></p>
+    <button id="vtBtn" class="ghost" data-t="vt_btn"></button>
+    <div id="vtOut" class="vote-out" aria-live="polite"></div>
+  </div>
   <div class="card">
     <h2 id="v1h" data-t="v1_q"></h2>
     <div class="row" style="justify-content:space-between"><b><span data-t="v1_a"></span> <span id="vA"></span></b><b><span data-t="v1_b"></span> <span id="vB"></span></b></div>
@@ -111,11 +119,32 @@
     <div class="opts" id="v3"></div>
   </div>
   <div class="card">
-    <button id="vExplain" class="ghost" data-t="vote_explain"></button>
-    <div class="out" id="vOut" aria-live="polite"></div>
     <button id="vGo" data-t="vote_go"></button>
     <p class="small" id="vDone" hidden><span class="tag ok" data-t="vote_ok"></span> <span data-t="vote_done"></span></p>
   </div>
+</section>
+
+<!-- AGENT « MES DROITS » -->
+<section id="v-droits" class="view" hidden style="display:contents">
+  <span class="tag" id="dMode"></span>
+  <h1 data-t="dr_h1"></h1>
+  <p class="muted" data-t="dr_intro"></p>
+  <div class="card" id="dStart">
+    <h2 data-t="dr_start_h"></h2>
+    <p class="small muted" data-t="dr_start_p"></p>
+    <label class="btn" for="dDoc" data-t="dr_photo"></label>
+    <input class="sr" type="file" id="dDoc" accept="image/*">
+    <button class="ghost" id="dSample" data-t="dr_sample"></button>
+    <p class="small" id="dStartMsg" aria-live="polite"></p>
+    <a class="link small" href="#aides" data-t="dr_manual"></a>
+  </div>
+  <ol class="agent" id="dSteps" hidden aria-live="polite"></ol>
+  <div class="card ask" id="dAsk" hidden></div>
+  <div class="card" id="dRes" hidden></div>
+  <div class="card" id="dForm" hidden></div>
+  <div class="card" id="dDone" hidden></div>
+  <button class="link" id="dRestart" hidden data-t="dr_restart" style="align-self:center"></button>
+  <div class="card" id="dVeille"></div>
 </section>
 
 <!-- AIDES -->
@@ -179,10 +208,14 @@
       <label class="opt"><input type="checkbox" id="k4" checked><span data-t="k4"></span></label>
     </div>
     <p><span class="tag" id="eTag"></span></p>
-    <button id="eBtn" class="ghost" data-t="et_btn"></button>
-    <div class="out" id="eOut" aria-live="polite"></div>
+  </div>
+  <div class="card">
+    <div class="row" style="justify-content:space-between"><span class="tag" data-t="ed_h"></span><span class="tag" id="eMode"></span></div>
+    <button id="eBtn" data-t="et_btn"></button>
+    <ol class="agent" id="eSteps" hidden aria-live="polite"></ol>
     <p class="small muted" data-t="et_warn"></p>
   </div>
+  <div class="card note" id="eNote" hidden></div>
   <a class="btn ghost" href="#accueil" data-t="back"></a>
 </section>
 
@@ -275,7 +308,7 @@
   <a href="#accueil"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9H3z"/></svg><span data-t="n_home"></span></a>
   <a href="#capital"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/></svg><span data-t="n_cap"></span></a>
   <a href="#vote"><svg viewBox="0 0 24 24"><path d="M5 12l4 4 10-10M3 21h18"/></svg><span data-t="n_vote"></span></a>
-  <a href="#aides"><svg viewBox="0 0 24 24"><path d="M12 21s-7-4.5-7-10a4 4 0 017-2.5A4 4 0 0119 11c0 5.5-7 10-7 10z"/></svg><span data-t="n_aid"></span></a>
+  <a href="#droits"><svg viewBox="0 0 24 24"><path d="M12 21s-7-4.5-7-10a4 4 0 017-2.5A4 4 0 0119 11c0 5.5-7 10-7 10z"/></svg><span data-t="n_aid"></span></a>
   <a href="#assistant"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></svg><span data-t="n_ask"></span></a>
 </div></nav>
 </div>

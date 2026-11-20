@@ -195,3 +195,53 @@ button.link:hover{background:transparent}
   .view:not([hidden])>*:nth-child(4){animation-delay:.09s}
   @keyframes rise{from{opacity:.001;transform:translateY(6px)}to{opacity:1;transform:none}}
 }
+
+/* ---------- Agents : étapes visibles, journal d'actions, formulaire, alertes, note ---------- */
+a.link{color:var(--blue);font-weight:600;text-decoration:underline;text-underline-offset:3px;align-self:center;min-height:44px;display:inline-flex;align-items:center}
+.agent{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.6rem}
+.step{border:1px solid var(--line);border-radius:var(--r);padding:.9rem 1rem;background:var(--surface);transition:border-color .2s,background .2s}
+.step[data-state="wait"]{opacity:.55}
+.step[data-state="run"],.step[data-state="ask"]{border-color:var(--blue);box-shadow:inset 3px 0 0 var(--blue)}
+.step[data-state="fail"]{border-color:var(--red)}
+.st-head{display:grid;grid-template-columns:28px 1fr auto;gap:.6rem;align-items:center}
+.st-head b{font-weight:600}
+.st-time{font-size:.8rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.st-dot{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-size:.8rem;font-weight:700;background:var(--surface-2);color:var(--muted)}
+.step[data-state="run"] .st-dot{background:var(--blue-soft);color:transparent;position:relative}
+.step[data-state="run"] .st-dot::after{content:"";position:absolute;inset:5px;border-radius:50%;border:2.5px solid var(--blue);border-right-color:transparent;animation:spin .8s linear infinite}
+.step[data-state="ask"] .st-dot{background:var(--warn-soft);color:var(--warn)}
+.step[data-state="done"] .st-dot{background:var(--blue);color:#fff;font-size:0}
+.step[data-state="done"] .st-dot::after{content:"✓";font-size:.85rem}
+.step[data-state="fail"] .st-dot{background:#fff1f1;color:var(--red)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.st-log{list-style:none;margin:.55rem 0 0;padding:0 0 0 2.2rem;display:flex;flex-direction:column;gap:.3rem;font-size:.86rem}
+.st-log:empty{display:none}
+.st-log li{display:flex;flex-wrap:wrap;gap:.25rem .5rem;align-items:baseline;overflow-wrap:anywhere}
+.st-log li.dim{color:var(--muted)}
+.st-log li.ok{color:var(--ok)} .st-log li.ko{color:var(--red);font-weight:600}
+.tool{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.74rem;padding:.05rem .4rem;border-radius:6px;background:var(--surface-2);color:var(--muted);white-space:nowrap}
+.doc-thumb{display:block;width:100%;max-width:260px;border:1px solid var(--line);border-radius:10px;margin-top:.3rem}
+.agent.mini .step{padding:.6rem .8rem}
+.aid-row{display:flex;flex-direction:column;gap:.35rem;padding:.8rem 0;border-top:1px solid var(--line)}
+.aid-row.on{background:var(--blue-soft);margin-inline:-1.2rem;padding-inline:1.2rem;border-top-color:transparent}
+.aid-row .amt{font-weight:700;font-size:1.2rem;font-variant-numeric:tabular-nums}
+.aid-row button{align-self:flex-start}
+.field.todo input{border-style:dashed;border-color:var(--warn);background:var(--warn-soft)}
+.src{font-size:.75rem;font-weight:600;padding:.1rem .5rem;border-radius:99px;background:var(--surface-2);color:var(--muted);white-space:nowrap}
+.src-document{background:var(--blue-soft);color:var(--blue)} .src-a_completer{background:var(--warn-soft);color:var(--warn)} .src-calcul{background:var(--ok-soft);color:var(--ok)}
+.card.ask{border-color:var(--warn);box-shadow:inset 3px 0 0 var(--warn)}
+.alerts{display:flex;flex-direction:column;gap:.5rem}
+.alert{display:flex;flex-direction:column;gap:.3rem;padding:.75rem .9rem;border-radius:var(--r-sm);background:var(--surface-2)}
+.alert-new,.alert-up{background:var(--ok-soft)} .alert-down{background:var(--warn-soft)}
+.alert button{align-self:flex-start}
+.stmt-box{display:flex;flex-direction:column;gap:.5rem}
+.vote-out{display:flex;flex-direction:column;gap:.9rem}
+.vote-out:empty{display:none}
+.vote-sum{display:flex;flex-direction:column;gap:.45rem}
+.pc{padding:.6rem .8rem;border-radius:var(--r-sm);background:var(--surface-2);display:flex;flex-direction:column;gap:.15rem}
+.pc .plus{color:var(--ok)} .pc .minus{color:var(--warn)}
+.note{border-color:var(--fg)}
+.crit,.note-l{margin:0;padding-left:1.1rem;display:flex;flex-direction:column;gap:.4rem}
+.crit{list-style:none;padding:0}
+.crit li{display:flex;flex-direction:column;padding-left:.7rem;border-left:3px solid var(--ok)}
+.crit li.ko{border-left-color:var(--red)}
