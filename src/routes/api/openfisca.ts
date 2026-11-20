@@ -37,6 +37,7 @@ const byMonth = (months: string[], v: unknown) => Object.fromEntries(months.map(
 function situation(p: Profil, variable: string) {
   const months = lastMonths(36); // mois en cours + 36 mois passés : couvre les ressources N-2 de l'aide au logement
   const M = months[0];
+  if (!M) throw new Error("no month");
   const rev = Math.max(0, Math.round(Number(p.revenu_net_mensuel) || 0));
   const age = Math.min(110, Math.max(16, Math.round(Number(p.age) || 35)));
   const enf = Math.min(8, Math.max(0, Math.round(Number(p.enfants_a_charge) || 0)));
@@ -51,7 +52,7 @@ function situation(p: Profil, variable: string) {
   const individus: Record<string, object> = {
     demandeur: { date_naissance: { ETERNITY: year - age + "-01-01" }, ...revenu },
   };
-  if (couple) individus.conjoint = { date_naissance: { ETERNITY: year - age + "-01-01" } };
+  if (couple) individus["conjoint"] = { date_naissance: { ETERNITY: year - age + "-01-01" } };
   const enfants = Array.from({ length: enf }, (_, i) => "enfant" + (i + 1));
   enfants.forEach((e, i) => { individus[e] = { date_naissance: { ETERNITY: year - 6 - 2 * i + "-01-01" } }; });
   const parents = couple ? ["demandeur", "conjoint"] : ["demandeur"];
