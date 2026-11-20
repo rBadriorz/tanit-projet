@@ -10,33 +10,63 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApiHealthRouteImport } from './routes/api/health'
+import { Route as ApiJsonRouteImport } from './routes/api/json'
+import { Route as ApiSampleRouteImport } from './routes/api/sample'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiHealthRoute = ApiHealthRouteImport.update({
+  id: '/api/health',
+  path: '/api/health',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiJsonRoute = ApiJsonRouteImport.update({
+  id: '/api/json',
+  path: '/api/json',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiSampleRoute = ApiSampleRouteImport.update({
+  id: '/api/sample',
+  path: '/api/sample',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/api/health': typeof ApiHealthRoute
+  '/api/json': typeof ApiJsonRoute
+  '/api/sample': typeof ApiSampleRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/api/health': typeof ApiHealthRoute
+  '/api/json': typeof ApiJsonRoute
+  '/api/sample': typeof ApiSampleRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/api/health': typeof ApiHealthRoute
+  '/api/json': typeof ApiJsonRoute
+  '/api/sample': typeof ApiSampleRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/api/health' | '/api/json' | '/api/sample'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/api/health' | '/api/json' | '/api/sample'
+  id: '__root__' | '/' | '/api/health' | '/api/json' | '/api/sample'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ApiHealthRoute: typeof ApiHealthRoute
+  ApiJsonRoute: typeof ApiJsonRoute
+  ApiSampleRoute: typeof ApiSampleRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +78,35 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/health': {
+      id: '/api/health'
+      path: '/api/health'
+      fullPath: '/api/health'
+      preLoaderRoute: typeof ApiHealthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/json': {
+      id: '/api/json'
+      path: '/api/json'
+      fullPath: '/api/json'
+      preLoaderRoute: typeof ApiJsonRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/sample': {
+      id: '/api/sample'
+      path: '/api/sample'
+      fullPath: '/api/sample'
+      preLoaderRoute: typeof ApiSampleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ApiHealthRoute: ApiHealthRoute,
+  ApiJsonRoute: ApiJsonRoute,
+  ApiSampleRoute: ApiSampleRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

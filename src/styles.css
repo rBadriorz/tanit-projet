@@ -5,7 +5,10 @@
  *   build resolves @import from the filesystem. Load those with a <link> in the head() of
  *   src/routes/__root.tsx and name the family in a --font-* token in @theme inline below.
  */
-@import "tailwindcss" source(none);
+/* Sans preflight : le style d'origine de Tanit Citoyen reste intact. */
+@layer theme, base, components, utilities;
+@import "tailwindcss/theme.css" layer(theme) source(none);
+@import "tailwindcss/utilities.css" layer(utilities) source(none);
 @source "../src";
 @import "tw-animate-css";
 

@@ -1,23 +1,33 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useEffect } from "react";
+import bodyHtml from "@/legacy/body.html?raw";
+import tanitCss from "@/legacy/tanit.css?url";
 
-// The home route ships no og:image, so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
 export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title: "Tanit Citoyen" },
+      { name: "description", content: "Tanit Citoyen : vos aides, votre capital Tanit et votre vote citoyen, dans une seule appli." },
+      { property: "og:title", content: "Tanit Citoyen" },
+      { property: "og:description", content: "Vos aides, votre capital Tanit et votre vote citoyen, dans une seule appli." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "color-scheme", content: "light" },
+      { name: "theme-color", content: "#ffffff" },
+    ],
+    links: [
+      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap" },
+      { rel: "stylesheet", href: tanitCss },
+    ],
+  }),
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
+// L'appli d'origine est conservée telle quelle : même page, même code.
 function Index() {
-  return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
-  );
+  useEffect(() => {
+    void import("@/legacy/main.js");
+    void import("@/legacy/sliders.js");
+  }, []);
+  return <div dangerouslySetInnerHTML={{ __html: bodyHtml }} />;
 }
