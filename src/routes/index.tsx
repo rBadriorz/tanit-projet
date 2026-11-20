@@ -26,7 +26,9 @@ export const Route = createFileRoute("/")({
 // L'appli d'origine est conservée telle quelle : même page, même code.
 function Index() {
   useEffect(() => {
+    // @ts-ignore -- code JavaScript d'origine, sans types
     void import("@/legacy/main.js");
+    // @ts-ignore -- code JavaScript d'origine, sans types
     void import("@/legacy/sliders.js");
   }, []);
   return <div dangerouslySetInnerHTML={{ __html: bodyHtml }} />;

@@ -33,7 +33,7 @@ export async function* streamMessages(body: Record<string, unknown>, signal?: Ab
       "anthropic-beta": "server-side-fallback-2026-07-01",
     },
     body: JSON.stringify({ ...body, stream: true }),
-    signal,
+    signal: signal ?? null,
   });
   if (!res.ok || !res.body) {
     const txt = await res.text().catch(() => "");
