@@ -31,12 +31,13 @@ Ce qui marche déjà ailleurs : MyWelfare en Irlande attribue automatiquement pl
 | Accueil | Carte du capital Tanit, questions fréquentes, accès aux votes et aux aides |
 | Capital | Simulateur, compartiments, poche européenne, relevé trimestriel |
 | Je vote | Trois votes d'orientation |
+| Mes droits | Agent en 4 étapes visibles : lecture de l'avis d'imposition, calcul des aides par un moteur de règles, formulaire pré-rempli, relecture et validation par le citoyen. Veille « ma situation change » et suivi de dossier |
 | Mes aides | Photo du document, estimation des aides, dossier pré-rempli |
 | Question | Assistant conversationnel |
 | Compte | Mes démarches et leur suivi, confidentialité, effacement des données, préférences, mentions légales |
 | Politique de confidentialité | Données, finalités, durées, destinataires, droits |
 
-Accessibilité : gros boutons, contrastes forts, taille du texte réglable, lecture à voix haute, mode sombre, navigation au clavier.
+Accessibilité : gros boutons, contrastes forts, taille du texte réglable, lecture à voix haute, navigation au clavier. Interface claire sur fond blanc.
 
 ## Architecture
 
@@ -46,17 +47,18 @@ Accessibilité : gros boutons, contrastes forts, taille du texte réglable, lect
 
 ```mermaid
 flowchart LR
-  U[Navigateur<br/>index.html + src/main.js] -->|/api/sample, /api/json| S[Serveur Node / Express<br/>server/index.js]
+  U[Navigateur<br/>src/legacy : body.html, main.js, agents.js] -->|/api/sample, /api/json| S[Routes serveur TanStack Start<br/>src/routes/api]
   S -->|clé API côté serveur| C[API Anthropic<br/>Claude]
   U -->|voix| V[Synthèse vocale du navigateur]
   U -->|compte, choix, votes, démarches| L[(Stockage local de l'appareil)]
 ```
 
-- `index.html` : interface (HTML et CSS).
-- `src/main.js` : logique de l'appli, textes français et anglais.
-- `src/claude.js` : appels au serveur (texte en streaming, réponses JSON, réduction des photos).
-- `server/index.js` : seul endroit qui voit la clé API. Schémas JSON validés, limite de 20 requêtes par minute, sert aussi le site compilé.
-- `.claude/agents/` : agents de recherche utilisés pendant le projet (veille sondages, benchmark international, analyse juridique, retours terrain, jury contradicteur).
+Le projet est construit et hébergé avec [Lovable](https://lovable.dev) (TanStack Start), synchronisé avec ce dépôt GitHub.
+
+- `src/legacy/` : l'appli Tanit Citoyen, gardée en HTML, CSS et JavaScript : `body.html` (écrans), `tanit.css` (styles), `main.js` (logique, textes français et anglais), `agents.js` (les 5 agents de l'appli), `claude.js` (appels au serveur, réduction des photos). `src/routes/index.tsx` la monte telle quelle.
+- `src/routes/api/` : routes serveur `/api/health`, `/api/sample` (texte en streaming) et `/api/json` (réponses JSON validées par des schémas).
+- `src/lib/anthropic.server.ts` : seul endroit qui voit la clé API. Limite de 20 requêtes par minute et par personne.
+- `.claude/agents/` : agents Claude Code utilisés pendant le projet (veille sondages, benchmark international, analyse juridique, retours terrain, jury contradicteur, revue d'interface).
 
 ### Version cible
 
@@ -64,23 +66,22 @@ Connexion FranceConnect+, registre des consentements, calcul des droits par **Op
 
 ## Lancer le projet
 
-Prérequis : Node.js 22.9 ou plus récent.
+En ligne, l'appli est publiée par Lovable. La clé API est enregistrée dans les secrets du projet Lovable (`ANTHROPIC_API_KEY`) : elle n'est jamais dans le dépôt.
+
+En local (Node.js 22 ou plus récent) :
 
 ```bash
 npm install
-cp .env.example .env      # Windows : Copy-Item .env.example .env
-# coller la clé dans .env : ANTHROPIC_API_KEY=sk-ant-...
-npm run dev               # http://localhost:5173
+npm run dev       # la clé est lue dans la variable d'environnement ANTHROPIC_API_KEY
+npm run build     # vérifier que le projet compile
 ```
 
-Sans clé, l'appli fonctionne avec des exemples et indique que l'assistant n'est pas disponible.
-
-Production : `npm run build` puis `npm start` (un seul serveur sert le site et l'API).
+Sans clé, l'appli passe en « mode démo » : mêmes étapes, avec des réponses d'exemple et une étiquette visible.
 
 ## Limites connues
 
 - Connexion, transmission des dossiers et compte Tanit sont **simulés**.
-- Les aides sont **estimées par l'IA**, pas calculées par les règles officielles : la version cible utilise OpenFisca.
+- Les aides sont calculées par des **barèmes simplifiés 2026** (l'IA n'écrit que les explications), pas par les règles officielles complètes : la version cible utilise OpenFisca.
 - Les rendements et le barème de contribution sont des **hypothèses de l'équipe**, à valider.
 - Les données du compte restent sur l'appareil.
 

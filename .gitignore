@@ -30,3 +30,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Secrets (la clé API reste dans les secrets Lovable)
+.env
+.env.*
