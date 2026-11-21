@@ -109,6 +109,7 @@ function Shell() {
 function StatusBar({ framed }: { framed?: boolean | undefined }) {
   const [now, setNow] = useState(() => new Date());
   useEffect(() => { const t = setInterval(() => setNow(new Date()), 15_000); return () => clearInterval(t); }, []);
+  if (!framed) return <div className="h-[env(safe-area-inset-top)] shrink-0" />; // real phone: no fake status bar
   return (
     <div className={`relative z-[700] flex shrink-0 items-center justify-between px-7 ${framed ? "h-[50px] pt-1" : "h-7"} text-[13px] font-semibold`}>
       {framed ? <span>{now.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" })}</span> : <span />}

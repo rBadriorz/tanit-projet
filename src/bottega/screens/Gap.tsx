@@ -112,7 +112,7 @@ export default function Gap({ screen }: { screen: Screen }) {
 
       <Card className="mt-3">
         <h3 className="serif text-lg font-semibold">Your financing plan · {euro(calc.need)}</h3>
-        <div className="my-2 flex justify-center"><Donut data={calc.plan} size={170} /></div>
+        <div className="my-2 flex justify-center"><Donut data={calc.plan} size={170} legend={false} /></div>
         <ul className="space-y-1 text-sm">
           {calc.plan.map((p) => (
             <li key={p.label} className="flex justify-between gap-2">

@@ -190,9 +190,9 @@ export default function Takeover({ screen }: { screen: Screen }) {
         </div>
       )}
 
-      <div className="mt-6 flex gap-3">
-        {step > 0 && <Btn kind="light" className="flex-1" onClick={() => setStep(step - 1)}>Back</Btn>}
-        {step < 4 && <Btn className="flex-1" disabled={step === 3 && !bank} onClick={() => setStep(step + 1)}>Next</Btn>}
+      <div className="sticky -bottom-28 -mx-4 mt-6 flex gap-3 border-t border-line bg-cream/95 px-4 pb-8 pt-3 backdrop-blur">
+        {step > 0 && <Btn kind="light" className="flex-1" onClick={() => { setStep(step - 1); document.querySelector(".no-scrollbar.flex-1")?.scrollTo({ top: 0 }); }}>Back</Btn>}
+        {step < 4 && <Btn className="flex-1" disabled={step === 3 && !bank} onClick={() => { setStep(step + 1); document.querySelector(".no-scrollbar.flex-1")?.scrollTo({ top: 0 }); }}>Next</Btn>}
       </div>
     </Page>
   );
