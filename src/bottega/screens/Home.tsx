@@ -5,6 +5,7 @@ import { useStore } from "../store";
 import { STATS } from "../data/stats";
 import type { Screen } from "../types";
 import { Awning } from "../components/Logo";
+import { AiTeam } from "../components/AiTeam";
 
 let splashShown = false;
 
@@ -56,6 +57,7 @@ export default function Home(_p: { screen: Screen }) {
         <button onClick={() => go({ name: "poster", shopId: "martin", kind: "successor" })} className="press min-h-[44px] rounded-full bg-paper px-4 shadow-sm">Posters</button>
         <button onClick={() => go({ name: "takeover", shopId: "marcel" })} className="press min-h-[44px] rounded-full bg-paper px-4 shadow-sm">Start a takeover</button>
       </div>
+      <AiTeam className="mt-6" />
     </div>
   );
 }

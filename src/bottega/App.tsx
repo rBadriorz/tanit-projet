@@ -22,6 +22,7 @@ import About from "./screens/About";
 import How from "./screens/How";
 import Flag from "./screens/Flag";
 import Presenter from "./components/Presenter";
+import { AI_PITCH } from "./components/AiTeam";
 import { Celebration } from "./components/CoOwnerCard";
 import { publicOrigin, qrIsLocal } from "./lib/url";
 
@@ -77,7 +78,7 @@ function Shell() {
         <h1 className="serif text-6xl font-semibold text-fir">{APP_NAME}</h1>
         <p className="serif mt-3 text-2xl italic text-terracotta">{APP_TAGLINE}</p>
         <ul className="mt-8 space-y-4 text-lg">
-          {["Find the shops about to close", "Take over with your neighbours", "AI builds the bank file"].map((b) => (
+          {["Find the shops about to close", "Take over with your neighbours", AI_PITCH].map((b) => (
             <li key={b} className="flex gap-3"><span className="mt-2 h-2.5 w-2.5 shrink-0 rounded-full bg-terracotta" />{b}</li>
           ))}
         </ul>
