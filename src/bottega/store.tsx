@@ -1,0 +1,119 @@
+import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
+import type { Contribution, Message, Screen, Shop } from "./types";
+import { SHOPS } from "./data/shops";
+import { MESSAGES } from "./data/messages";
+
+const KEY = "bottega-demo-v1";
+
+interface Persisted {
+  contributions: Contribution[];
+  extraShops: Shop[];                       // shops added by the owner flow / flag
+  shopPatches: Record<string, Partial<Shop>>; // e.g. raise opened
+  posts: Message[];                         // posts written in the app
+  applications: { shopId: string; name: string; experience: string; message: string }[];
+  backerBumps: Record<string, number>;      // presenter "+1 neighbour"
+  aiMode: "live" | "scripted";
+}
+const EMPTY: Persisted = { contributions: [], extraShops: [], shopPatches: {}, posts: [], applications: [], backerBumps: {}, aiMode: "live" };
+
+function load(): Persisted {
+  try {
+    const raw = localStorage.getItem(KEY);
+    return raw ? { ...EMPTY, ...JSON.parse(raw) } : EMPTY;
+  } catch {
+    return EMPTY;
+  }
+}
+
+interface Store extends Persisted {
+  shops: Shop[];
+  messages: Message[];
+  shop: (id: string) => Shop | undefined;
+  stack: Screen[];
+  screen: Screen;
+  dir: 1 | -1;
+  go: (s: Screen) => void;
+  tab: (s: Screen) => void;
+  back: () => void;
+  contribute: (shopId: string, firstName: string, amount: number) => Contribution;
+  addShop: (s: Shop) => void;
+  patchShop: (id: string, p: Partial<Shop>) => void;
+  addPost: (m: Message) => void;
+  apply: (a: Persisted["applications"][number]) => void;
+  bump: (shopId: string) => void;
+  setAiMode: (m: "live" | "scripted") => void;
+  aiLast: "live" | "scripted" | null;
+  setAiLast: (m: "live" | "scripted") => void;
+  toast: string | null;
+  notify: (t: string) => void;
+  reset: () => void;
+}
+
+const Ctx = createContext<Store | null>(null);
+
+export function StoreProvider({ children, initial }: { children: ReactNode; initial: Screen }) {
+  const [p, setP] = useState<Persisted>(EMPTY);
+  const [stack, setStack] = useState<Screen[]>([initial]);
+  const [dir, setDir] = useState<1 | -1>(1);
+  const [aiLast, setAiLast] = useState<"live" | "scripted" | null>(null);
+  const [toast, setToast] = useState<string | null>(null);
+
+  useEffect(() => setP(load()), []);
+  const save = useCallback((f: (x: Persisted) => Persisted) => {
+    setP((prev) => {
+      const next = f(prev);
+      try { localStorage.setItem(KEY, JSON.stringify(next)); } catch { /* private mode */ }
+      return next;
+    });
+  }, []);
+
+  const shops = useMemo(() => {
+    const all = [...SHOPS, ...p.extraShops].map((s) => {
+      const patch = p.shopPatches[s.id];
+      let shop: Shop = patch ? { ...s, ...patch } : s;
+      if (shop.raise) {
+        const mine = p.contributions.filter((c) => c.shopId === shop.id);
+        const add = mine.reduce((a, c) => a + c.amount, 0);
+        const bumps = p.backerBumps[shop.id] || 0;
+        if (add || bumps) shop = { ...shop, raise: { ...shop.raise, raised: shop.raise.raised + add + bumps * 100, backers: shop.raise.backers + mine.length + bumps } };
+      }
+      return shop;
+    });
+    return all;
+  }, [p]);
+
+  const messages = useMemo(() => [...p.posts, ...MESSAGES], [p.posts]);
+
+  const store: Store = {
+    ...p, shops, messages, stack, dir, aiLast, setAiLast, toast,
+    screen: stack[stack.length - 1],
+    shop: (id) => shops.find((s) => s.id === id),
+    go: (s) => { setDir(1); setStack((st) => [...st, s]); },
+    tab: (s) => { setDir(1); setStack([s]); },
+    back: () => { setDir(-1); setStack((st) => (st.length > 1 ? st.slice(0, -1) : [{ name: "home" }])); },
+    contribute: (shopId, firstName, amount) => {
+      const shop = shops.find((s) => s.id === shopId);
+      const c: Contribution = { shopId, firstName, amount, at: new Date().toISOString(), share: (shop?.raise?.backers ?? 0) + 1 };
+      save((x) => ({ ...x, contributions: [...x.contributions, c] }));
+      return c;
+    },
+    addShop: (s) => save((x) => ({ ...x, extraShops: [...x.extraShops.filter((e) => e.id !== s.id), s] })),
+    patchShop: (id, patch) => save((x) => ({ ...x, shopPatches: { ...x.shopPatches, [id]: { ...x.shopPatches[id], ...patch } } })),
+    addPost: (m) => save((x) => ({ ...x, posts: [m, ...x.posts] })),
+    apply: (a) => save((x) => ({ ...x, applications: [...x.applications, a] })),
+    bump: (shopId) => save((x) => ({ ...x, backerBumps: { ...x.backerBumps, [shopId]: (x.backerBumps[shopId] || 0) + 1 } })),
+    setAiMode: (m) => save((x) => ({ ...x, aiMode: m })),
+    notify: (t) => { setToast(t); setTimeout(() => setToast(null), 3500); },
+    reset: () => { try { localStorage.removeItem(KEY); } catch { /* ignore */ } setP({ ...EMPTY }); setStack([{ name: "home" }]); },
+  };
+  return <Ctx.Provider value={store}>{children}</Ctx.Provider>;
+}
+
+export function useStore() {
+  const s = useContext(Ctx);
+  if (!s) throw new Error("StoreProvider missing");
+  return s;
+}
+
+export const euro = (n: number) => "€" + Math.round(n).toLocaleString("en-GB");
+export const pct = (s: Shop) => (s.raise ? Math.min(100, Math.round((s.raise.raised / s.raise.target) * 100)) : s.status === "taken_over" ? 100 : 0);

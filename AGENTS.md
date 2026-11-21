@@ -29,6 +29,5 @@ use the editor.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
 
-- The Tanit Citoyen app is kept verbatim in src/legacy (body.html, tanit.css, main.js, claude.js) and mounted by src/routes/index.tsx; edit those files rather than rewriting in React, so the original design and flow stay identical.
-- AI calls go through server routes /api/health, /api/sample, /api/json (src/lib/anthropic.server.ts) calling Anthropic directly with the ANTHROPIC_API_KEY secret, so the key never reaches the browser.
-- Tailwind preflight is disabled in src/styles.css because it would alter the original stylesheet.
+- The app lives in src/bottega (React + TypeScript); routes in src/routes mount it. See CLAUDE.md.
+- AI calls go through the server route /api/bottega/agent (src/lib/anthropic.server.ts, official Anthropic SDK) with the ANTHROPIC_API_KEY secret, so the key never reaches the browser. Every AI feature has a scripted fallback.

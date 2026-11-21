@@ -11,9 +11,9 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiHealthRouteImport } from './routes/api/health'
-import { Route as ApiJsonRouteImport } from './routes/api/json'
-import { Route as ApiOpenfiscaRouteImport } from './routes/api/openfisca'
-import { Route as ApiSampleRouteImport } from './routes/api/sample'
+import { Route as PosterShopIdRouteImport } from './routes/poster/$shopId'
+import { Route as ShopShopIdRouteImport } from './routes/shop/$shopId'
+import { Route as PosterSuccessorShopIdRouteImport } from './routes/poster/successor/$shopId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -25,65 +25,74 @@ const ApiHealthRoute = ApiHealthRouteImport.update({
   path: '/api/health',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiJsonRoute = ApiJsonRouteImport.update({
-  id: '/api/json',
-  path: '/api/json',
+const PosterShopIdRoute = PosterShopIdRouteImport.update({
+  id: '/poster/$shopId',
+  path: '/poster/$shopId',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiOpenfiscaRoute = ApiOpenfiscaRouteImport.update({
-  id: '/api/openfisca',
-  path: '/api/openfisca',
+const ShopShopIdRoute = ShopShopIdRouteImport.update({
+  id: '/shop/$shopId',
+  path: '/shop/$shopId',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiSampleRoute = ApiSampleRouteImport.update({
-  id: '/api/sample',
-  path: '/api/sample',
+const PosterSuccessorShopIdRoute = PosterSuccessorShopIdRouteImport.update({
+  id: '/poster/successor/$shopId',
+  path: '/poster/successor/$shopId',
   getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/api/health': typeof ApiHealthRoute
-  '/api/json': typeof ApiJsonRoute
-  '/api/openfisca': typeof ApiOpenfiscaRoute
-  '/api/sample': typeof ApiSampleRoute
+  '/poster/$shopId': typeof PosterShopIdRoute
+  '/shop/$shopId': typeof ShopShopIdRoute
+  '/poster/successor/$shopId': typeof PosterSuccessorShopIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/api/health': typeof ApiHealthRoute
-  '/api/json': typeof ApiJsonRoute
-  '/api/openfisca': typeof ApiOpenfiscaRoute
-  '/api/sample': typeof ApiSampleRoute
+  '/poster/$shopId': typeof PosterShopIdRoute
+  '/shop/$shopId': typeof ShopShopIdRoute
+  '/poster/successor/$shopId': typeof PosterSuccessorShopIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/api/health': typeof ApiHealthRoute
-  '/api/json': typeof ApiJsonRoute
-  '/api/openfisca': typeof ApiOpenfiscaRoute
-  '/api/sample': typeof ApiSampleRoute
+  '/poster/$shopId': typeof PosterShopIdRoute
+  '/shop/$shopId': typeof ShopShopIdRoute
+  '/poster/successor/$shopId': typeof PosterSuccessorShopIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/api/health' | '/api/json' | '/api/openfisca' | '/api/sample'
+    | '/'
+    | '/api/health'
+    | '/poster/$shopId'
+    | '/shop/$shopId'
+    | '/poster/successor/$shopId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/api/health' | '/api/json' | '/api/openfisca' | '/api/sample'
+  to:
+    | '/'
+    | '/api/health'
+    | '/poster/$shopId'
+    | '/shop/$shopId'
+    | '/poster/successor/$shopId'
   id:
     | '__root__'
     | '/'
     | '/api/health'
-    | '/api/json'
-    | '/api/openfisca'
-    | '/api/sample'
+    | '/poster/$shopId'
+    | '/shop/$shopId'
+    | '/poster/successor/$shopId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ApiHealthRoute: typeof ApiHealthRoute
-  ApiJsonRoute: typeof ApiJsonRoute
-  ApiOpenfiscaRoute: typeof ApiOpenfiscaRoute
-  ApiSampleRoute: typeof ApiSampleRoute
+  PosterShopIdRoute: typeof PosterShopIdRoute
+  ShopShopIdRoute: typeof ShopShopIdRoute
+  PosterSuccessorShopIdRoute: typeof PosterSuccessorShopIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -102,25 +111,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiHealthRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/json': {
-      id: '/api/json'
-      path: '/api/json'
-      fullPath: '/api/json'
-      preLoaderRoute: typeof ApiJsonRouteImport
+    '/poster/$shopId': {
+      id: '/poster/$shopId'
+      path: '/poster/$shopId'
+      fullPath: '/poster/$shopId'
+      preLoaderRoute: typeof PosterShopIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/openfisca': {
-      id: '/api/openfisca'
-      path: '/api/openfisca'
-      fullPath: '/api/openfisca'
-      preLoaderRoute: typeof ApiOpenfiscaRouteImport
+    '/shop/$shopId': {
+      id: '/shop/$shopId'
+      path: '/shop/$shopId'
+      fullPath: '/shop/$shopId'
+      preLoaderRoute: typeof ShopShopIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/sample': {
-      id: '/api/sample'
-      path: '/api/sample'
-      fullPath: '/api/sample'
-      preLoaderRoute: typeof ApiSampleRouteImport
+    '/poster/successor/$shopId': {
+      id: '/poster/successor/$shopId'
+      path: '/poster/successor/$shopId'
+      fullPath: '/poster/successor/$shopId'
+      preLoaderRoute: typeof PosterSuccessorShopIdRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -129,9 +138,9 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ApiHealthRoute: ApiHealthRoute,
-  ApiJsonRoute: ApiJsonRoute,
-  ApiOpenfiscaRoute: ApiOpenfiscaRoute,
-  ApiSampleRoute: ApiSampleRoute,
+  PosterShopIdRoute: PosterShopIdRoute,
+  ShopShopIdRoute: ShopShopIdRoute,
+  PosterSuccessorShopIdRoute: PosterSuccessorShopIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
