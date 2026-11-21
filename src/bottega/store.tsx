@@ -86,7 +86,7 @@ export function StoreProvider({ children, initial }: { children: ReactNode; init
 
   const store: Store = {
     ...p, shops, messages, stack, dir, aiLast, setAiLast, toast,
-    screen: stack[stack.length - 1],
+    screen: stack[stack.length - 1] ?? { name: "home" },
     shop: (id) => shops.find((s) => s.id === id),
     go: (s) => { setDir(1); setStack((st) => [...st, s]); },
     tab: (s) => { setDir(1); setStack([s]); },

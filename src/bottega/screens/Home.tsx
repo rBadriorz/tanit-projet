@@ -17,7 +17,7 @@ function CountUp({ to }: { to: number }) {
 export default function Home(_p: { screen: Screen }) {
   const { go, tab, contributions } = useStore();
   const [splash, setSplash] = useState(!splashShown);
-  useEffect(() => { if (splash) { const t = setTimeout(() => { splashShown = true; setSplash(false); }, 1300); return () => clearTimeout(t); } }, [splash]);
+  useEffect(() => { if (!splash) return; const t = setTimeout(() => { splashShown = true; setSplash(false); }, 1300); return () => clearTimeout(t); }, [splash]);
 
   if (splash) {
     return (

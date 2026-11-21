@@ -23,10 +23,10 @@ export interface PosterProps {
   kind: "raise" | "successor";
   template: Template;
   origin: string;
-  headline?: string;
-  subline?: string;
-  offers?: string[];
-  profiles?: string[];
+  headline?: string | undefined;
+  subline?: string | undefined;
+  offers?: string[] | undefined;
+  profiles?: string[] | undefined;
 }
 
 export function defaultHeadline(shop: Shop, kind: "raise" | "successor") {

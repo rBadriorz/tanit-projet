@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiHealthRouteImport } from './routes/api/health'
 import { Route as PosterShopIdRouteImport } from './routes/poster/$shopId'
 import { Route as ShopShopIdRouteImport } from './routes/shop/$shopId'
+import { Route as ApiBottegaAgentRouteImport } from './routes/api/bottega/agent'
 import { Route as PosterSuccessorShopIdRouteImport } from './routes/poster/successor/$shopId'
 
 const IndexRoute = IndexRouteImport.update({
@@ -35,6 +36,11 @@ const ShopShopIdRoute = ShopShopIdRouteImport.update({
   path: '/shop/$shopId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiBottegaAgentRoute = ApiBottegaAgentRouteImport.update({
+  id: '/api/bottega/agent',
+  path: '/api/bottega/agent',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PosterSuccessorShopIdRoute = PosterSuccessorShopIdRouteImport.update({
   id: '/poster/successor/$shopId',
   path: '/poster/successor/$shopId',
@@ -46,6 +52,7 @@ export interface FileRoutesByFullPath {
   '/api/health': typeof ApiHealthRoute
   '/poster/$shopId': typeof PosterShopIdRoute
   '/shop/$shopId': typeof ShopShopIdRoute
+  '/api/bottega/agent': typeof ApiBottegaAgentRoute
   '/poster/successor/$shopId': typeof PosterSuccessorShopIdRoute
 }
 export interface FileRoutesByTo {
@@ -53,6 +60,7 @@ export interface FileRoutesByTo {
   '/api/health': typeof ApiHealthRoute
   '/poster/$shopId': typeof PosterShopIdRoute
   '/shop/$shopId': typeof ShopShopIdRoute
+  '/api/bottega/agent': typeof ApiBottegaAgentRoute
   '/poster/successor/$shopId': typeof PosterSuccessorShopIdRoute
 }
 export interface FileRoutesById {
@@ -61,6 +69,7 @@ export interface FileRoutesById {
   '/api/health': typeof ApiHealthRoute
   '/poster/$shopId': typeof PosterShopIdRoute
   '/shop/$shopId': typeof ShopShopIdRoute
+  '/api/bottega/agent': typeof ApiBottegaAgentRoute
   '/poster/successor/$shopId': typeof PosterSuccessorShopIdRoute
 }
 export interface FileRouteTypes {
@@ -70,6 +79,7 @@ export interface FileRouteTypes {
     | '/api/health'
     | '/poster/$shopId'
     | '/shop/$shopId'
+    | '/api/bottega/agent'
     | '/poster/successor/$shopId'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -77,6 +87,7 @@ export interface FileRouteTypes {
     | '/api/health'
     | '/poster/$shopId'
     | '/shop/$shopId'
+    | '/api/bottega/agent'
     | '/poster/successor/$shopId'
   id:
     | '__root__'
@@ -84,6 +95,7 @@ export interface FileRouteTypes {
     | '/api/health'
     | '/poster/$shopId'
     | '/shop/$shopId'
+    | '/api/bottega/agent'
     | '/poster/successor/$shopId'
   fileRoutesById: FileRoutesById
 }
@@ -92,6 +104,7 @@ export interface RootRouteChildren {
   ApiHealthRoute: typeof ApiHealthRoute
   PosterShopIdRoute: typeof PosterShopIdRoute
   ShopShopIdRoute: typeof ShopShopIdRoute
+  ApiBottegaAgentRoute: typeof ApiBottegaAgentRoute
   PosterSuccessorShopIdRoute: typeof PosterSuccessorShopIdRoute
 }
 
@@ -125,6 +138,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ShopShopIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/bottega/agent': {
+      id: '/api/bottega/agent'
+      path: '/api/bottega/agent'
+      fullPath: '/api/bottega/agent'
+      preLoaderRoute: typeof ApiBottegaAgentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/poster/successor/$shopId': {
       id: '/poster/successor/$shopId'
       path: '/poster/successor/$shopId'
@@ -140,6 +160,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiHealthRoute: ApiHealthRoute,
   PosterShopIdRoute: PosterShopIdRoute,
   ShopShopIdRoute: ShopShopIdRoute,
+  ApiBottegaAgentRoute: ApiBottegaAgentRoute,
   PosterSuccessorShopIdRoute: PosterSuccessorShopIdRoute,
 }
 export const routeTree = rootRouteImport

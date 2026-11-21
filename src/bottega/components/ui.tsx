@@ -25,7 +25,7 @@ export function Btn({ children, onClick, kind = "primary", className = "", disab
 
 export function Card({ children, className = "", onClick }: { children: ReactNode; className?: string; onClick?: () => void }) {
   return (
-    <motion.div whileTap={onClick ? { scale: 0.98, y: -2 } : undefined} onClick={onClick}
+    <motion.div {...(onClick ? { whileTap: { scale: 0.98, y: -2 }, onClick } : {})}
       className={`rounded-3xl bg-paper p-4 shadow-[0_4px_18px_rgba(31,77,58,0.08)] ${onClick ? "cursor-pointer" : ""} ${className}`}>
       {children}
     </motion.div>

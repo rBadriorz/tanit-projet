@@ -103,7 +103,7 @@ function Shell() {
   );
 }
 
-function StatusBar({ framed }: { framed?: boolean }) {
+function StatusBar({ framed }: { framed?: boolean | undefined }) {
   const [now, setNow] = useState(() => new Date());
   useEffect(() => { const t = setInterval(() => setNow(new Date()), 15_000); return () => clearInterval(t); }, []);
   return (
@@ -115,7 +115,7 @@ function StatusBar({ framed }: { framed?: boolean }) {
   );
 }
 
-function Screens({ framed }: { framed?: boolean }) {
+function Screens({ framed }: { framed?: boolean | undefined }) {
   const { screen, stack, dir, tab, toast } = useStore();
   const C = SCREENS[screen.name];
   const showTabs = TAB_SCREENS.has(screen.name);

@@ -7,7 +7,7 @@ import { pct } from "../store";
 export interface MapTarget { lat: number; lng: number; zoom: number; key: number }
 
 export default function LeafletMap({ shops, selectedId, onSelect, target, me }: {
-  shops: Shop[]; selectedId?: string; onSelect: (id: string) => void; target: MapTarget; me?: { lat: number; lng: number } | null;
+  shops: Shop[]; selectedId?: string | undefined; onSelect: (id: string) => void; target: MapTarget; me?: { lat: number; lng: number } | null;
 }) {
   const el = useRef<HTMLDivElement>(null);
   const mapRef = useRef<Leaflet.Map | null>(null);

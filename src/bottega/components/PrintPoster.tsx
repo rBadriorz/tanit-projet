@@ -3,8 +3,8 @@ import { StoreProvider, useStore } from "../store";
 import { Poster, type Template } from "./Poster";
 
 interface Props {
-  shopId: string; kind: "raise" | "successor"; template?: string;
-  headline?: string; subline?: string; offers?: string[]; profiles?: string[];
+  shopId: string; kind: "raise" | "successor"; template?: string | undefined;
+  headline?: string | undefined; subline?: string | undefined; offers?: string[] | undefined; profiles?: string[] | undefined;
 }
 
 /** Standalone A4 page for printing (no phone frame). */
