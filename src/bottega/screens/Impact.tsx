@@ -11,8 +11,8 @@ export default function Impact(_p: { screen: Screen }) {
   const big = [
     { label: "Shops saved", value: STATS.shopsSaved.toLocaleString("en-GB") },
     { label: "Jobs kept", value: STATS.jobsKept.toLocaleString("en-GB") },
-    { label: "Neighbours co-owners", value: (STATS.coOwners + contributions.length).toLocaleString("en-GB") },
-    { label: "Raised locally", value: euro(STATS.raisedLocally + contributions.reduce((a, c) => a + c.amount, 0)) },
+    { label: "Neighbours co-owners", value: (STATS.coOwners + contributions.filter((c) => c.status === "approved").length).toLocaleString("en-GB") },
+    { label: "Raised locally", value: euro(STATS.raisedLocally + contributions.filter((c) => c.status === "approved").reduce((a, c) => a + c.amount, 0)) },
   ];
   const max = Math.max(...MONTHS.map((m) => m[1]));
   return (

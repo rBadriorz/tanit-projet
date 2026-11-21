@@ -1,7 +1,9 @@
-﻿import { useState } from "react";
+import { useRef, useState } from "react";
+import type { Contribution } from "../types";
+import { CoOwnerCard, downloadCard } from "../components/CoOwnerCard";
 import { ChevronRight } from "lucide-react";
 import type { Screen } from "../types";
-import { Avatar, Card } from "../components/ui";
+import { Avatar, Btn, Card, Sheet } from "../components/ui";
 import { euro, useStore } from "../store";
 
 const PREFILLED = [
@@ -12,12 +14,16 @@ const PREFILLED = [
 export default function Me(_p: { screen: Screen }) {
   const st = useStore();
   const [notif, setNotif] = useState(true);
-  const mine = st.contributions.map((c) => ({
+  const [card, setCard] = useState<Contribution | null>(null);
+  const cardRef = useRef<HTMLDivElement>(null);
+  const requests = st.contributions.filter((c) => c.status === "pending");
+  const mine = st.contributions.filter((c) => c.status === "approved").map((c) => ({
     shopId: c.shopId, name: st.shop(c.shopId)?.name ?? c.shopId, amount: c.amount, share: `#${c.share}`,
-    note: st.shop(c.shopId)?.raise?.perks?.[0] ? `Perk: ${st.shop(c.shopId)!.raise!.perks[0]}` : "Co-owner", status: "Raising",
+    note: st.shop(c.shopId)?.raise?.perks?.[0] ? `Perk: ${st.shop(c.shopId)!.raise!.perks[0]}` : "Co-owner", status: "Approved", c,
   }));
-  const wallet = [...mine, ...PREFILLED];
+  const wallet = [...mine, ...PREFILLED.map((w) => ({ ...w, c: null as Contribution | null }))];
   const total = wallet.reduce((a, w) => a + w.amount, 0);
+  const cardShop = card ? st.shop(card.shopId) : undefined;
   const badges = ["First takeover", "Street saver", ...(mine.length ? ["Founder of a cooperative"] : [])];
 
   return (
@@ -27,16 +33,37 @@ export default function Me(_p: { screen: Screen }) {
         <div><h1 className="serif text-3xl font-semibold">Léa</h1><p className="text-sm text-muted">rue de Fougères, Rennes</p></div>
       </div>
 
+      {requests.length > 0 && (
+        <>
+          <h2 className="serif mt-6 text-xl font-semibold">My requests</h2>
+          <p className="text-sm text-muted">Not shares yet: no money is taken until a request is approved.</p>
+          <div className="mt-3 space-y-2">
+            {requests.map((c) => (
+              <Card key={c.id} onClick={() => st.go({ name: "shop", id: c.shopId })} className="flex items-center gap-3 !p-3">
+                <div className="min-w-0 flex-1">
+                  <div className="truncate font-semibold">{st.shop(c.shopId)?.name ?? c.shopId}</div>
+                  <div className="truncate text-xs text-muted">Identity and risk check in progress</div>
+                </div>
+                <div className="text-right">
+                  <div className="font-bold text-ink">{euro(c.amount)}</div>
+                  <span className="mt-1 inline-block rounded-full bg-sun px-2 py-0.5 text-[11px] font-semibold text-ink">Pending validation</span>
+                </div>
+              </Card>
+            ))}
+          </div>
+        </>
+      )}
+
       <h2 className="serif mt-6 text-xl font-semibold">My shares</h2>
       <p className="text-sm text-muted">{wallet.length} shops · {euro(total)} invested</p>
       <div className="mt-3 space-y-2">
         {wallet.map((w, i) => (
-          <Card key={w.shopId + i} onClick={() => st.go({ name: "shop", id: w.shopId })} className="flex items-center gap-3 !p-3">
+          <Card key={w.shopId + i} onClick={() => (w.c ? setCard(w.c) : st.go({ name: "shop", id: w.shopId }))} className="flex items-center gap-3 !p-3">
             <div className="min-w-0 flex-1">
               <div className="truncate font-semibold">{w.name}</div>
               <div className="truncate text-xs text-muted">Share {w.share} · {w.note}</div>
             </div>
-            <div className="text-right"><div className="font-bold text-fir">{euro(w.amount)}</div><div className="text-[11px] text-muted">{w.status}</div></div>
+            <div className="text-right"><div className="font-bold text-fir">{euro(w.amount)}</div><div className="text-[11px] text-muted">{w.c ? "Approved · view card" : w.status}</div></div>
           </Card>
         ))}
       </div>
@@ -57,6 +84,15 @@ export default function Me(_p: { screen: Screen }) {
         <Link label="Impact" onClick={() => st.go({ name: "impact" })} />
         <Link label="About & risks" onClick={() => st.go({ name: "about" })} />
       </Card>
+      <Sheet open={!!card && !!cardShop} onClose={() => setCard(null)}>
+        {card && cardShop && (
+          <div className="text-center">
+            <h2 className="serif mb-3 text-2xl font-semibold text-fir">Your co-owner card</h2>
+            <CoOwnerCard shop={cardShop} c={card} cardRef={cardRef} />
+            <Btn kind="accent" className="mt-4 w-full" onClick={() => downloadCard(cardRef.current, cardShop.id)}>Download PNG</Btn>
+          </div>
+        )}
+      </Sheet>
     </div>
   );
 }

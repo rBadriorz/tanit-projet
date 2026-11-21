@@ -1,13 +1,9 @@
-import { useRef, useState } from "react";
-import confetti from "canvas-confetti";
-import { toPng } from "html-to-image";
-import { Check } from "lucide-react";
-import { APP_NAME, DEMO_DATE, PARTNER } from "../config";
+import { useState } from "react";
+import { Check, Clock, Circle } from "lucide-react";
+import { APP_NAME, PARTNER } from "../config";
 import { euro, useStore } from "../store";
 import type { Contribution, Shop } from "../types";
-import { ShopFront } from "./ShopArt";
 import { Btn, Sheet, Trust } from "./ui";
-import { Awning } from "./Logo";
 
 const AMOUNTS = [100, 250, 500, 1000];
 
@@ -20,50 +16,18 @@ export function JoinSheet({ shop, open, onClose }: { shop: Shop; open: boolean; 
   const [nearby, setNearby] = useState(true);
   const [ok, setOk] = useState(false);
   const [done, setDone] = useState<Contribution | null>(null);
-  const cardRef = useRef<HTMLDivElement>(null);
 
   const close = () => { onClose(); setTimeout(() => { setStep(0); setOk(false); setDone(null); }, 300); };
   const price = shop.price || 100000;
   const share = ((amount / price) * 100).toFixed(2);
   const perks = shop.raise?.perks?.length ? shop.raise.perks : ["Your name on the wall of founders", "A vote at the yearly meeting"];
 
-  const confirm = () => {
-    const c = contribute(shop.id, name.trim() || "Léa", amount);
-    setDone(c);
-    confetti({ particleCount: 90, spread: 70, origin: { y: 0.7 }, colors: ["#C2452D", "#1B2A4A", "#E9B949", "#F6F0E4"], scalar: 0.8 });
-  };
-
-  const download = async () => {
-    if (!cardRef.current) return;
-    try {
-      const url = await toPng(cardRef.current, { pixelRatio: 3, cacheBust: true });
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `${APP_NAME}-co-owner-${shop.id}.png`;
-      a.click();
-    } catch { /* ignore */ }
-  };
+  const confirm = () => setDone(contribute(shop.id, name.trim() || "Léa", amount));
 
   return (
     <Sheet open={open} onClose={close}>
       {done ? (
-        <div className="text-center">
-          <h2 className="serif text-3xl font-semibold text-fir">Welcome, co-owner!</h2>
-          <p className="mt-1 text-sm text-muted">Your {euro(done.amount)} is counted (simulated).</p>
-          <div ref={cardRef} className="mx-auto mt-4 w-[280px] overflow-hidden rounded-3xl bg-fir text-left text-white">
-            <ShopFront type={shop.type} status={shop.status} name={shop.name} colors={shop.colors} className="block w-full" lit={(shop.raise ? shop.raise.raised >= shop.raise.target : false)} />
-            <div className="p-4">
-              <div className="flex items-center gap-2 text-xs opacity-80"><Awning size={18} />{APP_NAME}</div>
-              <div className="serif mt-2 text-xl font-semibold">{shop.name}</div>
-              <div className="mt-1 text-sm">{done.firstName} · co-owner since {DEMO_DATE} · share #{done.share}</div>
-            </div>
-          </div>
-          <div className="mt-4 grid gap-2">
-            <Btn kind="accent" onClick={download}>Download PNG</Btn>
-            <Btn kind="light" onClick={close}>Back to the shop</Btn>
-          </div>
-          <Trust className="mt-3" />
-        </div>
+        <RequestSent shop={shop} c={done} onClose={close} />
       ) : (
         <div>
           <div className="mb-3 flex justify-center gap-1.5">
@@ -119,8 +83,8 @@ export function JoinSheet({ shop, open, onClose }: { shop: Shop; open: boolean; 
           {step === 3 && (
             <div className="text-center">
               <h2 className="serif text-2xl font-semibold">Ready, {name || "Léa"}?</h2>
-              <p className="mt-2 text-sm text-muted">{euro(amount)} in {shop.name} · {share}% · nothing is charged in this demo.</p>
-              <Btn kind="accent" className="mt-6 min-h-[60px] w-full text-lg" onClick={confirm}>Confirm my {euro(amount)} (simulated)</Btn>
+              <p className="mt-2 text-sm text-muted">{euro(amount)} in {shop.name} · {share}% · this sends a request. No money is taken until it is approved.</p>
+              <Btn kind="accent" className="mt-6 min-h-[60px] w-full text-lg" onClick={confirm}>Send my request for {euro(amount)}</Btn>
               <button onClick={() => setStep(2)} className="mt-3 min-h-[44px] text-sm text-muted underline">Back</button>
             </div>
           )}
@@ -128,6 +92,44 @@ export function JoinSheet({ shop, open, onClose }: { shop: Shop; open: boolean; 
         </div>
       )}
     </Sheet>
+  );
+}
+
+export const NO_MONEY_NOTICE = "No money is taken until your request is approved. Investing in a small business carries a risk of losing all or part of your capital.";
+
+/** Pending state: the request is sent, the share is not issued yet. */
+export function RequestSent({ shop, c, onClose }: { shop: Shop; c: Contribution; onClose: () => void }) {
+  const steps: { label: string; state: "done" | "doing" | "todo" }[] = [
+    { label: "Request sent", state: "done" },
+    { label: `Identity and risk check by ${PARTNER}`, state: c.status === "approved" ? "done" : "doing" },
+    { label: "Lead buyer approval and share issuance", state: c.status === "approved" ? "done" : "todo" },
+  ];
+  return (
+    <div>
+      <div className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-sun/30 text-[#8a6400]"><Clock size={28} /></div>
+      <h2 className="serif mt-3 text-center text-3xl font-semibold text-fir">Request sent</h2>
+      <p className="mt-2 text-center text-sm">
+        Your request to become a co-owner of <b>{shop.name}</b> for <b>{euro(c.amount)}</b> has been sent. It is pending validation.
+      </p>
+      <ol className="mt-5 space-y-0" aria-label="Progress of your request">
+        {steps.map((st, i) => (
+          <li key={st.label} className="relative flex gap-3 pb-4">
+            {i < steps.length - 1 && <span className={`absolute left-[15px] top-8 h-[calc(100%-24px)] w-0.5 ${st.state === "done" ? "bg-fir" : "bg-line"}`} />}
+            <span className={`grid h-8 w-8 shrink-0 place-items-center rounded-full ${st.state === "done" ? "bg-fir text-white" : st.state === "doing" ? "bg-sun text-ink" : "border-2 border-line bg-paper text-muted"}`}>
+              {st.state === "done" ? <Check size={16} /> : st.state === "doing" ? <Clock size={16} /> : <Circle size={10} />}
+            </span>
+            <div className="pt-1">
+              <div className="text-sm font-semibold">{i + 1}. {st.label}</div>
+              <div className="text-xs text-muted">{st.state === "done" ? "Done" : st.state === "doing" ? "In progress" : "To come"}</div>
+            </div>
+          </li>
+        ))}
+      </ol>
+      <p className="rounded-2xl border border-sun bg-sun/15 p-3 text-sm">{NO_MONEY_NOTICE}</p>
+      <p className="mt-2 text-xs text-muted">Your co-owner card unlocks once the request is approved. Follow it in Me › My shares.</p>
+      <Btn kind="light" className="mt-4 w-full" onClick={onClose}>Back to the shop</Btn>
+      <Trust className="mt-3" />
+    </div>
   );
 }
 

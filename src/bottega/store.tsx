@@ -3,7 +3,7 @@ import type { Contribution, Message, Screen, Shop } from "./types";
 import { SHOPS } from "./data/shops";
 import { MESSAGES } from "./data/messages";
 
-const KEY = "bottega-demo-v1";
+const KEY = "bottega-demo-v2"; // v2: contributions carry a pending / approved status
 
 interface Persisted {
   contributions: Contribution[];
@@ -36,6 +36,9 @@ interface Store extends Persisted {
   tab: (s: Screen) => void;
   back: () => void;
   contribute: (shopId: string, firstName: string, amount: number) => Contribution;
+  approvePending: () => Contribution[];
+  celebrate: Contribution | null;           // approved request to celebrate (confetti + co-owner card)
+  setCelebrate: (c: Contribution | null) => void;
   addShop: (s: Shop) => void;
   patchShop: (id: string, p: Partial<Shop>) => void;
   addPost: (m: Message) => void;
@@ -57,6 +60,7 @@ export function StoreProvider({ children, initial }: { children: ReactNode; init
   const [dir, setDir] = useState<1 | -1>(1);
   const [aiLast, setAiLast] = useState<"live" | "scripted" | null>(null);
   const [toast, setToast] = useState<string | null>(null);
+  const [celebrate, setCelebrate] = useState<Contribution | null>(null);
 
   useEffect(() => setP(load()), []);
   const save = useCallback((f: (x: Persisted) => Persisted) => {
@@ -72,10 +76,13 @@ export function StoreProvider({ children, initial }: { children: ReactNode; init
       const patch = p.shopPatches[s.id];
       let shop: Shop = patch ? { ...s, ...patch } : s;
       if (shop.raise) {
+        // Only approved requests count as raised money; pending ones are shown apart.
         const mine = p.contributions.filter((c) => c.shopId === shop.id);
-        const add = mine.reduce((a, c) => a + c.amount, 0);
+        const approved = mine.filter((c) => c.status === "approved");
+        const add = approved.reduce((a, c) => a + c.amount, 0);
+        const pending = mine.filter((c) => c.status === "pending").reduce((a, c) => a + c.amount, 0);
         const bumps = p.backerBumps[shop.id] || 0;
-        if (add || bumps) shop = { ...shop, raise: { ...shop.raise, raised: shop.raise.raised + add + bumps * 100, backers: shop.raise.backers + mine.length + bumps } };
+        if (add || bumps || pending) shop = { ...shop, raise: { ...shop.raise, raised: shop.raise.raised + add + bumps * 100, pending, backers: shop.raise.backers + approved.length + bumps } };
       }
       return shop;
     });
@@ -92,11 +99,33 @@ export function StoreProvider({ children, initial }: { children: ReactNode; init
     tab: (s) => { setDir(1); setStack([s]); },
     back: () => { setDir(-1); setStack((st) => (st.length > 1 ? st.slice(0, -1) : [{ name: "home" }])); },
     contribute: (shopId, firstName, amount) => {
-      const shop = shops.find((s) => s.id === shopId);
-      const c: Contribution = { shopId, firstName, amount, at: new Date().toISOString(), share: (shop?.raise?.backers ?? 0) + 1 };
+      // A request, not a share: it stays pending until the partner checks it and the lead buyer approves.
+      const c: Contribution = { id: "c-" + Date.now(), shopId, firstName, amount, at: new Date().toISOString(), share: 0, status: "pending" };
       save((x) => ({ ...x, contributions: [...x.contributions, c] }));
       return c;
     },
+    approvePending: () => {
+      const pending = p.contributions.filter((c) => c.status === "pending");
+      if (!pending.length) return [];
+      const next = [...p.contributions];
+      const done: Contribution[] = [];
+      const count: Record<string, number> = {};
+      for (let i = 0; i < next.length; i++) {
+        const c = next[i]!;
+        if (c.status !== "pending") continue;
+        const shop = shops.find((s) => s.id === c.shopId);
+        count[c.shopId] = (count[c.shopId] || 0) + 1;
+        const share = (shop?.raise?.backers ?? 0) + count[c.shopId]!;
+        const a: Contribution = { ...c, status: "approved", share, approvedAt: new Date().toISOString() };
+        next[i] = a;
+        done.push(a);
+      }
+      save((x) => ({ ...x, contributions: next }));
+      setCelebrate(done[done.length - 1] ?? null);
+      return done;
+    },
+    celebrate,
+    setCelebrate,
     addShop: (s) => save((x) => ({ ...x, extraShops: [...x.extraShops.filter((e) => e.id !== s.id), s] })),
     patchShop: (id, patch) => save((x) => ({ ...x, shopPatches: { ...x.shopPatches, [id]: { ...x.shopPatches[id], ...patch } } })),
     addPost: (m) => save((x) => ({ ...x, posts: [m, ...x.posts] })),

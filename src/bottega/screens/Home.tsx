@@ -48,7 +48,7 @@ export default function Home(_p: { screen: Screen }) {
         </motion.button>
       </div>
       <button onClick={() => go({ name: "impact" })} className="mt-4 w-full rounded-2xl bg-paper p-4 text-left text-sm shadow-sm">
-        <b className="text-fir"><CountUp to={STATS.coOwners + contributions.length} /></b> neighbours have joined a takeover · <b className="text-fir"><CountUp to={STATS.shopsSaved} /></b> shops saved
+        <b className="text-fir"><CountUp to={STATS.coOwners + contributions.filter((c) => c.status === "approved").length} /></b> neighbours have joined a takeover · <b className="text-fir"><CountUp to={STATS.shopsSaved} /></b> shops saved
       </button>
       <div className="mt-3 flex flex-wrap gap-2 text-sm">
         <button onClick={() => go({ name: "how" })} className="press min-h-[44px] rounded-full bg-paper px-4 shadow-sm">How it works</button>

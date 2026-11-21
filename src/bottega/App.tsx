@@ -22,6 +22,7 @@ import About from "./screens/About";
 import How from "./screens/How";
 import Flag from "./screens/Flag";
 import Presenter from "./components/Presenter";
+import { Celebration } from "./components/CoOwnerCard";
 
 const SCREENS: Record<Screen["name"], ComponentType<{ screen: Screen }>> = {
   home: Home, map: MapScreen, projects: Projects, wall: Wall, services: Services, me: Me,
@@ -132,6 +133,7 @@ function Screens({ framed }: { framed?: boolean | undefined }) {
             <C screen={screen} />
           </motion.div>
         </AnimatePresence>
+        <Celebration />
         <AnimatePresence>
           {toast && (
             <motion.div initial={{ y: -80 }} animate={{ y: 0 }} exit={{ y: -80 }}

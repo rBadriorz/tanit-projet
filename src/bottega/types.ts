@@ -9,7 +9,7 @@ export interface Shop {
   owner: { firstName: string; age: number; yearsInShop: number; quote: string };
   leadBuyer?: { firstName: string; age: number; role: "employee" | "resident" | "other"; yearsExperience: number; stakePct: number; contribution: number };
   price?: number; revenue?: number; ebitda?: number; staff?: number; rent?: number;
-  raise?: { target: number; raised: number; backers: number; daysLeft: number; minTicket: 100; perks: string[] };
+  raise?: { target: number; raised: number; pending?: number; backers: number; daysLeft: number; minTicket: 100; perks: string[] };
   legalForm?: "SAS" | "SCIC";
   story?: string[];
   pullQuote?: string;
@@ -25,7 +25,8 @@ export interface Message {
   kind: "support" | "owner" | "milestone" | "success"; text: string; reactions: number;
 }
 
-export interface Contribution { shopId: string; firstName: string; amount: number; at: string; share: number }
+export type ContributionStatus = "pending" | "approved";
+export interface Contribution { id: string; shopId: string; firstName: string; amount: number; at: string; share: number; status: ContributionStatus; approvedAt?: string }
 
 export type Screen =
   | { name: "home" } | { name: "map" } | { name: "projects" } | { name: "wall"; shopId?: string }

@@ -21,6 +21,11 @@ export default function Presenter({ onClose }: { onClose: () => void }) {
     jump({ name: "shop", id: "marcel" });
     [0, 1, 2, 3, 4].forEach((i) => setTimeout(() => st.bump("marcel"), 600 + i * 350));
   };
+  const pendingCount = st.contributions.filter((c) => c.status === "pending").length;
+  const approve = () => {
+    const done = st.approvePending();
+    if (!done.length) st.notify("No pending request. Join a shop first (Join from €100).");
+  };
   const B = ({ children, onClick, kind }: { children: React.ReactNode; onClick: () => void; kind?: "danger" }) => (
     <button onClick={onClick} className={`press min-h-[36px] rounded-xl px-3 text-xs font-semibold ${kind === "danger" ? "bg-terracotta text-white" : "bg-cream text-ink"}`}>{children}</button>
   );
@@ -45,6 +50,7 @@ export default function Presenter({ onClose }: { onClose: () => void }) {
       <div className="mb-3 flex flex-wrap gap-2">
         <B onClick={() => { st.bump("marcel"); st.notify("+1 neighbour joined Boulangerie de Marcel"); }}>+1 neighbour joined</B>
         <B onClick={shutter}>Trigger shutter</B>
+        <B onClick={approve}>Approve pending requests{pendingCount ? ` (${pendingCount})` : ""}</B>
         <B onClick={pushPost}>Push wall message</B>
         <B onClick={() => st.notify("Café du Marché is at 75%")}>Push notification</B>
         <B onClick={() => st.notify("A shop near you is looking for a successor")}>Nearby alert</B>

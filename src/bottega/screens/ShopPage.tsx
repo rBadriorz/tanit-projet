@@ -97,7 +97,11 @@ export default function ShopPage({ screen }: { screen: Screen }) {
                 <div><div className="serif text-2xl font-semibold text-fir">{euro(shop.raise.raised)}</div><div className="text-xs text-muted">of {euro(shop.raise.target)}</div></div>
                 <div className="text-right text-sm font-semibold">{p}%</div>
               </div>
-              <Progress value={p} className="mt-3" />
+              <Progress value={p} pending={shop.raise.pending ? (shop.raise.pending / shop.raise.target) * 100 : 0} className="mt-3" />
+              <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs">
+                <span className="flex items-center gap-1.5"><span className="h-2.5 w-2.5 rounded-full bg-fir" />Confirmed {euro(shop.raise.raised)}</span>
+                {!!shop.raise.pending && <span className="flex items-center gap-1.5"><span className="h-2.5 w-2.5 rounded-full bg-fir-light/40" />Pending validation {euro(shop.raise.pending)}</span>}
+              </div>
               <div className="mt-3 grid grid-cols-3 gap-2 text-center text-xs">
                 <div><b className="block text-base">{shop.raise.backers}</b>neighbours</div>
                 <div><b className="block text-base">{shop.raise.daysLeft}</b>days left</div>

@@ -43,10 +43,17 @@ export function Badge({ status }: { status: Status }) {
   );
 }
 
-export function Progress({ value, className = "" }: { value: number; className?: string }) {
+/** Funding bar. `pending` (same unit as value, in %) shows as a lighter segment after the confirmed part. */
+export function Progress({ value, pending = 0, className = "" }: { value: number; pending?: number; className?: string }) {
+  const v = Math.min(100, value);
+  const p = Math.max(0, Math.min(100 - v, pending));
   return (
-    <div className={`h-2.5 w-full overflow-hidden rounded-full bg-line ${className}`}>
-      <motion.div className="h-full rounded-full bg-fir" initial={{ width: 0 }} animate={{ width: `${Math.min(100, value)}%` }} transition={{ duration: 0.9, ease: "easeOut" }} />
+    <div className={`flex h-2.5 w-full overflow-hidden rounded-full bg-line ${className}`}>
+      <motion.div className="h-full bg-fir" initial={{ width: 0 }} animate={{ width: `${v}%` }} transition={{ duration: 0.9, ease: "easeOut" }} />
+      {p > 0 && (
+        <motion.div className="h-full bg-fir-light/40" initial={{ width: 0 }} animate={{ width: `${p}%` }} transition={{ duration: 0.9, delay: 0.3, ease: "easeOut" }}
+          style={{ backgroundImage: "repeating-linear-gradient(45deg, rgba(255,255,255,.35) 0 4px, transparent 4px 8px)" }} />
+      )}
     </div>
   );
 }
