@@ -1,10 +1,10 @@
 import { motion, animate } from "framer-motion";
 import { useEffect, useState } from "react";
-import { APP_NAME } from "../config";
+import { APP_TAGLINE } from "../config";
 import { useStore } from "../store";
 import { STATS } from "../data/stats";
 import type { Screen } from "../types";
-import { Awning } from "../components/Logo";
+import { Logo } from "../components/Logo";
 import { AiTeam } from "../components/AiTeam";
 import { P } from "../theme";
 
@@ -25,18 +25,18 @@ export default function Home(_p: { screen: Screen }) {
     return (
       <div className="absolute inset-0 grid place-items-center bg-page">
         <div className="flex flex-col items-center">
-          <motion.div initial={{ scaleY: 0 }} animate={{ scaleY: 1 }} transition={{ duration: 0.8, ease: "easeOut" }} style={{ transformOrigin: "top" }}>
-            <Awning size={96} />
+          <motion.div initial={{ scale: 0.6, opacity: 0, y: 20 }} animate={{ scale: 1, opacity: 1, y: 0 }} transition={{ type: "spring", damping: 12, stiffness: 140 }}>
+            <Logo height={110} />
           </motion.div>
-          <motion.h1 initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="serif mt-4 text-4xl font-semibold text-primary">{APP_NAME}</motion.h1>
+          <motion.p initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="mt-4 text-sm text-muted">{APP_TAGLINE}</motion.p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="no-scrollbar absolute inset-0 overflow-y-auto px-5 pb-6">
-      <div className="flex items-center gap-2 pt-2"><Awning size={30} /><span className="serif text-2xl font-semibold text-primary">{APP_NAME}</span></div>
+    <div className="no-scrollbar absolute inset-0 overflow-y-auto px-5 pb-24">
+      <div className="flex items-center pt-2"><Logo height={44} /></div>
       <Street />
       <h1 className="serif mt-4 text-[30px] font-semibold leading-tight">Every street deserves its corner shop.</h1>
       <div className="mt-5 grid gap-3">

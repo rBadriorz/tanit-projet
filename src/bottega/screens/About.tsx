@@ -2,6 +2,7 @@ import type { Screen } from "../types";
 import { Card, Page, Trust } from "../components/ui";
 import { APP_NAME, PARTNER } from "../config";
 import { AiTeam } from "../components/AiTeam";
+import { Logo } from "../components/Logo";
 
 const FAQ = [
   { q: `Does ${APP_NAME} hold my money?`, a: `No. Funds are collected and held by ${PARTNER}, a licensed EU crowdfunding platform such as WiSEED or LITA.co. ${APP_NAME} never holds money.` },
@@ -14,6 +15,7 @@ const FAQ = [
 export default function About(_p: { screen: Screen }) {
   return (
     <Page title="About & risks">
+      <div className="mb-4 flex justify-center"><Logo height={84} /></div>
       <Card>
         <h2 className="serif text-xl font-semibold">How {APP_NAME} works</h2>
         <p className="mt-2 text-sm leading-relaxed">Neighbours take over local shops whose owners retire. A lead buyer keeps the majority. Residents join the capital from €100 through {PARTNER}. One company per shop: {APP_NAME} is not a fund.</p>

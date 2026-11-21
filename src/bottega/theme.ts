@@ -1,9 +1,10 @@
 // The app palette, defined once. CSS variables are generated from it (see cssVars, injected in
 // src/routes/__root.tsx) and SVG illustrations, map pins, the PDF and posters read it directly.
-// René brown: there is no mascot SVG yet, so the fallback #8B5A2B is used (white text on it: 5.9:1, WCAG AA).
+// René brown #8B5A2B = the beaver's fur in src/assets/rene-logo.svg (white text on it: 5.9:1, WCAG AA).
+// #3B2516 = the logo's darkest brown.
 export const P = {
   primary: "#8B5A2B",       // René brown: buttons, active tab, links, progress, raising pins, headers
-  primaryDark: "#5C3A1E",   // hover / pressed, titles, accent buttons
+  primaryDark: "#3B2516",   // darkest brand brown (logo): titles, dark backgrounds, accent buttons, pressed
   primaryLight: "#E8D5C0",  // chips, badges, selected cards, pending part of funding bars
   page: "#FFFFFF",          // background
   surface: "#FAF6F1",       // cards and sheets

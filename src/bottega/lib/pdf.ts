@@ -1,6 +1,7 @@
 // Client-side bank file PDF (A4), built with jspdf. Loaded on demand.
 import { APP_NAME } from "../config";
 import { P } from "../theme";
+import { LOGO_DARK_URL, LOGO_RATIO, svgToPng } from "../components/Logo";
 import type { Shop } from "../types";
 import type { BankFileResult, ValuationResult } from "../data/scripted";
 
@@ -16,11 +17,17 @@ export async function downloadBankFilePdf(shop: Shop, bank: BankFileResult, val:
   const ink = hex(P.text);
   const grey = hex(P.text2);
 
-  doc.setFillColor(...brand);
+  // Header: dark brand brown with the dark (white) logo.
+  doc.setFillColor(...hex(P.primaryDark));
   doc.rect(0, 0, W, 26, "F");
   doc.setTextColor(255, 255, 255);
-  doc.setFont("times", "bold"); doc.setFontSize(20);
-  doc.text(APP_NAME, M, 16);
+  try {
+    const png = await svgToPng(LOGO_DARK_URL, Math.round(LOGO_RATIO * 120), 120);
+    doc.addImage(png, "PNG", M, 4, 18 * LOGO_RATIO, 18);
+  } catch {
+    doc.setFont("helvetica", "bold"); doc.setFontSize(20);
+    doc.text(APP_NAME, M, 16);
+  }
   doc.setFont("helvetica", "normal"); doc.setFontSize(10);
   doc.text("Takeover bank file", W - M, 16, { align: "right" });
   y = 38;

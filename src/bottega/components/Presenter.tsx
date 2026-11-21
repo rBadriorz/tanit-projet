@@ -1,5 +1,6 @@
 import { X } from "lucide-react";
 import { useStore } from "../store";
+import { Logo } from "./Logo";
 import type { Message, Screen } from "../types";
 
 const SCRIPTED_POSTS: Omit<Message, "id">[] = [
@@ -32,7 +33,7 @@ export default function Presenter({ onClose }: { onClose: () => void }) {
   return (
     <div className="no-print fixed bottom-16 right-4 z-[100] max-h-[80vh] w-[320px] overflow-y-auto rounded-3xl bg-surface p-4 text-ink shadow-2xl">
       <div className="mb-3 flex items-center justify-between">
-        <div className="font-semibold">Presenter</div>
+        <div className="flex items-center gap-2"><Logo height={30} /><span className="text-sm font-semibold text-muted">Presenter</span></div>
         <button onClick={onClose} aria-label="Close" className="grid h-9 w-9 place-items-center rounded-full bg-page"><X size={16} /></button>
       </div>
 

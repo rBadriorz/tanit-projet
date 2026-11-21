@@ -22,6 +22,7 @@ import About from "./screens/About";
 import How from "./screens/How";
 import Flag from "./screens/Flag";
 import Presenter from "./components/Presenter";
+import { Logo, Mark } from "./components/Logo";
 import { AI_PITCH } from "./components/AiTeam";
 import { Celebration } from "./components/CoOwnerCard";
 import { publicOrigin, qrIsLocal } from "./lib/url";
@@ -76,7 +77,7 @@ function Shell() {
   return (
     <div className="grain fixed inset-0 flex items-center justify-center gap-10 overflow-hidden px-6">
       <aside className="hidden max-w-[300px] lg:block">
-        <h1 className="serif text-6xl font-semibold text-primary">{APP_NAME}</h1>
+        <h1><Logo height={104} /></h1>
         <p className="serif mt-3 text-2xl italic text-primary-dark">{APP_TAGLINE}</p>
         <ul className="mt-8 space-y-4 text-lg">
           {["Find the shops about to close", "Take over with your neighbours", AI_PITCH].map((b) => (
@@ -121,7 +122,7 @@ function StatusBar({ framed }: { framed?: boolean | undefined }) {
 }
 
 function Screens({ framed }: { framed?: boolean | undefined }) {
-  const { screen, stack, dir, tab, toast } = useStore();
+  const { screen, stack, dir, tab, go, toast } = useStore();
   const C = SCREENS[screen.name];
   const showTabs = TAB_SCREENS.has(screen.name);
   const key = stack.length + ":" + JSON.stringify(screen);
@@ -138,6 +139,17 @@ function Screens({ framed }: { framed?: boolean | undefined }) {
           </motion.div>
         </AnimatePresence>
         <Celebration />
+        {/* Floating chat button: the assistant, one tap away (not on the map or the wall, whose bottom corner is taken). */}
+        <AnimatePresence>
+          {showTabs && screen.name !== "map" && screen.name !== "wall" && (
+            <motion.button key="chat" initial={{ scale: 0, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0, opacity: 0 }}
+              whileTap={{ scale: 0.92 }} onClick={() => go({ name: "legal" })} aria-label={`Ask ${APP_NAME}, the assistant`}
+              className="absolute bottom-3 right-3 z-40 flex h-14 items-center gap-1.5 rounded-full bg-primary pl-1.5 pr-4 text-sm font-semibold text-white shadow-[0_8px_24px_color-mix(in_srgb,var(--primary-dark)_35%,transparent)]">
+              <span className="grid h-11 w-11 place-items-center rounded-full bg-white"><Mark size={26} /></span>
+              Ask {APP_NAME}
+            </motion.button>
+          )}
+        </AnimatePresence>
         <AnimatePresence>
           {toast && (
             <motion.div initial={{ y: -80 }} animate={{ y: 0 }} exit={{ y: -80 }}

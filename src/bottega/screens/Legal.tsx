@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { APP_NAME } from "../config";
+import { Mark } from "../components/Logo";
 import { useEffect, useRef, useState } from "react";
 import { Send } from "lucide-react";
 import type { Screen } from "../types";
@@ -33,7 +34,7 @@ export default function Legal(_p: { screen: Screen }) {
   };
 
   return (
-    <Page title={`${APP_NAME} · legal assistant`} noPad right={<span className="grid h-10 w-10 place-items-center rounded-full bg-primary font-semibold text-white" aria-hidden>{APP_NAME[0]}</span>}>
+    <Page title={`${APP_NAME} · legal assistant`} noPad right={<span className="grid h-11 w-11 place-items-center rounded-full border border-line bg-white" aria-hidden><Mark size={28} /></span>}>
       <div className="flex min-h-full flex-col px-4 pb-40">
         <div className="space-y-3">
           {msgs.map((m, i) => (

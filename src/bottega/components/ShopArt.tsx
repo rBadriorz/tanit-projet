@@ -1,4 +1,5 @@
 import type { ShopType, Status } from "../types";
+import { MARK_URL } from "./Logo";
 import { P } from "../theme";
 
 export const STATUS_COLOR: Record<Status, string> = {
@@ -49,19 +50,20 @@ export function TypeIcon({ type, color = P.text }: { type: ShopType; color?: str
 export const MANAGER_BADGE = (x = 27, y = 7) =>
   `<g><circle cx="${x}" cy="${y}" r="6.5" fill="${P.warning}" stroke="#fff" stroke-width="1.5"/><text x="${x}" y="${y + 3}" text-anchor="middle" font-size="8" font-weight="700" font-family="Inter, sans-serif" fill="#fff">M</text></g>`;
 
+/** Map pin: the René beaver in a disc whose border is the status colour, a progress ring when raising,
+ *  the shop type in a small badge, and an "M" badge for "Wanted: manager" listings. */
 export function markerSvg(type: ShopType, status: Status, progress?: number, managerWanted = false): string {
-  const aw = STATUS_HEX[status];
-  const stroke = status === "open" ? P.primaryDark : aw;
+  const ringColor = status === "open" ? P.primary : STATUS_HEX[status];
   const op = status === "closed" ? 0.55 : 1;
   const ring = progress != null && status === "raising"
-    ? `<circle cx="17" cy="17" r="16" fill="none" stroke="${P.border}" stroke-width="2.5"/><circle cx="17" cy="17" r="16" fill="none" stroke="${P.primaryDark}" stroke-width="2.5" stroke-dasharray="${(progress / 100) * 100.5} 100.5" transform="rotate(-90 17 17)"/>`
+    ? `<circle cx="17" cy="17" r="16.5" fill="none" stroke="${P.border}" stroke-width="2.5"/><circle cx="17" cy="17" r="16.5" fill="none" stroke="${P.primaryDark}" stroke-width="2.5" stroke-dasharray="${(progress / 100) * 103.7} 103.7" transform="rotate(-90 17 17)"/>`
     : "";
   const icon = ICON_PATHS[type];
   return `<svg width="34" height="34" viewBox="0 0 34 34" style="opacity:${op};overflow:visible" xmlns="http://www.w3.org/2000/svg">${ring}
-  <rect x="7" y="11" width="20" height="16" rx="2" fill="${P.surface}" stroke="${stroke}" stroke-width="1.5"/>
-  <path d="M5 8h24l-2 5H7z" fill="${aw}" stroke="${stroke}" stroke-width="1.2"/>
-  <path d="M11 8l-1 5M17 8v5M23 8l1 5" stroke="${status === "open" ? P.primaryDark : "#fff"}" stroke-width="1" opacity=".7"/>
-  <g transform="translate(11 14) scale(.5)" fill="none" stroke="${P.text}" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">${icon}</g>${managerWanted ? MANAGER_BADGE() : ""}
+  <circle cx="17" cy="17" r="13.5" fill="#fff" stroke="${ringColor}" stroke-width="${status === "open" ? 1.5 : 3}"/>
+  <image href="${MARK_URL}" x="6" y="8.5" width="22" height="16.2" style="${status === "closed" ? "filter:grayscale(1)" : ""}"/>
+  <g transform="translate(22 22)"><circle cx="6" cy="6" r="6.5" fill="${P.surface}" stroke="${ringColor}" stroke-width="1.2"/>
+  <g transform="translate(1.6 1.6) scale(.37)" fill="none" stroke="${P.text}" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">${icon}</g></g>${managerWanted ? MANAGER_BADGE() : ""}
   </svg>`;
 }
 const ICON_PATHS: Record<ShopType, string> = {
