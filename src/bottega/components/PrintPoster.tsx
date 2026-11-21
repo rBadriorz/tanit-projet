@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { StoreProvider, useStore } from "../store";
 import { Poster, type Template } from "./Poster";
+import { publicOrigin } from "../lib/url";
 
 interface Props {
   shopId: string; kind: "raise" | "successor"; template?: string | undefined;
@@ -31,7 +32,7 @@ function Inner({ shopId, kind, template, ...rest }: Props) {
         <a href="/" className="text-fir underline">Back to the app</a>
       </div>
       <div className="mx-auto w-[794px] print:m-0">
-        <Poster shop={s} kind={kind} template={tpl} origin={window.location.origin} {...rest} />
+        <Poster shop={s} kind={kind} template={tpl} origin={publicOrigin()} {...rest} />
       </div>
     </div>
   );

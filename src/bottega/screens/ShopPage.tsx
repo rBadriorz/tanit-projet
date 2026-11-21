@@ -8,6 +8,7 @@ import { Shutter } from "../components/Shutter";
 import { JoinSheet } from "../components/JoinSheet";
 import { Donut } from "../components/Donut";
 import { Avatar, Badge, Btn, Card, Progress, Sheet, Trust } from "../components/ui";
+import { publicOrigin } from "../lib/url";
 
 const STEPS = ["Flagged", "Owner on board", "Valuation", "Bank file", "Raise open", "Bank approved", "Signing", "Reopened under new ownership"];
 const AV_COLORS = ["#34507F", "#C2452D", "#1B2A4A", "#b8892a", "#6b6b6b"];
@@ -44,7 +45,7 @@ export default function ShopPage({ screen }: { screen: Screen }) {
   }
 
   const share = async () => {
-    const url = `${location.origin}/shop/${shop.id}`;
+    const url = `${publicOrigin()}/shop/${shop.id}`;
     try {
       if (navigator.share) { await navigator.share({ title: shop.name, url }); return; }
     } catch { return; }

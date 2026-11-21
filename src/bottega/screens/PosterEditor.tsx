@@ -1,10 +1,11 @@
-﻿import { useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { toPng } from "html-to-image";
 import type { Screen } from "../types";
 import { Btn, Card, Page } from "../components/ui";
 import { useStore } from "../store";
 import { Poster, TEMPLATES, defaultHeadline, defaultSubline, type Template } from "../components/Poster";
 import { TYPE_LABEL } from "../components/ShopArt";
+import { publicOrigin } from "../lib/url";
 
 const OFFERS = [
   "Training by the owner",
@@ -38,7 +39,7 @@ export default function PosterEditor({ screen }: { screen: Screen }) {
 
   const h = headline || (kind === "raise" ? defaultHeadline(shop, "raise") : presets[0]!);
   const s = subline || defaultSubline(shop, kind);
-  const props = { shop, kind, template, origin: window.location.origin, headline: h, subline: s, offers: kind === "successor" ? offers : undefined, profiles: kind === "successor" ? profiles : undefined };
+  const props = { shop, kind, template, origin: publicOrigin(), headline: h, subline: s, offers: kind === "successor" ? offers : undefined, profiles: kind === "successor" ? profiles : undefined };
 
   const interested = useMemo(() => [
     ...(shop.interested ?? []).map((i) => `${i.name}, ${i.age}: ${i.note}`),
@@ -50,7 +51,7 @@ export default function PosterEditor({ screen }: { screen: Screen }) {
     const q = new URLSearchParams({ template, h: h ?? "", s, o: offers.join("|"), p: profiles.join("|") });
     return `/poster/successor/${shop.id}?${q}`;
   };
-  const shareUrl = `${window.location.origin}/shop/${shop.id}${kind === "successor" ? "?apply=1" : ""}`;
+  const shareUrl = `${publicOrigin()}/shop/${shop.id}${kind === "successor" ? "?apply=1" : ""}`;
 
   const download = async () => {
     if (!full.current) return;

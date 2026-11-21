@@ -23,6 +23,7 @@ import How from "./screens/How";
 import Flag from "./screens/Flag";
 import Presenter from "./components/Presenter";
 import { Celebration } from "./components/CoOwnerCard";
+import { publicOrigin, qrIsLocal } from "./lib/url";
 
 const SCREENS: Record<Screen["name"], ComponentType<{ screen: Screen }>> = {
   home: Home, map: MapScreen, projects: Projects, wall: Wall, services: Services, me: Me,
@@ -92,9 +93,10 @@ function Shell() {
         </div>
       </div>
       <aside className="hidden flex-col items-center text-center xl:flex">
-        <div className="rounded-3xl bg-paper p-5 shadow-md"><QRCodeSVG value={window.location.origin} size={180} fgColor="#1B2A4A" bgColor="#FFFDF8" /></div>
+        <div className="rounded-3xl bg-paper p-5 shadow-md"><QRCodeSVG value={publicOrigin()} size={180} fgColor="#1B2A4A" bgColor="#FFFDF8" /></div>
         <p className="mt-4 text-lg font-semibold">Scan to try it on your phone</p>
-        <p className="text-sm text-muted">{window.location.host}</p>
+        <p className="text-sm text-muted">{new URL(publicOrigin()).host}</p>
+        {qrIsLocal() && <p className="mt-1 max-w-[220px] text-xs text-terracotta">Local address: set PUBLIC_URL in config.ts for a public QR.</p>}
       </aside>
       <button onClick={() => setPresenter(true)} className="no-print fixed bottom-4 right-4 flex items-center gap-2 rounded-full bg-ink/80 px-4 py-2 text-sm text-white">
         <Settings2 size={16} /> Presenter
