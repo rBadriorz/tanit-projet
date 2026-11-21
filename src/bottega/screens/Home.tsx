@@ -1,4 +1,4 @@
-import { motion, animate } from "framer-motion";
+﻿import { motion, animate } from "framer-motion";
 import { useEffect, useState } from "react";
 import { APP_TAGLINE } from "../config";
 import { useStore } from "../store";
@@ -17,7 +17,7 @@ function CountUp({ to }: { to: number }) {
 }
 
 export default function Home(_p: { screen: Screen }) {
-  const { go, tab, contributions } = useStore();
+  const { go, tab, home, contributions } = useStore();
   const [splash, setSplash] = useState(!splashShown);
   useEffect(() => { if (!splash) return; const t = setTimeout(() => { splashShown = true; setSplash(false); }, 1300); return () => clearTimeout(t); }, [splash]);
 
@@ -36,7 +36,7 @@ export default function Home(_p: { screen: Screen }) {
 
   return (
     <div className="no-scrollbar absolute inset-0 overflow-y-auto px-5 pb-24">
-      <div className="flex items-center pt-2"><Logo height={44} /></div>
+      <button onClick={home} aria-label="Home" className="flex items-center pt-2"><Logo height={44} /></button>
       <Street />
       <h1 className="serif mt-4 text-[30px] font-semibold leading-tight">Every street deserves its corner shop.</h1>
       <div className="mt-5 grid gap-3">

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+﻿import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { motion } from "framer-motion";
 import { ChevronLeft, Share2, FileText, Image as ImageIcon, Check } from "lucide-react";
 import type { Screen, Shop } from "../types";
@@ -7,7 +7,7 @@ import { ShopFront, TYPE_LABEL } from "../components/ShopArt";
 import { Shutter } from "../components/Shutter";
 import { JoinSheet } from "../components/JoinSheet";
 import { Donut } from "../components/Donut";
-import { Avatar, Badge, Btn, Card, Progress, Sheet, Trust } from "../components/ui";
+import { Avatar, Badge, Btn, Card, Progress, Sheet, Trust, HomeButton } from "../components/ui";
 import { publicOrigin } from "../lib/url";
 import { P } from "../theme";
 
@@ -72,6 +72,7 @@ export default function ShopPage({ screen }: { screen: Screen }) {
             {lit && <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6, duration: 1 }} className="pointer-events-none absolute inset-0" style={{ boxShadow: "inset 0 0 60px color-mix(in_srgb,var(--warning)_55%,transparent)" }} />}
           </div>
           <button aria-label="Back" onClick={back} className="press absolute left-3 top-3 grid h-11 w-11 place-items-center rounded-full bg-surface/95 shadow"><ChevronLeft size={22} /></button>
+          <HomeButton className="absolute left-16 top-3 !bg-surface/95" />
           {!closed && <button aria-label="Share" onClick={share} className="press absolute right-3 top-3 grid h-11 w-11 place-items-center rounded-full bg-surface/95 shadow"><Share2 size={18} /></button>}
         </div>
 

@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+﻿import { motion } from "framer-motion";
 import type { ReactNode } from "react";
 import { ChevronLeft } from "lucide-react";
 import { TRUST_LINE } from "../config";
@@ -6,6 +6,7 @@ import { useStore } from "../store";
 import type { Status } from "../types";
 import { STATUS_HEX, STATUS_LABEL } from "./ShopArt";
 import { P } from "../theme";
+import { Mark } from "./Logo";
 
 export function Btn({ children, onClick, kind = "primary", className = "", disabled, type = "button" }: {
   children: ReactNode; onClick?: () => void; kind?: "primary" | "accent" | "ghost" | "light"; className?: string; disabled?: boolean; type?: "button" | "submit";
@@ -63,13 +64,31 @@ export function Trust({ className = "" }: { className?: string }) {
   return <p className={`text-center text-[11px] leading-snug text-muted ${className}`}>{TRUST_LINE}</p>;
 }
 
+/** "Home" pill with the René mark: back to the start screen from anywhere. */
+export function HomeButton({ className = "" }: { className?: string }) {
+  const { home } = useStore();
+  return (
+    <button onClick={home} aria-label="Home" data-testid="home-button"
+      className={`press flex h-11 shrink-0 items-center gap-1.5 rounded-full bg-surface pl-1.5 pr-3 text-sm font-semibold text-primary-dark shadow-sm ${className}`}>
+      <Mark size={28} /> Home
+    </button>
+  );
+}
+
+/** Clear end-of-scenario button. */
+export function BackToStart({ className = "" }: { className?: string }) {
+  const { home } = useStore();
+  return <Btn kind="light" className={`w-full ${className}`} onClick={home}>Back to start</Btn>;
+}
+
 /** Standard screen with a back header. Content scrolls inside the phone. */
 export function Page({ title, children, right, noPad }: { title?: string; children: ReactNode; right?: ReactNode; noPad?: boolean }) {
   const { back } = useStore();
   return (
     <div className="absolute inset-0 flex flex-col bg-page">
       <div className="flex h-14 shrink-0 items-center gap-2 px-3">
-        <button aria-label="Back" onClick={back} className="press grid h-11 w-11 place-items-center rounded-full bg-surface shadow-sm"><ChevronLeft size={22} /></button>
+        <button aria-label="Back" onClick={back} className="press grid h-11 w-11 shrink-0 place-items-center rounded-full bg-surface shadow-sm"><ChevronLeft size={22} /></button>
+        <HomeButton />
         <h1 className="flex-1 truncate text-lg font-semibold">{title}</h1>
         {right}
       </div>

@@ -1,7 +1,7 @@
-import { useMemo, useRef, useState } from "react";
+﻿import { useMemo, useRef, useState } from "react";
 import { toPng } from "html-to-image";
 import type { Screen, Shop } from "../types";
-import { Btn, Card, Page } from "../components/ui";
+import { Btn, Card, Page, BackToStart } from "../components/ui";
 import { useStore } from "../store";
 import { Poster, TEMPLATES, defaultHeadline, defaultSubline, type Template } from "../components/Poster";
 import { TYPE_LABEL } from "../components/ShopArt";
@@ -155,6 +155,7 @@ export default function PosterEditor({ screen }: { screen: Screen }) {
       <Section title="Template">
         <div className="grid grid-cols-3 gap-2">{TEMPLATES.map((t) => <Chip key={t.id} on={template === t.id} onClick={() => setTemplate(t.id)}>{t.label}</Chip>)}</div>
       </Section>
+      <BackToStart className="mt-5" />
     </Page>
   );
 }

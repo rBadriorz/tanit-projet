@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
+﻿import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import type { Contribution, Message, Screen, Shop } from "./types";
 import { SHOPS } from "./data/shops";
 import { MESSAGES } from "./data/messages";
@@ -38,6 +38,7 @@ interface Store extends Persisted {
   go: (s: Screen) => void;
   tab: (s: Screen) => void;
   back: () => void;
+  home: () => void;                         // back to the start screen; the current scenario starts clean
   contribute: (shopId: string, firstName: string, amount: number) => Contribution;
   approvePending: () => Contribution[];
   celebrate: Contribution | null;           // approved request to celebrate (confetti + co-owner card)
@@ -59,7 +60,30 @@ const Ctx = createContext<Store | null>(null);
 
 export function StoreProvider({ children, initial }: { children: ReactNode; initial: Screen }) {
   const [p, setP] = useState<Persisted>(EMPTY);
-  const [stack, setStack] = useState<Screen[]>([initial]);
+  const [stack, setStackState] = useState<Screen[]>([initial]);
+  // Browser history: every navigation is a history entry (same URL, no reload), so the browser back button works.
+  const stackRef = useRef<Screen[]>([initial]);
+  const setStack = useCallback((next: Screen[], mode: "push" | "replace" | "none" = "push") => {
+    stackRef.current = next;
+    setStackState(next);
+    try {
+      const prev = (window.history.state ?? {}) as Record<string, unknown>;
+      const i = typeof prev["reneI"] === "number" ? (prev["reneI"] as number) : 0;
+      if (mode === "push") window.history.pushState({ ...prev, rene: next, reneI: i + 1 }, "");
+      else if (mode === "replace") window.history.replaceState({ ...prev, rene: next, reneI: i }, "");
+    } catch { /* ignore */ }
+  }, []);
+  useEffect(() => {
+    setStack(stackRef.current, "replace");
+    const onPop = (e: PopStateEvent) => {
+      const next = (e.state as { rene?: Screen[] } | null)?.rene ?? [{ name: "home" } as Screen];
+      setDir(next.length < stackRef.current.length || next[0]?.name === "home" ? -1 : 1);
+      setCelebrate(null);
+      setStack(next, "none");
+    };
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, [setStack]);
   const [dir, setDir] = useState<1 | -1>(1);
   const [aiLast, setAiLast] = useState<"live" | "scripted" | null>(null);
   const [toast, setToast] = useState<string | null>(null);
@@ -98,9 +122,15 @@ export function StoreProvider({ children, initial }: { children: ReactNode; init
     ...p, shops, messages, stack, dir, aiLast, setAiLast, toast,
     screen: stack[stack.length - 1] ?? { name: "home" },
     shop: (id) => shops.find((s) => s.id === id),
-    go: (s) => { setDir(1); setStack((st) => [...st, s]); },
+    go: (s) => { setDir(1); setStack([...stackRef.current, s]); },
     tab: (s) => { setDir(1); setStack([s]); },
-    back: () => { setDir(-1); setStack((st) => (st.length > 1 ? st.slice(0, -1) : [{ name: "home" }])); },
+    back: () => {
+      const i = (window.history.state as { reneI?: number } | null)?.reneI ?? 0;
+      if (i > 0 && stackRef.current.length > 1) { window.history.back(); return; } // popstate updates the screen
+      setDir(-1);
+      setStack(stackRef.current.length > 1 ? stackRef.current.slice(0, -1) : [{ name: "home" }], "replace");
+    },
+    home: () => { setDir(-1); setCelebrate(null); setStack([{ name: "home" }]); },
     contribute: (shopId, firstName, amount) => {
       // A request, not a share: it stays pending until the partner checks it and the lead buyer approves.
       const c: Contribution = { id: "c-" + Date.now(), shopId, firstName, amount, at: new Date().toISOString(), share: 0, status: "pending" };

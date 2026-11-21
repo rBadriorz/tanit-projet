@@ -1,9 +1,9 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { Check, Clock, Circle } from "lucide-react";
 import { APP_NAME, PARTNER } from "../config";
 import { euro, useStore } from "../store";
 import type { Contribution, Shop } from "../types";
-import { Btn, Sheet, Trust } from "./ui";
+import { Btn, Sheet, Trust, BackToStart } from "./ui";
 
 const AMOUNTS = [100, 250, 500, 1000];
 
@@ -128,6 +128,7 @@ export function RequestSent({ shop, c, onClose }: { shop: Shop; c: Contribution;
       <p className="rounded-2xl border border-warning bg-warning/15 p-3 text-sm">{NO_MONEY_NOTICE}</p>
       <p className="mt-2 text-xs text-muted">Your co-owner card unlocks once the request is approved. Follow it in Me › My shares.</p>
       <Btn kind="light" className="mt-4 w-full" onClick={onClose}>Back to the shop</Btn>
+      <BackToStart className="mt-2" />
       <Trust className="mt-3" />
     </div>
   );

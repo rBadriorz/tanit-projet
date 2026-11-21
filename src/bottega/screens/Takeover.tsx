@@ -1,8 +1,8 @@
-import { motion } from "framer-motion";
+﻿import { motion } from "framer-motion";
 import { useState } from "react";
 import { Check, Loader2, FileDown } from "lucide-react";
 import type { Screen, Shop } from "../types";
-import { Btn, Card, Page, Trust } from "../components/ui";
+import { Btn, Card, Page, Trust, BackToStart } from "../components/ui";
 import { Donut } from "../components/Donut";
 import { ShopFront, TYPE_LABEL } from "../components/ShopArt";
 import { euro, useStore } from "../store";
@@ -193,6 +193,7 @@ export default function Takeover({ screen }: { screen: Screen }) {
           </label>
           <Btn kind="accent" className="w-full" onClick={openRaise}>Open the raise</Btn>
           <Trust />
+          <BackToStart />
         </div>
       )}
 
@@ -281,6 +282,7 @@ export function BankFileView({ shop, bank, val }: { shop: Shop; bank: BankFileRe
       <button onClick={() => go({ name: "gap", shopId: shop.id })} className="press min-h-[44px] w-full rounded-2xl text-center font-semibold text-primary-dark underline">
         Funding gap? Close the gap
       </button>
+      <BackToStart />
     </motion.div>
   );
 }

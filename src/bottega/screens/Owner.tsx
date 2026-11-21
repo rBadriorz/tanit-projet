@@ -1,7 +1,7 @@
-import { motion } from "framer-motion";
+﻿import { motion } from "framer-motion";
 import { useState } from "react";
 import type { Screen, Shop, ShopType } from "../types";
-import { Btn, Card, Page } from "../components/ui";
+import { Btn, Card, Page, BackToStart } from "../components/ui";
 import { euro, useStore } from "../store";
 import { TYPE_LABEL } from "../components/ShopArt";
 import { P } from "../theme";
@@ -93,6 +93,7 @@ export default function Owner(_p: { screen: Screen }) {
           <Btn kind="ghost" className="w-full" onClick={() => st.tab({ name: "map" })}>See it on the map</Btn>
         </div>
       )}
+      <BackToStart className="mt-3" />
     </Page>
   );
 }

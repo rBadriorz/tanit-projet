@@ -1,7 +1,7 @@
-import { AnimatePresence, motion } from "framer-motion";
+﻿import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState, type ComponentType } from "react";
 import { QRCodeSVG } from "qrcode.react";
-import { Map as MapIcon, Store, MessageCircle, Briefcase, User, Wifi, Signal, BatteryMedium, Settings2 } from "lucide-react";
+import { House, Map as MapIcon, Store, MessageCircle, Briefcase, User, Wifi, Signal, BatteryMedium, Settings2 } from "lucide-react";
 import { APP_NAME, APP_TAGLINE } from "./config";
 import { StoreProvider, useStore } from "./store";
 import type { Screen } from "./types";
@@ -34,13 +34,14 @@ const SCREENS: Record<Screen["name"], ComponentType<{ screen: Screen }>> = {
   legal: Legal, impact: Impact, about: About, how: How, flag: Flag,
 };
 const TABS: { name: Screen["name"]; label: string; Icon: typeof MapIcon }[] = [
+  { name: "home", label: "Home", Icon: House },
   { name: "map", label: "Map", Icon: MapIcon },
   { name: "projects", label: "Projects", Icon: Store },
   { name: "wall", label: "Wall", Icon: MessageCircle },
   { name: "services", label: "Services", Icon: Briefcase },
   { name: "me", label: "Me", Icon: User },
 ];
-const TAB_SCREENS = new Set(["home", ...TABS.map((t) => t.name)]);
+const TAB_SCREENS = new Set(TABS.map((t) => t.name));
 
 export function BottegaApp({ initial }: { initial: Screen }) {
   const [mounted, setMounted] = useState(false);
@@ -136,7 +137,7 @@ function StatusBar({ framed }: { framed?: boolean | undefined }) {
 }
 
 function Screens({ framed }: { framed?: boolean | undefined }) {
-  const { screen, stack, dir, tab, go, toast } = useStore();
+  const { screen, stack, dir, tab, go, home, toast } = useStore();
   const C = SCREENS[screen.name];
   const showTabs = TAB_SCREENS.has(screen.name);
   const key = stack.length + ":" + JSON.stringify(screen);
@@ -176,7 +177,7 @@ function Screens({ framed }: { framed?: boolean | undefined }) {
           {TABS.map(({ name, label, Icon }) => {
             const on = screen.name === name;
             return (
-              <button key={name} onClick={() => tab({ name } as Screen)} className={`press flex min-h-[54px] flex-1 flex-col items-center justify-center gap-0.5 text-[11px] ${on ? "font-semibold text-primary" : "text-muted"}`}>
+              <button key={name} onClick={() => (name === "home" ? home() : tab({ name } as Screen))} className={`press flex min-h-[54px] flex-1 flex-col items-center justify-center gap-0.5 text-[11px] ${on ? "font-semibold text-primary" : "text-muted"}`}>
                 <Icon size={22} strokeWidth={on ? 2.4 : 1.8} />{label}
               </button>
             );

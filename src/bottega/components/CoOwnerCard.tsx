@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+﻿import { useEffect, useRef } from "react";
 import confetti from "canvas-confetti";
 import { toPng } from "html-to-image";
 import { motion } from "framer-motion";
@@ -7,7 +7,7 @@ import { euro, useStore } from "../store";
 import type { Contribution, Shop } from "../types";
 import { ShopFront } from "./ShopArt";
 import { Logo } from "./Logo";
-import { Btn, Trust } from "./ui";
+import { Btn, Trust, BackToStart } from "./ui";
 import { P } from "../theme";
 
 const fmtDate = (iso?: string) =>
@@ -59,6 +59,7 @@ export function Celebration() {
         <div className="mt-4 grid gap-2">
           <Btn kind="accent" onClick={() => downloadCard(ref.current, s.id)}>Download PNG</Btn>
           <Btn kind="light" onClick={() => setCelebrate(null)}>Close</Btn>
+          <BackToStart />
         </div>
         <Trust className="mt-3" />
       </motion.div>

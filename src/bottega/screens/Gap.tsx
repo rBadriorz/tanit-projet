@@ -1,9 +1,9 @@
-import { motion } from "framer-motion";
+﻿import { motion } from "framer-motion";
 import { useEffect, useMemo, useState } from "react";
 import { Check, X, Loader2, Landmark, Info } from "lucide-react";
 import type { Screen } from "../types";
 import { APP_NAME } from "../config";
-import { Btn, Card, Page, Trust } from "../components/ui";
+import { Btn, Card, Page, Trust, BackToStart } from "../components/ui";
 import { Donut } from "../components/Donut";
 import { euro, useStore } from "../store";
 import { runAgent, withSteps } from "../lib/agent";
@@ -203,6 +203,7 @@ export default function Gap({ screen }: { screen: Screen }) {
         </tbody></table>
       </Card>
       <Trust className="mt-4" />
+      <BackToStart className="mt-4" />
     </Page>
   );
 }
