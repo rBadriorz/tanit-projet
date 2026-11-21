@@ -71,8 +71,23 @@ function useIsPhone() {
 function Shell() {
   const { phone, scale } = useIsPhone();
   const [presenter, setPresenter] = useState(false);
+  // Phone width: the presenter panel is hidden, except with ?presenter in the address (demo recording).
+  const [phonePresenter] = useState(() => new URLSearchParams(window.location.search).has("presenter"));
   if (phone) {
-    return <div className="fixed inset-0 overflow-hidden grain"><Screens /></div>;
+    return (
+      <div className="fixed inset-0 overflow-hidden grain">
+        <Screens />
+        {phonePresenter && (
+          <>
+            <button data-testid="presenter-toggle" onClick={() => setPresenter((v) => !v)} aria-label="Presenter"
+              className="no-print fixed right-2 top-1/2 z-[100] grid h-10 w-10 place-items-center rounded-full bg-ink/70 text-white">
+              <Settings2 size={18} />
+            </button>
+            {presenter && <Presenter onClose={() => setPresenter(false)} />}
+          </>
+        )}
+      </div>
+    );
   }
   return (
     <div className="grain fixed inset-0 flex items-center justify-center gap-10 overflow-hidden px-6">
