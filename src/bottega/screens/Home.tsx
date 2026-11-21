@@ -42,11 +42,9 @@ export default function Home(_p: { screen: Screen }) {
       <div className="mt-5 grid gap-3">
         <motion.button whileTap={{ scale: 0.97 }} onClick={() => go({ name: "owner" })} className="rounded-3xl bg-primary-dark p-5 text-left text-white">
           <div className="serif text-xl font-semibold">I'm looking for a successor</div>
-          <div className="mt-1 text-sm italic opacity-80">Je cherche la relève</div>
         </motion.button>
         <motion.button whileTap={{ scale: 0.97 }} onClick={() => tab({ name: "map" })} className="rounded-3xl bg-primary p-5 text-left text-white">
           <div className="serif text-xl font-semibold">I'm taking over</div>
-          <div className="mt-1 text-sm italic opacity-80">Je prends la relève</div>
         </motion.button>
       </div>
       <button onClick={() => go({ name: "impact" })} className="mt-4 w-full rounded-2xl bg-surface p-4 text-left text-sm shadow-sm">

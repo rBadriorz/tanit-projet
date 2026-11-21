@@ -76,7 +76,7 @@ export default function Me(_p: { screen: Screen }) {
 
       <h2 className="serif mt-6 text-xl font-semibold">Settings</h2>
       <Card className="mt-2 divide-y divide-line !p-0">
-        <Row label="Language" value="English · Français (coming soon)" />
+        <Row label="Language" value="English" />
         <Toggle label="Notifications" on={notif} onClick={() => setNotif(!notif)} />
         <Toggle label="Live AI (off = scripted demo answers)" on={st.aiMode === "live"} onClick={() => st.setAiMode(st.aiMode === "live" ? "scripted" : "live")} />
       </Card>
