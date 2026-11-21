@@ -11,7 +11,7 @@ import {
 import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
-import { APP_NAME, APP_TAGLINE } from "../bottega/config";
+import { APP_NAME, DESCRIPTION } from "../bottega/config";
 import { cssVars, P } from "../bottega/theme";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 
@@ -83,14 +83,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: `${APP_NAME}: take over your corner shop` },
-      { name: "description", content: APP_TAGLINE },
+      { title: APP_NAME },
+      { name: "description", content: DESCRIPTION },
       { name: "author", content: "Lovable" },
       { property: "og:title", content: APP_NAME },
-      { property: "og:description", content: APP_TAGLINE },
+      { property: "og:description", content: DESCRIPTION },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
       {
@@ -98,6 +97,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         href: appCss,
       },
       { rel: "icon", href: "/favicon.svg", type: "image/svg+xml" },
+      { rel: "icon", href: "/favicon.ico", sizes: "180x180" },
+      { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
+      { rel: "manifest", href: "/site.webmanifest" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400&family=Inter:wght@400;500;600;700&family=Poppins:wght@600&display=swap" },
     ],

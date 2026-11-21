@@ -6,6 +6,7 @@ App name: René (constant in src/bottega/config.ts). Pivot from the earlier "Tan
 - App: `src/bottega/` (`config.ts` = APP_NAME / tagline / trust line — never hard-code the name; `types.ts`; `data/` fictional seed data + `scripted.ts` AI fallbacks; `components/`; `screens/`; `lib/agent.ts` client agent calls; `store.tsx` state + localStorage + internal navigation).
 - Routes: `/` (app), `/shop/$shopId` (QR deep link, `?apply=1`), `/poster/$shopId`, `/poster/successor/$shopId` (print A4), `/api/bottega/agent` (Claude), `/api/health`.
 - Claude calls: `src/lib/anthropic.server.ts` (official SDK, secret `ANTHROPIC_API_KEY`, `claude-opus-5-5`, low effort, server-side fallbacks). Every AI feature has a scripted fallback (no key, error, >12 s, or Presenter "scripted").
+- Public link: set `PUBLIC_URL` in `src/bottega/config.ts` to the published Lovable URL; every QR code, share link and link preview uses it (`src/bottega/lib/url.ts`, `lib/seo.ts`). Preview image: `public/og-image.png`.
 - Desktop shows the app in a phone frame with a jury QR and a Presenter panel; < 500 px wide = full screen.
 
 ## Rules
