@@ -23,16 +23,25 @@ export default function LeafletMap({ shops, selectedId, onSelect, target, me }: 
   useEffect(() => {
     let cancelled = false;
     ready.current = (async () => {
-      const L = (await import("leaflet")).default;
+      // Leaflet's ESM build has no default export, and the cluster plugin needs a writable global L.
+      const mod = (await import("leaflet")) as unknown as typeof Leaflet & { default?: typeof Leaflet };
+      const L = (mod.default ?? { ...mod }) as typeof Leaflet;
       (window as unknown as { L: typeof Leaflet }).L = L;
-      await import("leaflet.markercluster");
+      try {
+        await import("leaflet.markercluster");
+      } catch (e) {
+        console.warn("[map] marker clustering unavailable", e);
+      }
       if (cancelled || !el.current) return;
       LRef.current = L;
-      const map = L.map(el.current, { zoomControl: false, attributionControl: true }).setView([target.lat, target.lng], target.zoom);
+      const map = L.map(el.current, { zoomControl: false, attributionControl: true, maxZoom: 19, minZoom: 4 }).setView([target.lat, target.lng], target.zoom);
       L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
         attribution: "© OpenStreetMap contributors © CARTO", subdomains: "abcd", maxZoom: 19,
       }).addTo(map);
-      const cluster = L.markerClusterGroup({ maxClusterRadius: 40, disableClusteringAtZoom: 15, showCoverageOnHover: false });
+      const g = (window as unknown as { L: typeof Leaflet }).L;
+      const cluster = (typeof g.markerClusterGroup === "function"
+        ? g.markerClusterGroup({ maxClusterRadius: 40, disableClusteringAtZoom: 15, showCoverageOnHover: false })
+        : (L.featureGroup() as unknown as Leaflet.MarkerClusterGroup));
       map.addLayer(cluster);
       mapRef.current = map;
       clusterRef.current = cluster;
@@ -67,7 +76,7 @@ export default function LeafletMap({ shops, selectedId, onSelect, target, me }: 
         markers.current.set(s.id, m);
         return m;
       });
-      cluster.addLayers(list);
+      list.forEach((m) => cluster.addLayer(m));
     });
   }, [shops]);
 
