@@ -7,7 +7,7 @@ import { useStore } from "../store";
 import type { Manager, ManagerWanted, Shop } from "../types";
 import { TYPE_LABEL } from "./ShopArt";
 import { Avatar, Btn, Card } from "./ui";
-import { Mark } from "./Logo";
+import { Mascot } from "./Logo";
 
 const ROLES: { id: Manager["role"]; label: string }[] = [
   { id: "me", label: "Me" },
@@ -19,7 +19,7 @@ const ROLES: { id: Manager["role"]; label: string }[] = [
 export function AssistantSays({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex items-start gap-2">
-      <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-line bg-white" aria-hidden><Mark size={26} /></span>
+      <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-line bg-white" aria-hidden><Mascot size={28} /></span>
       <div className="rounded-2xl rounded-tl-md border border-line bg-primary-light px-3 py-2 text-sm">
         <b>{APP_NAME}</b> · {children}
       </div>

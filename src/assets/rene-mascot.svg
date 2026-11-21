@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 50 190 140" role="img" aria-label="René, the assistant">
+  <g id="rene-beaver">
+    <g transform="rotate(-28 44 158)">
+      <ellipse cx="44" cy="158" rx="36" ry="17" fill="#3B2516"/>
+      <path d="M22 152h44M20 160h48M24 168h40M34 142v32M46 141v34M58 143v30" stroke="#8B5A2B" stroke-width="2" opacity=".55"/>
+    </g>
+    <ellipse cx="86" cy="185" rx="15" ry="6" fill="#3B2516"/>
+    <ellipse cx="124" cy="185" rx="15" ry="6" fill="#3B2516"/>
+    <ellipse cx="104" cy="146" rx="44" ry="40" fill="#8B5A2B" stroke="#3B2516" stroke-width="4"/>
+    <ellipse cx="110" cy="154" rx="26" ry="25" fill="#E8D5C0"/>
+    <circle cx="94" cy="62" r="9" fill="#3B2516"/>
+    <circle cx="142" cy="60" r="9" fill="#3B2516"/>
+    <circle cx="118" cy="92" r="36" fill="#8B5A2B" stroke="#3B2516" stroke-width="4"/>
+    <ellipse cx="131" cy="107" rx="20" ry="14" fill="#E8D5C0"/>
+    <ellipse cx="132" cy="98" rx="7" ry="5" fill="#3B2516"/>
+    <circle cx="106" cy="85" r="3.4" fill="#3B2516"/>
+    <circle cx="140" cy="83" r="3.4" fill="#3B2516"/>
+    <rect x="125" y="112" width="13" height="11" rx="2" fill="#FFFFFF" stroke="#3B2516" stroke-width="2"/>
+    <path d="M131.5 112v11" stroke="#3B2516" stroke-width="1.6"/>
+    <g transform="rotate(-14 116 136)">
+      <rect x="74" y="128" width="88" height="16" rx="8" fill="#D9A45B" stroke="#3B2516" stroke-width="3"/>
+      <path d="M90 131l6 10M106 131l6 10M122 131l6 10M138 131l6 10" stroke="#3B2516" stroke-width="2" stroke-linecap="round" opacity=".7"/>
+    </g>
+    <ellipse cx="96" cy="139" rx="9" ry="7" fill="#8B5A2B" stroke="#3B2516" stroke-width="3"/>
+    <ellipse cx="132" cy="131" rx="9" ry="7" fill="#8B5A2B" stroke="#3B2516" stroke-width="3"/>
+  </g>
+</svg>

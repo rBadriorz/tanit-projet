@@ -3,12 +3,14 @@ import logoDarkSvg from "../../assets/rene-logo-dark.svg?raw";
 import logoOutlinedUrl from "../../assets/rene-logo-outlined.svg?url";
 import logoDarkOutlinedUrl from "../../assets/rene-logo-dark-outlined.svg?url";
 import markUrl from "../../assets/rene-mark.svg?url";
+import mascotUrl from "../../assets/rene-mascot.svg?url";
 import { APP_NAME } from "../config";
 
 // Brand assets (src/assets):
 // - rene-logo.svg: the logo exactly as supplied (its "René" is a <text> in Poppins 600, loaded in __root.tsx);
 // - rene-logo-dark.svg: the same for dark brown backgrounds;
-// - rene-mark.svg: the beaver alone (favicon, map pins, chat button);
+// - rene-mark.svg: the beaver alone (favicon, map pins);
+// - rene-mascot.svg: René the assistant, the cute mascot (Ask René button, chat avatar, speech bubbles);
 // - *-outlined.svg: same logos with only the text turned into a Poppins 600 path, for PNG / PDF exports where
 //   a web font cannot load.
 export const LOGO_OUTLINED_URL = logoOutlinedUrl;
@@ -32,6 +34,11 @@ export function Logo({ height = 40, dark = false, outlined = false, className = 
 /** Beaver mark alone. Height in px. */
 export function Mark({ size = 32, className = "", alt = "" }: { size?: number; className?: string; alt?: string }) {
   return <img src={markUrl} alt={alt} height={size} width={Math.round(size * MARK_RATIO)} className={`block ${className}`} draggable={false} />;
+}
+
+/** René the assistant: the friendly beaver mascot (chat button, chat avatar, speech bubbles). */
+export function Mascot({ size = 32, className = "", alt = "" }: { size?: number; className?: string; alt?: string }) {
+  return <img src={mascotUrl} alt={alt} height={size} width={Math.round(size * MARK_RATIO)} className={`block ${className}`} draggable={false} />;
 }
 
 /** Load an SVG asset as a PNG data URL (for the PDF). */

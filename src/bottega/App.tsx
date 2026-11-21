@@ -22,7 +22,7 @@ import About from "./screens/About";
 import How from "./screens/How";
 import Flag from "./screens/Flag";
 import Presenter from "./components/Presenter";
-import { Logo, Mark } from "./components/Logo";
+import { Logo, Mascot } from "./components/Logo";
 import { AI_PITCH } from "./components/AiTeam";
 import { Celebration } from "./components/CoOwnerCard";
 import { publicOrigin, qrIsLocal } from "./lib/url";
@@ -145,7 +145,7 @@ function Screens({ framed }: { framed?: boolean | undefined }) {
             <motion.button key="chat" initial={{ scale: 0, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0, opacity: 0 }}
               whileTap={{ scale: 0.92 }} onClick={() => go({ name: "legal" })} aria-label={`Ask ${APP_NAME}, the assistant`}
               className="absolute bottom-3 right-3 z-40 flex h-14 items-center gap-1.5 rounded-full bg-primary pl-1.5 pr-4 text-sm font-semibold text-white shadow-[0_8px_24px_color-mix(in_srgb,var(--primary-dark)_35%,transparent)]">
-              <span className="grid h-11 w-11 place-items-center rounded-full bg-white"><Mark size={26} /></span>
+              <span className="grid h-11 w-11 place-items-center rounded-full bg-white"><Mascot size={30} /></span>
               Ask {APP_NAME}
             </motion.button>
           )}
