@@ -64,6 +64,7 @@
 .no-scrollbar { scrollbar-width: none; }
 
 .leaflet-container { background: #efe9dc; font-family: var(--font-sans); }
+.leaflet-tile-pane { filter: grayscale(0.85) sepia(0.18) brightness(1.04) contrast(0.92); }
 .bt-marker { background: none; border: none; }
 .bt-marker.bounce svg { animation: bt-bounce 0.6s ease; }
 @keyframes bt-bounce { 0%, 100% { transform: translateY(0); } 40% { transform: translateY(-12px); } }

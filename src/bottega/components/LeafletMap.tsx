@@ -35,8 +35,10 @@ export default function LeafletMap({ shops, selectedId, onSelect, target, me }: 
       if (cancelled || !el.current) return;
       LRef.current = L;
       const map = L.map(el.current, { zoomControl: false, attributionControl: true, maxZoom: 19, minZoom: 4 }).setView([target.lat, target.lng], target.zoom);
-      L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
-        attribution: "© OpenStreetMap contributors © CARTO", subdomains: "abcd", maxZoom: 19,
+      // OpenStreetMap tiles: free, no key (CARTO now answers "API key required").
+      // Toned down in CSS (.leaflet-tile-pane) to fit the cream and navy palette.
+      L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: '© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">OpenStreetMap</a> contributors', maxZoom: 19,
       }).addTo(map);
       const g = (window as unknown as { L: typeof Leaflet }).L;
       const cluster = (typeof g.markerClusterGroup === "function"

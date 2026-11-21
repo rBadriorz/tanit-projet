@@ -108,7 +108,7 @@ function StatusBar({ framed }: { framed?: boolean | undefined }) {
   const [now, setNow] = useState(() => new Date());
   useEffect(() => { const t = setInterval(() => setNow(new Date()), 15_000); return () => clearInterval(t); }, []);
   return (
-    <div className={`relative z-50 flex shrink-0 items-center justify-between px-7 ${framed ? "h-[50px] pt-1" : "h-7"} text-[13px] font-semibold`}>
+    <div className={`relative z-[700] flex shrink-0 items-center justify-between px-7 ${framed ? "h-[50px] pt-1" : "h-7"} text-[13px] font-semibold`}>
       {framed ? <span>{now.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" })}</span> : <span />}
       <span className={`rounded-full bg-sun/90 px-2 py-0.5 text-[10px] font-bold text-ink ${framed ? "absolute left-1/2 top-[44px] -translate-x-1/2" : ""}`}>Demo · fictional data</span>
       {framed ? <span className="flex items-center gap-1"><Signal size={14} /><Wifi size={14} /><BatteryMedium size={18} /><span className="text-[11px]">87%</span></span> : <span />}
