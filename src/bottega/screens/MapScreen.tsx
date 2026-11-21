@@ -3,7 +3,7 @@ import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { Crosshair, Layers, Plus, Search } from "lucide-react";
 import type { Screen, Shop, ShopType, Status } from "../types";
 import { useStore } from "../store";
-import { STATUS_HEX } from "../components/ShopArt";
+import { STATUS_HEX, MANAGER_BADGE } from "../components/ShopArt";
 import { ShopCard, ME, distanceM } from "../components/ShopCard";
 import type { MapTarget } from "../components/LeafletMap";
 import { P } from "../theme";
@@ -159,6 +159,10 @@ export default function MapScreen(_p: { screen: Screen }) {
               {l.label}
             </div>
           ))}
+          <div className="flex items-center gap-2 py-1">
+            <svg width="14" height="14" viewBox="20 0 14 14" aria-hidden dangerouslySetInnerHTML={{ __html: MANAGER_BADGE() }} />
+            Wanted: manager
+          </div>
         </div>
       )}
 

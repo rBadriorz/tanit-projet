@@ -9,6 +9,7 @@ import { euro, useStore } from "../store";
 import { runAgent, withSteps } from "../lib/agent";
 import { scriptedBankFile, scriptedValuation, type BankFileOpts, type BankFileResult, type ValuationResult } from "../data/scripted";
 import { P } from "../theme";
+import { AssistantSays, BANK_MANAGER_NOTE, ManagerStep } from "../components/ManagerStep";
 
 const STEPS = [
   "Reading the shop accounts…",
@@ -22,7 +23,7 @@ const COLORS = [P.primaryDark, P.primary, P.warning, P.brown2, P.text2, P.closed
 export const planColor = (i: number): string => COLORS[i % COLORS.length] ?? P.text2;
 
 export function DscrGauge({ value }: { value: number }) {
-  const color = value >= 1.5 ? P.primaryDark : value >= 1.2 ? P.warning : P.primary;
+  const color = value >= 1.5 ? P.success : value >= 1.2 ? P.warning : P.danger;
   const label = value >= 1.5 ? "Comfortable" : value >= 1.2 ? "Tight" : "Too low";
   const w = Math.min(100, (value / 2.5) * 100);
   return (
@@ -53,6 +54,7 @@ export default function Takeover({ screen }: { screen: Screen }) {
   const store = useStore();
   const initialId = screen.name === "takeover" && screen.shopId ? screen.shopId : "marcel";
   const [step, setStep] = useState(0);
+  const [managerReady, setManagerReady] = useState(false);
   const [shopId, setShopId] = useState(initialId);
   const shop = store.shop(shopId) ?? store.shops.find((s) => s.price);
   const [role, setRole] = useState<"employee" | "resident" | "other">(shop?.leadBuyer?.role ?? "employee");
@@ -75,13 +77,13 @@ export default function Takeover({ screen }: { screen: Screen }) {
     setNums({ price: s.price ?? 150000, revenue: s.revenue ?? 250000, ebitda: s.ebitda ?? 35000, rent: s.rent ?? 1400, staff: s.staff ?? 3 });
     if (s.leadBuyer) { setRole(s.leadBuyer.role); setYears(s.leadBuyer.yearsExperience); setContribution(s.leadBuyer.contribution); }
     setTarget(s.raise?.target ?? Math.round((s.price ?? 150000) * 0.22 / 1000) * 1000);
-    setBank(null); setVal(null);
+    setBank(null); setVal(null); setManagerReady(!!(s.manager || s.managerWanted));
   };
 
   const generate = async () => {
     setRunning(0);
     const opts: BankFileOpts = { ...nums, contribution, salary, role, years };
-    const input = { shop: { name: shop.name, type: shop.type, town: shop.town, street: shop.street, owner: shop.owner, leadBuyer: shop.leadBuyer, raise: shop.raise, legalForm: shop.legalForm }, numbers: nums, leadBuyer: { role, years, contribution, monthlySalaryTarget: salary }, matchedGrants: ["Honour loan €20k at 0%", "Regional support €10k"] };
+    const input = { shop: { name: shop.name, type: shop.type, town: shop.town, street: shop.street, owner: shop.owner, leadBuyer: shop.leadBuyer, raise: shop.raise, legalForm: shop.legalForm }, numbers: nums, leadBuyer: { role, years, contribution, monthlySalaryTarget: salary }, manager: shop.manager ?? null, managerToRecruit: shop.managerWanted ?? null, matchedGrants: ["Honour loan €20k at 0%", "Regional support €10k"] };
     const work = Promise.all([
       runAgent("bankFile", input, () => scriptedBankFile(shop, opts), { mode: store.aiMode }),
       runAgent("valuation", { shop: input.shop, numbers: nums }, () => scriptedValuation(shop, opts), { mode: store.aiMode }),
@@ -101,10 +103,11 @@ export default function Takeover({ screen }: { screen: Screen }) {
     store.go({ name: "shop", id: shop.id });
   };
 
-  const titles = ["Pick the shop", "About you", "The shop", "Your bank file", "Open the raise"];
+  const titles = ["Pick the shop", "Who will run the shop?", "About you", "The shop", "Your bank file", "Open the raise"];
+  const LAST = titles.length - 1;
   return (
     <Page title="Start a takeover">
-      <div className="mb-4 flex items-center justify-center gap-2" aria-label={`Step ${step + 1} of 5`}>
+      <div className="mb-4 flex items-center justify-center gap-2" aria-label={`Step ${step + 1} of ${titles.length}`}>
         {titles.map((t, i) => <span key={t} className={`h-2.5 rounded-full transition-all ${i === step ? "w-8 bg-primary-dark" : i < step ? "w-2.5 bg-primary" : "w-2.5 bg-line"}`} />)}
       </div>
       <h2 className="serif mb-3 text-2xl font-semibold">{titles[step]}</h2>
@@ -124,7 +127,9 @@ export default function Takeover({ screen }: { screen: Screen }) {
         </div>
       )}
 
-      {step === 1 && (
+      {step === 1 && <ManagerStep key={shop.id} shop={shop} onReady={() => setManagerReady(true)} />}
+
+      {step === 2 && (
         <div className="space-y-4">
           <div>
             <span className="text-sm text-muted">Your role</span>
@@ -143,7 +148,7 @@ export default function Takeover({ screen }: { screen: Screen }) {
         </div>
       )}
 
-      {step === 2 && (
+      {step === 3 && (
         <div className="space-y-3">
           <p className="text-sm text-muted">Prefilled from the shop's accounts. Edit if needed.</p>
           <Field label="Asking price (€)" value={nums.price} onChange={(price) => setNums({ ...nums, price })} />
@@ -154,7 +159,7 @@ export default function Takeover({ screen }: { screen: Screen }) {
         </div>
       )}
 
-      {step === 3 && (
+      {step === 4 && (
         <div className="space-y-3">
           {!bank && running === null && (
             <Card>
@@ -178,7 +183,7 @@ export default function Takeover({ screen }: { screen: Screen }) {
         </div>
       )}
 
-      {step === 4 && (
+      {step === LAST && (
         <div className="space-y-3">
           <Field label="Raise target (€)" value={target} onChange={setTarget} />
           <Field label="Duration (days)" value={days} onChange={setDays} step={1} />
@@ -193,7 +198,7 @@ export default function Takeover({ screen }: { screen: Screen }) {
 
       <div className="sticky -bottom-28 -mx-4 mt-6 flex gap-3 border-t border-line bg-page/95 px-4 pb-8 pt-3 backdrop-blur">
         {step > 0 && <Btn kind="light" className="flex-1" onClick={() => { setStep(step - 1); document.querySelector(".no-scrollbar.flex-1")?.scrollTo({ top: 0 }); }}>Back</Btn>}
-        {step < 4 && <Btn className="flex-1" disabled={step === 3 && !bank} onClick={() => { setStep(step + 1); document.querySelector(".no-scrollbar.flex-1")?.scrollTo({ top: 0 }); }}>Next</Btn>}
+        {step < LAST && <Btn className="flex-1" disabled={(step === 4 && !bank) || (step === 1 && !managerReady && !shop.manager && !shop.managerWanted)} onClick={() => { setStep(step + 1); document.querySelector(".no-scrollbar.flex-1")?.scrollTo({ top: 0 }); }}>Next</Btn>}
       </div>
     </Page>
   );
@@ -204,6 +209,23 @@ export function BankFileView({ shop, bank, val }: { shop: Shop; bank: BankFileRe
   const total = bank.financingPlan.reduce((a, f) => a + f.amount, 0);
   return (
     <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="space-y-3">
+      {shop.manager && (
+        <Card>
+          <h3 className="serif text-lg font-semibold">Who runs the shop</h3>
+          <p className="mt-1 text-sm"><b>{shop.manager.name}</b> · {shop.manager.role === "me" ? "the buyer" : shop.manager.role === "colleague" ? "a colleague" : "a family member"} · {shop.manager.years} years in the trade</p>
+          {shop.manager.pitch && <p className="mt-1 text-sm italic text-muted">"{shop.manager.pitch}"</p>}
+        </Card>
+      )}
+      {shop.managerWanted && (
+        <Card className="border-2 border-warning">
+          <div className="flex items-center justify-between">
+            <h3 className="serif text-lg font-semibold">Manager to recruit</h3>
+            <span className="rounded-full bg-warning px-2 py-0.5 text-[11px] font-semibold text-white">Pending</span>
+          </div>
+          <p className="mt-1 text-sm">{shop.managerWanted.trade} · {shop.managerWanted.experience} · {shop.managerWanted.salary}</p>
+          <div className="mt-3"><AssistantSays>{BANK_MANAGER_NOTE}</AssistantSays></div>
+        </Card>
+      )}
       {val && (
         <Card>
           <h3 className="serif text-lg font-semibold">Valuation</h3>

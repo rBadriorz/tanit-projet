@@ -3,12 +3,15 @@ import type { Contribution, Message, Screen, Shop } from "./types";
 import { SHOPS } from "./data/shops";
 import { MESSAGES } from "./data/messages";
 
+/** Partial shop update; a key set to undefined clears that field. */
+export type ShopPatch = { [K in keyof Shop]?: Shop[K] | undefined };
+
 const KEY = "bottega-demo-v2"; // v2: contributions carry a pending / approved status
 
 interface Persisted {
   contributions: Contribution[];
   extraShops: Shop[];                       // shops added by the owner flow / flag
-  shopPatches: Record<string, Partial<Shop>>; // e.g. raise opened
+  shopPatches: Record<string, ShopPatch>; // e.g. raise opened, manager chosen
   posts: Message[];                         // posts written in the app
   applications: { shopId: string; name: string; experience: string; message: string }[];
   backerBumps: Record<string, number>;      // presenter "+1 neighbour"
@@ -40,7 +43,7 @@ interface Store extends Persisted {
   celebrate: Contribution | null;           // approved request to celebrate (confetti + co-owner card)
   setCelebrate: (c: Contribution | null) => void;
   addShop: (s: Shop) => void;
-  patchShop: (id: string, p: Partial<Shop>) => void;
+  patchShop: (id: string, p: ShopPatch) => void;
   addPost: (m: Message) => void;
   apply: (a: Persisted["applications"][number]) => void;
   bump: (shopId: string) => void;
@@ -74,7 +77,7 @@ export function StoreProvider({ children, initial }: { children: ReactNode; init
   const shops = useMemo(() => {
     const all = [...SHOPS, ...p.extraShops].map((s) => {
       const patch = p.shopPatches[s.id];
-      let shop: Shop = patch ? { ...s, ...patch } : s;
+      let shop: Shop = patch ? ({ ...s, ...patch } as Shop) : s;
       if (shop.raise) {
         // Only approved requests count as raised money; pending ones are shown apart.
         const mine = p.contributions.filter((c) => c.shopId === shop.id);

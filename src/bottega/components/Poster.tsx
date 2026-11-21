@@ -28,6 +28,7 @@ export interface PosterProps {
   subline?: string | undefined;
   offers?: string[] | undefined;
   profiles?: string[] | undefined;
+  cta?: string | undefined; // bottom call to action, e.g. "Scan if you could run it"
 }
 
 export function defaultHeadline(shop: Shop, kind: "raise" | "successor") {
@@ -84,7 +85,7 @@ export const Poster = forwardRef<HTMLDivElement, PosterProps>(function Poster(p,
           <QRCodeSVG value={url} size={210} fgColor={P.primaryDark} bgColor={t.qrBg} level="M" />
         </div>
         <div className="flex-1 pb-2">
-          <div className="serif text-[30px] font-semibold leading-tight">{p.kind === "raise" ? "Scan to join from €100" : "Scan if you could take over"}</div>
+          <div className="serif text-[30px] font-semibold leading-tight">{p.cta || (p.kind === "raise" ? "Scan to join from €100" : "Scan if you could take over")}</div>
           {p.kind === "raise" && shop.raise && (
             <div className="mt-4">
               <div className="h-4 overflow-hidden rounded-full" style={{ background: `${t.fg}33` }}>

@@ -45,7 +45,11 @@ export function TypeIcon({ type, color = P.text }: { type: ShopType; color?: str
 }
 
 /** Marker: a mini shop front (34x34) with an awning in the status colour. */
-export function markerSvg(type: ShopType, status: Status, progress?: number): string {
+/** Small "M" badge on pins of shops with a "Wanted: manager" listing. */
+export const MANAGER_BADGE = (x = 27, y = 7) =>
+  `<g><circle cx="${x}" cy="${y}" r="6.5" fill="${P.warning}" stroke="#fff" stroke-width="1.5"/><text x="${x}" y="${y + 3}" text-anchor="middle" font-size="8" font-weight="700" font-family="Inter, sans-serif" fill="#fff">M</text></g>`;
+
+export function markerSvg(type: ShopType, status: Status, progress?: number, managerWanted = false): string {
   const aw = STATUS_HEX[status];
   const stroke = status === "open" ? P.primaryDark : aw;
   const op = status === "closed" ? 0.55 : 1;
@@ -57,7 +61,7 @@ export function markerSvg(type: ShopType, status: Status, progress?: number): st
   <rect x="7" y="11" width="20" height="16" rx="2" fill="${P.surface}" stroke="${stroke}" stroke-width="1.5"/>
   <path d="M5 8h24l-2 5H7z" fill="${aw}" stroke="${stroke}" stroke-width="1.2"/>
   <path d="M11 8l-1 5M17 8v5M23 8l1 5" stroke="${status === "open" ? P.primaryDark : "#fff"}" stroke-width="1" opacity=".7"/>
-  <g transform="translate(11 14) scale(.5)" fill="none" stroke="${P.text}" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">${icon}</g>
+  <g transform="translate(11 14) scale(.5)" fill="none" stroke="${P.text}" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">${icon}</g>${managerWanted ? MANAGER_BADGE() : ""}
   </svg>`;
 }
 const ICON_PATHS: Record<ShopType, string> = {

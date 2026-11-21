@@ -47,6 +47,15 @@ export async function downloadBankFilePdf(shop: Shop, bank: BankFileResult, val:
   doc.text(`${shop.street}, ${shop.town}`, M, y); y += 4;
 
   h("Executive summary"); p(bank.executiveSummary);
+  if (shop.manager) {
+    h("Who runs the shop");
+    const role = shop.manager.role === "me" ? "the buyer" : shop.manager.role === "colleague" ? "a colleague" : "a family member";
+    p(`${shop.manager.name}, ${role}, ${shop.manager.years} years in the trade.${shop.manager.pitch ? " " + shop.manager.pitch : ""}`);
+  } else if (shop.managerWanted) {
+    h("Manager to recruit (pending)");
+    const w = shop.managerWanted;
+    p(`${w.trade}, ${w.experience}. ${w.hours}, ${w.salary}.${w.canBeShareholder ? " Can also become a shareholder." : ""} The loan is to be confirmed once the manager is recruited.`);
+  }
   if (val) {
     h("Valuation");
     for (const m of val.methods) row(m.name, eur(m.value));

@@ -71,7 +71,7 @@ export default function LeafletMap({ shops, selectedId, onSelect, target, me }: 
         const pulse = s.status === "raising" && s.id.startsWith("new-");
         const icon = L.divIcon({
           className: "bt-marker",
-          html: `<div style="position:relative;width:34px;height:34px" class="${pulse ? "bt-pulse" : ""}" title="${s.name.replace(/"/g, "")}">${markerSvg(s.type, s.status, p)}</div>`,
+          html: `<div style="position:relative;width:34px;height:34px" class="${pulse ? "bt-pulse" : ""}" title="${s.name.replace(/"/g, "")}">${markerSvg(s.type, s.status, p, !!s.managerWanted)}</div>`,
           iconSize: [34, 34], iconAnchor: [17, 30],
         });
         const m = L.marker([s.lat, s.lng], { icon, title: s.name, alt: s.name, zIndexOffset: s.status === "open" ? 0 : s.status === "closed" ? -100 : 500 });

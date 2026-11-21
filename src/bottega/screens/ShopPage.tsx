@@ -80,6 +80,12 @@ export default function ShopPage({ screen }: { screen: Screen }) {
             <Badge status={shop.status} />
             <h1 className="serif mt-2 text-[28px] font-semibold leading-tight">{shop.name}</h1>
             <p className="text-sm text-muted">{TYPE_LABEL[shop.type]} · {shop.street}, {shop.town}</p>
+            {shop.manager && <p className="mt-1 text-sm">Run by <b>{shop.manager.name}</b>{shop.manager.years ? ` · ${shop.manager.years} years in the trade` : ""}</p>}
+            {shop.managerWanted && (
+              <button onClick={() => go({ name: "poster", shopId: shop.id, kind: "manager" })} className="mt-2 inline-flex min-h-[36px] items-center gap-2 rounded-full bg-warning px-3 text-xs font-semibold text-white">
+                Wanted: manager · {shop.managerWanted.trade}
+              </button>
+            )}
           </div>
 
           {closed && (

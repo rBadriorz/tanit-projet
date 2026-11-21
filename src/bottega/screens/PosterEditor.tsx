@@ -1,6 +1,6 @@
 import { useMemo, useRef, useState } from "react";
 import { toPng } from "html-to-image";
-import type { Screen } from "../types";
+import type { Screen, Shop } from "../types";
 import { Btn, Card, Page } from "../components/ui";
 import { useStore } from "../store";
 import { Poster, TEMPLATES, defaultHeadline, defaultSubline, type Template } from "../components/Poster";
@@ -15,11 +15,23 @@ const OFFERS = [
   "Help finding grants",
 ];
 const PROFILES = ["Employee", "Trained cook / baker / butcher", "Career changer", "Young graduate"];
+type Kind = "raise" | "successor" | "manager";
+export const MANAGER_HEADLINE = "This shop is looking for its next manager.";
+const KIND_LABEL: Record<Kind, string> = { successor: "Call for a successor", raise: "Join the raise", manager: "Wanted: manager" };
+
+/** "Wanted: manager" poster content, from the shop's listing (or sensible defaults). */
+function managerContent(shop: Shop) {
+  const w = shop.managerWanted;
+  const offers = [w?.hours ?? "Full time, 5 days a week", w?.salary ?? "Salary to discuss", ...(w?.canBeShareholder !== false ? ["Option to become a shareholder"] : []), "Training by the owner"];
+  const profiles = [w?.trade ?? TYPE_LABEL[shop.type], w?.experience ?? "Experience in the trade"];
+  const subline = `${shop.name} (${shop.street}, ${shop.town}) is being taken over by its neighbours. They need someone to run it day to day.`;
+  return { offers, profiles, subline };
+}
 
 export default function PosterEditor({ screen }: { screen: Screen }) {
   const st = useStore();
   const init = screen.name === "poster" ? screen : { shopId: "martin", kind: "successor" as const };
-  const [kind, setKind] = useState<"raise" | "successor">(init.kind ?? "successor");
+  const [kind, setKind] = useState<Kind>(init.kind ?? "successor");
   const choices = st.shops.filter((s) => s.status !== "open" && s.status !== "closed");
   const [shopId, setShopId] = useState(init.shopId);
   const shop = (st.shop(shopId) ?? choices[0])!;
@@ -31,15 +43,20 @@ export default function PosterEditor({ screen }: { screen: Screen }) {
   ];
   const [headline, setHeadline] = useState("");
   const [subline, setSubline] = useState("");
-  const [offers, setOffers] = useState<string[]>(OFFERS.slice(0, 4));
-  const [profiles, setProfiles] = useState<string[]>(["Employee", "Trained cook / baker / butcher"]);
+  const mc = managerContent(shop);
+  const [offers, setOffers] = useState<string[]>(init.kind === "manager" ? mc.offers : OFFERS.slice(0, 4));
+  const [profiles, setProfiles] = useState<string[]>(init.kind === "manager" ? mc.profiles : ["Employee", "Trained cook / baker / butcher"]);
+  const offerOptions = kind === "manager" ? [...new Set([...mc.offers, ...OFFERS])] : OFFERS;
+  const profileOptions = kind === "manager" ? [...new Set([...mc.profiles, ...PROFILES])] : PROFILES;
+  const posterKind: "raise" | "successor" = kind === "raise" ? "raise" : "successor";
+  const cta = kind === "manager" ? "Scan if you could run it" : undefined;
   const [template, setTemplate] = useState<Template>("classic");
   const [busy, setBusy] = useState(false);
   const full = useRef<HTMLDivElement>(null);
 
-  const h = headline || (kind === "raise" ? defaultHeadline(shop, "raise") : presets[0]!);
-  const s = subline || defaultSubline(shop, kind);
-  const props = { shop, kind, template, origin: publicOrigin(), headline: h, subline: s, offers: kind === "successor" ? offers : undefined, profiles: kind === "successor" ? profiles : undefined };
+  const h = headline || (kind === "raise" ? defaultHeadline(shop, "raise") : kind === "manager" ? MANAGER_HEADLINE : presets[0]!);
+  const s = subline || (kind === "manager" ? mc.subline : defaultSubline(shop, kind));
+  const props = { shop, kind: posterKind, template, origin: publicOrigin(), headline: h, subline: s, offers: kind !== "raise" ? offers : undefined, profiles: kind !== "raise" ? profiles : undefined, cta };
 
   const interested = useMemo(() => [
     ...(shop.interested ?? []).map((i) => `${i.name}, ${i.age}: ${i.note}`),
@@ -48,10 +65,10 @@ export default function PosterEditor({ screen }: { screen: Screen }) {
 
   const printUrl = () => {
     if (kind === "raise") return `/poster/${shop.id}?template=${template}`;
-    const q = new URLSearchParams({ template, h: h ?? "", s, o: offers.join("|"), p: profiles.join("|") });
+    const q = new URLSearchParams({ template, h: h ?? "", s, o: offers.join("|"), p: profiles.join("|"), ...(cta ? { c: cta } : {}) });
     return `/poster/successor/${shop.id}?${q}`;
   };
-  const shareUrl = `${publicOrigin()}/shop/${shop.id}${kind === "successor" ? "?apply=1" : ""}`;
+  const shareUrl = `${publicOrigin()}/shop/${shop.id}${kind !== "raise" ? "?apply=1" : ""}`;
 
   const download = async () => {
     if (!full.current) return;
@@ -99,9 +116,12 @@ export default function PosterEditor({ screen }: { screen: Screen }) {
       )}
 
       <Section title="Poster type">
-        <div className="grid grid-cols-2 gap-2">
-          {(["successor", "raise"] as const).map((k) => (
-            <Chip key={k} on={kind === k} onClick={() => { setKind(k); setHeadline(""); setSubline(""); }}>{k === "successor" ? "Call for a successor" : "Join the raise"}</Chip>
+        <div className="grid grid-cols-3 gap-2">
+          {(["successor", "manager", "raise"] as const).map((k) => (
+            <Chip key={k} on={kind === k} onClick={() => {
+              setKind(k); setHeadline(""); setSubline("");
+              if (k === "manager") { setOffers(mc.offers); setProfiles(mc.profiles); } else if (kind === "manager") { setOffers(OFFERS.slice(0, 4)); setProfiles(["Employee", "Trained cook / baker / butcher"]); }
+            }}>{KIND_LABEL[k]}</Chip>
           ))}
         </div>
       </Section>
@@ -112,9 +132,9 @@ export default function PosterEditor({ screen }: { screen: Screen }) {
         </select>
       </Section>
       <Section title="Headline">
-        {kind === "successor" && (
+        {kind !== "raise" && (
           <div className="mb-2 flex flex-col gap-2">
-            {presets.map((p) => <Chip key={p} on={h === p} onClick={() => setHeadline(p)}>{p}</Chip>)}
+            {(kind === "manager" ? [MANAGER_HEADLINE, `${shop.name} needs a manager. Could it be you?`] : presets).map((p) => <Chip key={p} on={h === p} onClick={() => setHeadline(p)}>{p}</Chip>)}
           </div>
         )}
         <input value={h} onChange={(e) => setHeadline(e.target.value)} className="min-h-[48px] w-full rounded-2xl border border-line bg-surface px-3" aria-label="Headline" />
@@ -122,13 +142,13 @@ export default function PosterEditor({ screen }: { screen: Screen }) {
       <Section title="Subline">
         <textarea value={s} onChange={(e) => setSubline(e.target.value)} rows={3} className="w-full rounded-2xl border border-line bg-surface p-3" aria-label="Subline" />
       </Section>
-      {kind === "successor" && (
+      {kind !== "raise" && (
         <>
           <Section title="What we offer">
-            <div className="flex flex-wrap gap-2">{OFFERS.map((o) => <Chip key={o} on={offers.includes(o)} onClick={() => toggle(offers, setOffers, o)}>{o}</Chip>)}</div>
+            <div className="flex flex-wrap gap-2">{offerOptions.map((o) => <Chip key={o} on={offers.includes(o)} onClick={() => toggle(offers, setOffers, o)}>{o}</Chip>)}</div>
           </Section>
           <Section title="Profile wanted">
-            <div className="flex flex-wrap gap-2">{PROFILES.map((o) => <Chip key={o} on={profiles.includes(o)} onClick={() => toggle(profiles, setProfiles, o)}>{o}</Chip>)}</div>
+            <div className="flex flex-wrap gap-2">{profileOptions.map((o) => <Chip key={o} on={profiles.includes(o)} onClick={() => toggle(profiles, setProfiles, o)}>{o}</Chip>)}</div>
           </Section>
         </>
       )}

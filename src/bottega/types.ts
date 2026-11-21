@@ -18,7 +18,13 @@ export interface Shop {
   interested?: { name: string; age: number; note: string }[];
   colors: { awning: string; facade: string };
   timelineStep?: number; // 0..7
+  manager?: Manager;               // who runs the shop day to day
+  managerWanted?: ManagerWanted;   // "Wanted: manager" listing (investor buyers)
 }
+
+export interface Manager { name: string; role: "me" | "colleague" | "family"; years: number; pitch: string }
+export interface ManagerWanted { trade: string; experience: string; hours: string; salary: string; canBeShareholder: boolean }
+export interface Candidate { id: string; name: string; age: number; trade: string; years: number; message: string; color: string }
 
 export interface Message {
   id: string; shopId: string; author: string; street: string; ago: string;
@@ -34,6 +40,6 @@ export type Screen =
   | { name: "shop"; id: string; apply?: boolean }
   | { name: "takeover"; shopId?: string }
   | { name: "owner" }
-  | { name: "poster"; shopId: string; kind?: "raise" | "successor" }
+  | { name: "poster"; shopId: string; kind?: "raise" | "successor" | "manager" }
   | { name: "gap"; shopId: string }
   | { name: "legal" } | { name: "impact" } | { name: "about" } | { name: "how" } | { name: "flag" };

@@ -11,6 +11,7 @@ export const Route = createFileRoute("/poster/successor/$shopId")({
     s: str(s["s"]),
     o: str(s["o"]),
     p: str(s["p"]),
+    c: str(s["c"]),
   }),
   head: () => ({ meta: [{ title: `${APP_NAME}: call for a successor` }] }),
   component: SuccessorPoster,
@@ -21,6 +22,6 @@ function SuccessorPoster() {
   const q = Route.useSearch();
   return (
     <PrintPoster shopId={shopId} kind="successor" template={q.template} headline={q.h} subline={q.s}
-      offers={q.o ? q.o.split("|") : undefined} profiles={q.p ? q.p.split("|") : undefined} />
+      offers={q.o ? q.o.split("|") : undefined} profiles={q.p ? q.p.split("|") : undefined} cta={q.c} />
   );
 }

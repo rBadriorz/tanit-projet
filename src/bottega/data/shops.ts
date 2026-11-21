@@ -287,3 +287,9 @@ const CONTEXT_SHOPS: Shop[] = CONTEXT.map(([name, type, street, lat, lng], i) =>
 }));
 
 export const SHOPS: Shop[] = [...CORE, ...FAR_SHOPS, ...CONTEXT_SHOPS];
+
+// Who runs the shop (demo): Karim runs Marcel's bakery; the crêperie's buyers are looking for a manager.
+for (const s of SHOPS) {
+  if (s.id === "marcel") s.manager = { name: "Karim", role: "me", years: 9, pitch: "Nine years at this oven. I know every recipe and every regular." };
+  if (s.id === "creperie") s.managerWanted = { trade: "Crêpe and galette cook", experience: "2+ years on a billig", hours: "Full time, closed Mondays", salary: "€1,900 – €2,300 net / month", canBeShareholder: true };
+}
