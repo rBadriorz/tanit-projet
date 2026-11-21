@@ -1,5 +1,6 @@
 // Client-side bank file PDF (A4), built with jspdf. Loaded on demand.
 import { APP_NAME } from "../config";
+import { P } from "../theme";
 import type { Shop } from "../types";
 import type { BankFileResult, ValuationResult } from "../data/scripted";
 
@@ -10,9 +11,12 @@ export async function downloadBankFilePdf(shop: Shop, bank: BankFileResult, val:
   const doc = new jsPDF({ unit: "mm", format: "a4" });
   const W = 210, M = 18;
   let y = 0;
-  const fir: [number, number, number] = [31, 77, 58];
+  const hex = (h: string): [number, number, number] => { const n = parseInt(h.slice(1), 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255]; };
+  const brand = hex(P.primary);
+  const ink = hex(P.text);
+  const grey = hex(P.text2);
 
-  doc.setFillColor(...fir);
+  doc.setFillColor(...brand);
   doc.rect(0, 0, W, 26, "F");
   doc.setTextColor(255, 255, 255);
   doc.setFont("times", "bold"); doc.setFontSize(20);
@@ -24,9 +28,9 @@ export async function downloadBankFilePdf(shop: Shop, bank: BankFileResult, val:
   const need = () => { if (y > 270) { doc.addPage(); y = 20; } };
   const h = (t: string) => {
     need(); y += 4;
-    doc.setTextColor(...fir); doc.setFont("helvetica", "bold"); doc.setFontSize(12);
+    doc.setTextColor(...brand); doc.setFont("helvetica", "bold"); doc.setFontSize(12);
     doc.text(t, M, y); y += 6;
-    doc.setTextColor(30, 30, 30); doc.setFont("helvetica", "normal"); doc.setFontSize(10);
+    doc.setTextColor(...ink); doc.setFont("helvetica", "normal"); doc.setFontSize(10);
   };
   const p = (t: string) => {
     for (const line of doc.splitTextToSize(t, W - 2 * M) as string[]) { need(); doc.text(line, M, y); y += 5; }
@@ -37,7 +41,7 @@ export async function downloadBankFilePdf(shop: Shop, bank: BankFileResult, val:
     doc.setFont("helvetica", "normal");
   };
 
-  doc.setTextColor(30, 30, 30); doc.setFont("times", "bold"); doc.setFontSize(16);
+  doc.setTextColor(...ink); doc.setFont("times", "bold"); doc.setFontSize(16);
   doc.text(shop.name, M, y); y += 6;
   doc.setFont("helvetica", "normal"); doc.setFontSize(10);
   doc.text(`${shop.street}, ${shop.town}`, M, y); y += 4;
@@ -64,7 +68,7 @@ export async function downloadBankFilePdf(shop: Shop, bank: BankFileResult, val:
   const pages = doc.getNumberOfPages();
   for (let i = 1; i <= pages; i++) {
     doc.setPage(i);
-    doc.setFontSize(8); doc.setTextColor(110, 110, 110);
+    doc.setFontSize(8); doc.setTextColor(...grey);
     doc.text(`Demo · fictional data · ${APP_NAME} prototype · page ${i}/${pages}`, W / 2, 290, { align: "center" });
   }
   doc.save(`${APP_NAME}-bank-file-${shop.id}.pdf`);

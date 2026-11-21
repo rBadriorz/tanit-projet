@@ -27,21 +27,21 @@ export default function Presenter({ onClose }: { onClose: () => void }) {
     if (!done.length) st.notify("No pending request. Join a shop first (Join from €100).");
   };
   const B = ({ children, onClick, kind }: { children: React.ReactNode; onClick: () => void; kind?: "danger" }) => (
-    <button onClick={onClick} className={`press min-h-[36px] rounded-xl px-3 text-xs font-semibold ${kind === "danger" ? "bg-terracotta text-white" : "bg-cream text-ink"}`}>{children}</button>
+    <button onClick={onClick} className={`press min-h-[36px] rounded-xl px-3 text-xs font-semibold ${kind === "danger" ? "bg-danger text-white" : "bg-page text-ink"}`}>{children}</button>
   );
   return (
-    <div className="no-print fixed bottom-16 right-4 z-[100] max-h-[80vh] w-[320px] overflow-y-auto rounded-3xl bg-paper p-4 text-ink shadow-2xl">
+    <div className="no-print fixed bottom-16 right-4 z-[100] max-h-[80vh] w-[320px] overflow-y-auto rounded-3xl bg-surface p-4 text-ink shadow-2xl">
       <div className="mb-3 flex items-center justify-between">
         <div className="font-semibold">Presenter</div>
-        <button onClick={onClose} aria-label="Close" className="grid h-9 w-9 place-items-center rounded-full bg-cream"><X size={16} /></button>
+        <button onClick={onClose} aria-label="Close" className="grid h-9 w-9 place-items-center rounded-full bg-page"><X size={16} /></button>
       </div>
 
-      <div className="mb-3 flex items-center justify-between rounded-2xl bg-cream p-3 text-xs">
+      <div className="mb-3 flex items-center justify-between rounded-2xl bg-page p-3 text-xs">
         <span className="flex items-center gap-2">
-          <span className={`h-2.5 w-2.5 rounded-full ${st.aiMode === "live" ? "bg-fir-light" : "bg-sun"}`} />
+          <span className={`h-2.5 w-2.5 rounded-full ${st.aiMode === "live" ? "bg-primary-light" : "bg-warning"}`} />
           AI: {st.aiMode === "live" ? "live" : "scripted (forced)"}{st.aiLast ? ` · last answer ${st.aiLast}` : ""}
         </span>
-        <button onClick={() => st.setAiMode(st.aiMode === "live" ? "scripted" : "live")} className="rounded-lg bg-fir px-2 py-1 font-semibold text-white">
+        <button onClick={() => st.setAiMode(st.aiMode === "live" ? "scripted" : "live")} className="rounded-lg bg-primary px-2 py-1 font-semibold text-white">
           {st.aiMode === "live" ? "Force scripted" : "Go live"}
         </button>
       </div>

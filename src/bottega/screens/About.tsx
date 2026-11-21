@@ -20,8 +20,8 @@ export default function About(_p: { screen: Screen }) {
         <p className="mt-2 text-sm leading-relaxed">We earn a 5% fee on each raise, a €150/month shared-services subscription, and a referral fee from partner banks on takeover loans. The referral fee does not change your rate.</p>
       </Card>
       <AiTeam className="mt-5" />
-      <Card className="mt-5 border-2 border-terracotta">
-        <h2 className="serif text-xl font-semibold text-terracotta">Risk warning</h2>
+      <Card className="mt-5 border-2 border-primary-dark">
+        <h2 className="serif text-xl font-semibold text-primary-dark">Risk warning</h2>
         <ul className="mt-2 space-y-1 text-sm">
           <li>· You may lose all of what you invest.</li>
           <li>· Shares in a small company are not easily resellable.</li>
@@ -40,7 +40,7 @@ export default function About(_p: { screen: Screen }) {
       <h2 className="serif mt-6 text-xl font-semibold">FAQ</h2>
       <div className="mt-2 space-y-2">
         {FAQ.map((f) => (
-          <details key={f.q} className="rounded-2xl bg-paper p-4 shadow-sm">
+          <details key={f.q} className="rounded-2xl bg-surface p-4 shadow-sm">
             <summary className="cursor-pointer font-semibold">{f.q}</summary>
             <p className="mt-2 text-sm leading-relaxed text-muted">{f.a}</p>
           </details>

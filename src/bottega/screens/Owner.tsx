@@ -1,9 +1,10 @@
-﻿import { motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { useState } from "react";
 import type { Screen, Shop, ShopType } from "../types";
 import { Btn, Card, Page } from "../components/ui";
 import { euro, useStore } from "../store";
 import { TYPE_LABEL } from "../components/ShopArt";
+import { P } from "../theme";
 
 const TYPES: ShopType[] = ["bakery", "cafe", "butcher", "restaurant", "grocery", "bookshop", "florist", "hairdresser", "cheese", "bar"];
 const YEARS = ["Less than 10 years", "10 to 25 years", "25 to 40 years", "More than 40 years"];
@@ -29,14 +30,14 @@ export default function Owner(_p: { screen: Screen }) {
     const Q = questions[step]!;
     return (
       <Page title="Find a successor">
-        <div className="mb-5 flex gap-2">{[0, 1, 2, 3].map((i) => <div key={i} className={`h-2 flex-1 rounded-full ${i <= step ? "bg-terracotta" : "bg-line"}`} />)}</div>
+        <div className="mb-5 flex gap-2">{[0, 1, 2, 3].map((i) => <div key={i} className={`h-2 flex-1 rounded-full ${i <= step ? "bg-primary-dark" : "bg-line"}`} />)}</div>
         <motion.div key={step} initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }}>
           <h2 className="serif text-[28px] font-semibold leading-tight">{Q.q}</h2>
           <p className="mt-1 text-base text-muted">Question {step + 1} of 4. Take your time.</p>
           <div className="mt-5 grid gap-3">
             {Q.opts.map((o, i) => (
               <button key={o} onClick={() => { Q.pick(i); setStep(step + 1); }}
-                className="press min-h-[60px] rounded-2xl border border-line bg-paper px-5 text-left text-lg font-medium">{o}</button>
+                className="press min-h-[60px] rounded-2xl border border-line bg-surface px-5 text-left text-lg font-medium">{o}</button>
             ))}
           </div>
         </motion.div>
@@ -57,7 +58,7 @@ export default function Owner(_p: { screen: Screen }) {
       lat: 48.1131, lng: -1.6772,
       owner: { firstName: "You", age: 67, yearsInShop: years, quote: "I want my shop to stay open after me." },
       ebitda: e, revenue: e * 6, price: Math.round((low + high) / 2), staff: 2,
-      colors: { awning: "#C2452D", facade: "#f3e3cf" }, timelineStep: 1,
+      colors: { awning: P.primary, facade: P.facade1 }, timelineStep: 1,
     };
     st.addShop(shop);
     st.notify("Your shop is on the map");
@@ -68,11 +69,11 @@ export default function Owner(_p: { screen: Screen }) {
     <Page title="Your result">
       <h2 className="serif text-[28px] font-semibold leading-tight">Good news: your shop has a future.</h2>
       <Card className="mt-4">
-        <p className="text-lg"><b className="text-terracotta">37 neighbours</b> already flagged shops like yours nearby.</p>
+        <p className="text-lg"><b className="text-primary-dark">37 neighbours</b> already flagged shops like yours nearby.</p>
       </Card>
       <Card className="mt-3">
         <div className="text-sm text-muted">Estimated value of your {TYPE_LABEL[type].toLowerCase()}</div>
-        <div className="serif mt-1 text-3xl font-semibold text-fir">{euro(low)} – {euro(high)}</div>
+        <div className="serif mt-1 text-3xl font-semibold text-primary">{euro(low)} – {euro(high)}</div>
         <p className="mt-1 text-sm text-muted">A first estimate. Our AI co-pilot refines it with your accounts.</p>
       </Card>
       <Card className="mt-3">
@@ -82,7 +83,7 @@ export default function Owner(_p: { screen: Screen }) {
           <li>2. Your neighbours can join the capital from €100.</li>
           <li>3. We prepare the bank file with your successor.</li>
         </ol>
-        {a.who === 0 && <p className="mt-3 rounded-2xl bg-cream p-3 text-base">You have an employee in mind: that is the best start.</p>}
+        {a.who === 0 && <p className="mt-3 rounded-2xl bg-page p-3 text-base">You have an employee in mind: that is the best start.</p>}
       </Card>
       {!placed ? (
         <Btn kind="accent" className="mt-5 w-full text-lg" onClick={put}>Put my shop on the map</Btn>

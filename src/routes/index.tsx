@@ -10,7 +10,6 @@ export const Route = createFileRoute("/")({
       { property: "og:title", content: `${APP_NAME}: take over your corner shop` },
       { property: "og:description", content: APP_TAGLINE },
       { property: "og:type", content: "website" },
-      { name: "theme-color", content: "#F6F0E4" },
     ],
   }),
   component: () => <BottegaApp initial={{ name: "home" }} />,

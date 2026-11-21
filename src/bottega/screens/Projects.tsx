@@ -17,10 +17,10 @@ export default function Projects(_p: { screen: Screen }) {
   return (
     <div className="no-scrollbar absolute inset-0 overflow-y-auto px-4 pb-8">
       <h1 className="serif pt-3 text-3xl font-semibold">Projects</h1>
-      <div className="mt-3 flex gap-1 rounded-2xl bg-paper p-1 shadow-sm" role="tablist">
+      <div className="mt-3 flex gap-1 rounded-2xl bg-surface p-1 shadow-sm" role="tablist">
         {SEGMENTS.map((s, i) => (
           <button key={s.label} role="tab" aria-selected={seg === i} onClick={() => setSeg(i)}
-            className={`press min-h-[44px] flex-1 rounded-xl px-2 text-xs font-semibold leading-tight ${seg === i ? "bg-fir text-white" : "text-muted"}`}>
+            className={`press min-h-[44px] flex-1 rounded-xl px-2 text-xs font-semibold leading-tight ${seg === i ? "bg-primary text-white" : "text-muted"}`}>
             {s.label}
           </button>
         ))}

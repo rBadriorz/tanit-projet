@@ -4,18 +4,19 @@ import { APP_NAME, TRUST_LINE } from "../config";
 import type { Shop } from "../types";
 import { ShopFront, TYPE_LABEL } from "./ShopArt";
 import { Awning } from "./Logo";
+import { P } from "../theme";
 
 export type Template = "classic" | "bold" | "minimal";
 export const TEMPLATES: { id: Template; label: string }[] = [
   { id: "classic", label: "Classic chalkboard" },
-  { id: "bold", label: "Bold terracotta" },
-  { id: "minimal", label: "Minimal cream" },
+  { id: "bold", label: "Bold brown" },
+  { id: "minimal", label: "Minimal white" },
 ];
 
 const THEME: Record<Template, { bg: string; fg: string; accent: string; sub: string; qrBg: string }> = {
-  classic: { bg: "#2b2f2c", fg: "#F6F0E4", accent: "#E9B949", sub: "#d9d3c4", qrBg: "#F6F0E4" },
-  bold: { bg: "#C2452D", fg: "#FFFDF8", accent: "#1B2A4A", sub: "#fde9dd", qrBg: "#FFFDF8" },
-  minimal: { bg: "#F6F0E4", fg: "#1E1E1E", accent: "#1B2A4A", sub: "#4a4a4a", qrBg: "#FFFDF8" },
+  classic: { bg: P.text, fg: P.surface, accent: P.warning, sub: P.primaryLight, qrBg: P.surface },
+  bold: { bg: P.primary, fg: P.surface, accent: P.primaryDark, sub: P.facade1, qrBg: P.surface },
+  minimal: { bg: P.surface, fg: P.text, accent: P.primaryDark, sub: P.text2, qrBg: P.surface },
 };
 
 export interface PosterProps {
@@ -53,7 +54,7 @@ export const Poster = forwardRef<HTMLDivElement, PosterProps>(function Poster(p,
       className="relative flex flex-col overflow-hidden px-[64px] py-[56px]">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3"><Awning size={44} /><span className="serif text-[30px] font-semibold">{APP_NAME}</span></div>
-        <span className="rounded-full px-4 py-1.5 text-[15px] font-semibold" style={{ background: t.accent, color: p.template === "classic" ? "#1E1E1E" : "#fff" }}>
+        <span className="rounded-full px-4 py-1.5 text-[15px] font-semibold" style={{ background: t.accent, color: p.template === "classic" ? P.text : "#fff" }}>
           {TYPE_LABEL[shop.type]} · {shop.street}, {shop.town}
         </span>
       </div>
@@ -66,13 +67,13 @@ export const Poster = forwardRef<HTMLDivElement, PosterProps>(function Poster(p,
         <div className="mt-6 grid grid-cols-2 gap-6 text-[18px]">
           {!!p.offers?.length && (
             <div>
-              <div className="mb-2 font-bold" style={{ color: t.accent === "#1B2A4A" && p.template === "bold" ? t.fg : t.accent }}>What we offer</div>
+              <div className="mb-2 font-bold" style={{ color: t.accent === P.primaryDark && p.template === "bold" ? t.fg : t.accent }}>What we offer</div>
               <ul className="space-y-1.5">{p.offers.map((o) => <li key={o}>✓ {o}</li>)}</ul>
             </div>
           )}
           {!!p.profiles?.length && (
             <div>
-              <div className="mb-2 font-bold" style={{ color: t.accent === "#1B2A4A" && p.template === "bold" ? t.fg : t.accent }}>Profile wanted</div>
+              <div className="mb-2 font-bold" style={{ color: t.accent === P.primaryDark && p.template === "bold" ? t.fg : t.accent }}>Profile wanted</div>
               <div className="flex flex-wrap gap-2">{p.profiles.map((o) => <span key={o} className="rounded-full px-3 py-1" style={{ border: `2px solid ${t.fg}` }}>{o}</span>)}</div>
             </div>
           )}
@@ -80,7 +81,7 @@ export const Poster = forwardRef<HTMLDivElement, PosterProps>(function Poster(p,
       ) : null}
       <div className="mt-auto flex items-end gap-8">
         <div className="rounded-3xl p-4" style={{ background: t.qrBg }}>
-          <QRCodeSVG value={url} size={210} fgColor="#1B2A4A" bgColor={t.qrBg} level="M" />
+          <QRCodeSVG value={url} size={210} fgColor={P.primaryDark} bgColor={t.qrBg} level="M" />
         </div>
         <div className="flex-1 pb-2">
           <div className="serif text-[30px] font-semibold leading-tight">{p.kind === "raise" ? "Scan to join from €100" : "Scan if you could take over"}</div>

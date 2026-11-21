@@ -28,8 +28,8 @@ function Inner({ shopId, kind, template, ...rest }: Props) {
   return (
     <div className="min-h-screen bg-white print:bg-white">
       <div className="no-print flex items-center justify-center gap-3 p-4">
-        <button onClick={() => window.print()} className="press min-h-[48px] rounded-2xl bg-fir px-6 font-semibold text-white">Print (A4)</button>
-        <a href="/" className="text-fir underline">Back to the app</a>
+        <button onClick={() => window.print()} className="press min-h-[48px] rounded-2xl bg-primary px-6 font-semibold text-white">Print (A4)</button>
+        <a href="/" className="text-primary underline">Back to the app</a>
       </div>
       <div className="mx-auto w-[794px] print:m-0">
         <Poster shop={s} kind={kind} template={tpl} origin={publicOrigin()} {...rest} />

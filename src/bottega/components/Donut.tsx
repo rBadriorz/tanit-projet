@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { P } from "../theme";
 
 export interface DonutSlice { label: string; value: number; color: string }
 
@@ -10,7 +11,7 @@ export function Donut({ data, size = 140, legend = true }: { data: DonutSlice[];
   return (
     <div className="flex items-center gap-4">
       <svg width={size} height={size} viewBox="0 0 42 42" role="img" aria-label="Financing plan chart" className="shrink-0">
-        <circle cx="21" cy="21" r={r} fill="none" stroke="#e6dcc8" strokeWidth="6" />
+        <circle cx="21" cy="21" r={r} fill="none" stroke={P.border} strokeWidth="6" />
         {data.map((d) => {
           const len = (Math.max(0, d.value) / total) * 100;
           const el = (

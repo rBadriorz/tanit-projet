@@ -1,11 +1,12 @@
-﻿import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import { Heart, Send } from "lucide-react";
 import type { Message, Screen } from "../types";
 import { Avatar } from "../components/ui";
 import { useStore } from "../store";
+import { P } from "../theme";
 
-const KIND_COLOR: Record<Message["kind"], string> = { support: "#34507F", owner: "#C2452D", milestone: "#E9B949", success: "#1B2A4A" };
+const KIND_COLOR: Record<Message["kind"], string> = { support: P.brown2, owner: P.primary, milestone: P.warning, success: P.primaryDark };
 
 export default function Wall({ screen }: { screen: Screen }) {
   const st = useStore();
@@ -41,11 +42,11 @@ export default function Wall({ screen }: { screen: Screen }) {
         </motion.div>
       </div>
       {target && (
-        <div className="flex shrink-0 items-center gap-2 border-t border-line bg-cream px-3 py-2">
+        <div className="flex shrink-0 items-center gap-2 border-t border-line bg-page px-3 py-2">
           <input value={text} onChange={(e) => setText(e.target.value)} onKeyDown={(e) => e.key === "Enter" && post()}
             placeholder={`Write to ${target.name}`} aria-label={`Write to ${target.name}`}
-            className="min-h-[46px] flex-1 rounded-full border border-line bg-paper px-4 text-sm" />
-          <button onClick={post} aria-label="Post" className="press grid h-[46px] w-[46px] place-items-center rounded-full bg-fir text-white"><Send size={18} /></button>
+            className="min-h-[46px] flex-1 rounded-full border border-line bg-surface px-4 text-sm" />
+          <button onClick={post} aria-label="Post" className="press grid h-[46px] w-[46px] place-items-center rounded-full bg-primary text-white"><Send size={18} /></button>
         </div>
       )}
     </div>
@@ -64,8 +65,8 @@ function Post({ m }: { m: Message }) {
   };
   return (
     <motion.div layout initial={{ opacity: 0, y: -16, scale: 0.97 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0 }}
-      className={`rounded-3xl p-4 shadow-[0_4px_18px_rgba(27, 42, 74,0.08)] ${highlight ? "border-2" : "bg-paper"}`}
-      style={highlight ? { borderColor: KIND_COLOR[m.kind], background: m.kind === "success" ? "#e9f1ec" : "#fdf3d8" } : {}}>
+      className={`rounded-3xl p-4 shadow-[0_4px_18px_color-mix(in_srgb,var(--primary)_8%,transparent)] ${highlight ? "border-2" : "bg-surface"}`}
+      style={highlight ? { borderColor: KIND_COLOR[m.kind], background: m.kind === "success" ? P.facade4 : P.facade4 } : {}}>
       <div className="flex items-center gap-3">
         <Avatar name={m.author} size={38} color={KIND_COLOR[m.kind]} />
         <div className="min-w-0 flex-1">
@@ -73,14 +74,14 @@ function Post({ m }: { m: Message }) {
           <div className="truncate text-xs text-muted">{m.street ? `${m.street} · ` : ""}{m.ago}</div>
         </div>
         {shop && (
-          <button onClick={() => st.go({ name: "shop", id: shop.id })} className="press max-w-[40%] truncate rounded-full bg-cream px-2.5 py-1 text-[11px] font-semibold text-fir">
+          <button onClick={() => st.go({ name: "shop", id: shop.id })} className="press max-w-[40%] truncate rounded-full bg-page px-2.5 py-1 text-[11px] font-semibold text-primary">
             {shop.name}
           </button>
         )}
       </div>
       <p className="mt-3 text-[15px] leading-snug">{m.text}</p>
       <div className="mt-3 flex gap-2 text-xs">
-        <React on={mine.heart} onClick={() => react("heart")}><Heart size={14} className={mine.heart ? "fill-terracotta text-terracotta" : ""} /> {r.heart}</React>
+        <React on={mine.heart} onClick={() => react("heart")}><Heart size={14} className={mine.heart ? "fill-primary-dark text-primary-dark" : ""} /> {r.heart}</React>
         <React on={mine.in} onClick={() => react("in")}>I'm in · {r.in}</React>
         <React on={mine.bread} onClick={() => react("bread")}>🥖 {r.bread}</React>
       </div>
@@ -91,11 +92,11 @@ function Post({ m }: { m: Message }) {
 function React({ on, onClick, children }: { on?: boolean | undefined; onClick: () => void; children: React.ReactNode }) {
   return (
     <motion.button whileTap={{ scale: 1.15 }} onClick={onClick}
-      className={`flex min-h-[36px] items-center gap-1 rounded-full px-3 ${on ? "bg-fir text-white" : "bg-cream text-ink"}`}>{children}</motion.button>
+      className={`flex min-h-[36px] items-center gap-1 rounded-full px-3 ${on ? "bg-primary text-white" : "bg-page text-ink"}`}>{children}</motion.button>
   );
 }
 function FilterChip({ on, onClick, children }: { on: boolean; onClick: () => void; children: React.ReactNode }) {
   return (
-    <button onClick={onClick} className={`press min-h-[40px] shrink-0 rounded-full px-4 text-sm ${on ? "bg-fir text-white" : "bg-paper text-ink shadow-sm"}`}>{children}</button>
+    <button onClick={onClick} className={`press min-h-[40px] shrink-0 rounded-full px-4 text-sm ${on ? "bg-primary text-white" : "bg-surface text-ink shadow-sm"}`}>{children}</button>
   );
 }

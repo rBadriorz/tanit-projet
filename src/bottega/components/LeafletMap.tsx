@@ -3,6 +3,7 @@ import type * as Leaflet from "leaflet";
 import type { Shop } from "../types";
 import { markerSvg } from "./ShopArt";
 import { pct } from "../store";
+import { P } from "../theme";
 
 export interface MapTarget { lat: number; lng: number; zoom: number; key: number }
 
@@ -36,7 +37,7 @@ export default function LeafletMap({ shops, selectedId, onSelect, target, me }: 
       LRef.current = L;
       const map = L.map(el.current, { zoomControl: false, attributionControl: true, maxZoom: 19, minZoom: 4 }).setView([target.lat, target.lng], target.zoom);
       // OpenStreetMap tiles: free, no key (CARTO now answers "API key required").
-      // Toned down in CSS (.leaflet-tile-pane) to fit the cream and navy palette.
+      // Toned down in CSS (.leaflet-tile-pane) to fit the brown and white palette.
       L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
         attribution: '© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">OpenStreetMap</a> contributors', maxZoom: 19,
       }).addTo(map);
@@ -109,7 +110,7 @@ export default function LeafletMap({ shops, selectedId, onSelect, target, me }: 
       const L = LRef.current, map = mapRef.current;
       if (!L || !map) return;
       meRef.current?.remove();
-      meRef.current = me ? L.circleMarker([me.lat, me.lng], { radius: 8, color: "#fff", weight: 3, fillColor: "#2f6fed", fillOpacity: 1 }).addTo(map) : null;
+      meRef.current = me ? L.circleMarker([me.lat, me.lng], { radius: 8, color: "#fff", weight: 3, fillColor: P.primary, fillOpacity: 1 }).addTo(map) : null;
     });
   }, [me]);
 

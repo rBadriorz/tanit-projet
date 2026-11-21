@@ -1,4 +1,5 @@
-﻿import type { Shop, ShopType, Status } from "../types";
+import type { Shop, ShopType, Status } from "../types";
+import { P } from "../theme";
 
 // All data is fictional. Coordinates are approximate and slightly jittered.
 
@@ -14,7 +15,7 @@ const CORE: Shop[] = [
     leadBuyer: { firstName: "Karim", age: 34, role: "employee", yearsExperience: 9, stakePct: 60, contribution: 15000 },
     price: 180000, revenue: 310000, ebitda: 48000, staff: 3, rent: 1400,
     raise: { target: 40000, raised: 23400, backers: 187, daysLeft: 19, minTicket: 100, perks: perks("A coffee each Saturday") },
-    legalForm: "SAS", timelineStep: 4, colors: { awning: "#C2452D", facade: "#F3DCC6" },
+    legalForm: "SAS", timelineStep: 4, colors: { awning: P.primary, facade: P.facade2 },
     story: [
       "Every morning at 3am, the lights go on at 12 rue des Tilleuls. For 38 years, Marcel has made the bread this street wakes up to.",
       "Marcel is 71. His children chose other lives, and the only offer he received came from a chain that would close the bakery within a year. Karim, his employee for nine years, knows every recipe, every customer, every oven quirk. He has €15,000 of savings. The bank asks for more.",
@@ -29,7 +30,7 @@ const CORE: Shop[] = [
     leadBuyer: { firstName: "Sonia", age: 41, role: "resident", yearsExperience: 6, stakePct: 55, contribution: 14000 },
     price: 140000, revenue: 260000, ebitda: 39000, staff: 3, rent: 1600,
     raise: { target: 35000, raised: 26100, backers: 241, daysLeft: 12, minTicket: 100, perks: perks("An espresso on the house every market Saturday") },
-    legalForm: "SAS", timelineStep: 4, colors: { awning: "#1B2A4A", facade: "#E6EFE8" },
+    legalForm: "SAS", timelineStep: 4, colors: { awning: P.primaryDark, facade: P.facade1 },
     story: [
       "On Saturday mornings, when the market fills the place des Lices, the first stop for half of Rennes is Michèle's counter. Thirty-one years of espresso, croissants and gossip.",
       "Michèle is 68 and tired of the 6am openings. A phone-shop chain has already asked about the lease. Sonia, a customer for fifteen years who now runs the weekend shifts, wants to keep the terrace and the €1.50 espresso.",
@@ -42,7 +43,7 @@ const CORE: Shop[] = [
     lat: 48.1153, lng: -1.6812,
     owner: { firstName: "Gérard", age: 66, yearsInShop: 40, quote: "My hands are tired. My knives aren't. I need someone who loves the trade." },
     price: 210000, revenue: 520000, ebitda: 61000, staff: 4, rent: 1800,
-    legalForm: "SAS", timelineStep: 1, colors: { awning: "#8A3B2A", facade: "#F1E1DA" },
+    legalForm: "SAS", timelineStep: 1, colors: { awning: P.brown3, facade: P.facade3 },
     interested: [
       { name: "Yanis", age: 24, note: "Butchery school graduate" },
       { name: "Claire", age: 45, note: "Career changer" },
@@ -56,7 +57,7 @@ const CORE: Shop[] = [
     leadBuyer: { firstName: "Thomas", age: 29, role: "employee", yearsExperience: 7, stakePct: 51, contribution: 9000 },
     price: 95000, revenue: 190000, ebitda: 27000, staff: 4, rent: 1100,
     raise: { target: 30000, raised: 30000, backers: 212, daysLeft: 0, minTicket: 100, perks: perks("First drink on the house every month") },
-    legalForm: "SAS", timelineStep: 7, colors: { awning: "#34507F", facade: "#EDE3D1" },
+    legalForm: "SAS", timelineStep: 7, colors: { awning: P.brown2, facade: P.facade4 },
     story: [
       "Le Petit Zinc has stood on rue de Penhoët since 1962: a copper counter, a jukebox, and Yvonne behind the bar for 33 years.",
       "When Yvonne retired in 2025, the building's owner wanted a vape shop. Thomas, her barman since he was 22, had the regulars, the recipes and the will, but not the money.",
@@ -71,7 +72,7 @@ const CORE: Shop[] = [
     leadBuyer: { firstName: "Inès", age: 37, role: "employee", yearsExperience: 8, stakePct: 58, contribution: 12000 },
     price: 120000, revenue: 280000, ebitda: 33000, staff: 2, rent: 1200,
     raise: { target: 28000, raised: 9800, backers: 96, daysLeft: 33, minTicket: 100, perks: perks("A seat at the Thursday tastings") },
-    legalForm: "SAS", timelineStep: 4, colors: { awning: "#E9B949", facade: "#FBF1D6" },
+    legalForm: "SAS", timelineStep: 4, colors: { awning: P.warning, facade: P.facade1 },
   },
   {
     id: "pages", name: "Librairie Les Pages", type: "bookshop", status: "raising", town: "Rennes", street: "rue de la Monnaie",
@@ -80,7 +81,7 @@ const CORE: Shop[] = [
     leadBuyer: { firstName: "Malik", age: 31, role: "resident", yearsExperience: 4, stakePct: 52, contribution: 8000 },
     price: 85000, revenue: 210000, ebitda: 18000, staff: 2, rent: 950,
     raise: { target: 25000, raised: 21900, backers: 318, daysLeft: 6, minTicket: 100, perks: perks("10% off every book, for life") },
-    legalForm: "SCIC", timelineStep: 4, colors: { awning: "#3B5B7A", facade: "#E4EAF0" },
+    legalForm: "SCIC", timelineStep: 4, colors: { awning: P.tan, facade: P.facade2 },
     story: [
       "Librairie Les Pages has sold books on rue de la Monnaie for 35 years. Odile knows which teenager will love which comic before they do.",
       "At 70, Odile wants to stop. Bookshops rarely make a buyer rich, and no one came forward. Malik, a neighbour who spent his student years in the poetry aisle, asked a simple question: what if we all owned it?",
@@ -93,12 +94,12 @@ const CORE: Shop[] = [
     lat: 48.111, lng: -1.683,
     owner: { firstName: "Anne", age: 64, yearsInShop: 27, quote: "My galettes are my grandmother's recipe. I won't sell it to a chain." },
     price: 160000, revenue: 340000, ebitda: 42000, staff: 5, rent: 1700,
-    legalForm: "SAS", timelineStep: 1, colors: { awning: "#C2452D", facade: "#F6E7D6" },
+    legalForm: "SAS", timelineStep: 1, colors: { awning: P.primary, facade: P.facade2 },
   },
   {
     id: "primeur", name: "Primeur des Halles", type: "grocery", status: "flagged", town: "Rennes", street: "rue de Nemours",
     lat: 48.1095, lng: -1.6795, owner: NO_OWNER, flaggedBy: 43,
-    timelineStep: 0, colors: { awning: "#34507F", facade: "#EAF1E4" },
+    timelineStep: 0, colors: { awning: P.brown2, facade: P.facade2 },
   },
   {
     id: "fleurs", name: "Fleurs de Sainte-Anne", type: "florist", status: "taken_over", town: "Rennes", street: "place Sainte-Anne",
@@ -107,7 +108,7 @@ const CORE: Shop[] = [
     leadBuyer: { firstName: "Chloé", age: 28, role: "employee", yearsExperience: 6, stakePct: 55, contribution: 8000 },
     price: 70000, revenue: 150000, ebitda: 19000, staff: 2, rent: 900,
     raise: { target: 18000, raised: 18000, backers: 134, daysLeft: 0, minTicket: 100, perks: perks("A bouquet on your birthday") },
-    legalForm: "SAS", timelineStep: 7, colors: { awning: "#1B2A4A", facade: "#F5E4EA" },
+    legalForm: "SAS", timelineStep: 7, colors: { awning: P.primaryDark, facade: P.facade3 },
   },
   {
     id: "coiffure", name: "Salon Jacqueline", type: "hairdresser", status: "raising", town: "Rennes", street: "rue d'Antrain",
@@ -116,14 +117,14 @@ const CORE: Shop[] = [
     leadBuyer: { firstName: "Yasmine", age: 33, role: "employee", yearsExperience: 11, stakePct: 60, contribution: 10000 },
     price: 60000, revenue: 140000, ebitda: 22000, staff: 2, rent: 800,
     raise: { target: 15000, raised: 4200, backers: 38, daysLeft: 40, minTicket: 100, perks: perks("A free blow-dry each season") },
-    legalForm: "SAS", timelineStep: 4, colors: { awning: "#8A3B2A", facade: "#F4E3E3" },
+    legalForm: "SAS", timelineStep: 4, colors: { awning: P.brown3, facade: P.facade4 },
   },
   {
     id: "quincaillerie", name: "Quincaillerie Le Gall", type: "hardware", status: "seeking", town: "Rennes", street: "rue Saint-Hélier",
     lat: 48.1065, lng: -1.67,
     owner: { firstName: "Bernard", age: 70, yearsInShop: 42, quote: "People come for one screw and leave with advice for the whole house." },
     price: 130000, revenue: 300000, ebitda: 30000, staff: 3, rent: 1300,
-    legalForm: "SAS", timelineStep: 1, colors: { awning: "#3B5B7A", facade: "#E9E6DF" },
+    legalForm: "SAS", timelineStep: 1, colors: { awning: P.tan, facade: P.facade1 },
   },
   {
     id: "poissonnerie", name: "Poissonnerie de la Criée", type: "fishmonger", status: "raising", town: "Rennes", street: "rue Jules Simon",
@@ -132,7 +133,7 @@ const CORE: Shop[] = [
     leadBuyer: { firstName: "Maëlle", age: 36, role: "resident", yearsExperience: 5, stakePct: 55, contribution: 13000 },
     price: 150000, revenue: 380000, ebitda: 41000, staff: 3, rent: 1500,
     raise: { target: 32000, raised: 17500, backers: 152, daysLeft: 21, minTicket: 100, perks: perks("A dozen oysters at Christmas") },
-    legalForm: "SAS", timelineStep: 4, colors: { awning: "#3B5B7A", facade: "#E2EEF2" },
+    legalForm: "SAS", timelineStep: 4, colors: { awning: P.tan, facade: P.facade3 },
   },
   {
     id: "bistro", name: "Le Bistrot d'Alphonse", type: "restaurant", status: "taken_over", town: "Rennes", street: "rue Hoche",
@@ -141,7 +142,7 @@ const CORE: Shop[] = [
     leadBuyer: { firstName: "Nadia & Hugo", age: 39, role: "employee", yearsExperience: 12, stakePct: 56, contribution: 20000 },
     price: 190000, revenue: 450000, ebitda: 52000, staff: 6, rent: 2100,
     raise: { target: 45000, raised: 45000, backers: 389, daysLeft: 0, minTicket: 100, perks: perks("Dessert on the house once a month") },
-    legalForm: "SAS", timelineStep: 7, colors: { awning: "#8A3B2A", facade: "#F0E2CF" },
+    legalForm: "SAS", timelineStep: 7, colors: { awning: P.brown3, facade: P.facade2 },
   },
   {
     id: "epicerie", name: "Épicerie Bonne Nouvelle", type: "grocery", status: "raising", town: "Rennes", street: "rue de Brest",
@@ -150,31 +151,31 @@ const CORE: Shop[] = [
     leadBuyer: { firstName: "Rachid", age: 30, role: "resident", yearsExperience: 3, stakePct: 55, contribution: 9000 },
     price: 75000, revenue: 230000, ebitda: 21000, staff: 2, rent: 850,
     raise: { target: 20000, raised: 13300, backers: 167, daysLeft: 15, minTicket: 100, perks: perks("Free home delivery for neighbours over 75") },
-    legalForm: "SAS", timelineStep: 4, colors: { awning: "#E9B949", facade: "#F7EBD4" },
+    legalForm: "SAS", timelineStep: 4, colors: { awning: P.warning, facade: P.facade4 },
   },
   {
     id: "patisserie", name: "Pâtisserie Colombier", type: "bakery", status: "flagged", town: "Rennes", street: "rue du Colombier",
     lat: 48.105, lng: -1.682, owner: NO_OWNER, flaggedBy: 61,
-    timelineStep: 0, colors: { awning: "#C2452D", facade: "#F8E3E6" },
+    timelineStep: 0, colors: { awning: P.primary, facade: P.facade3 },
   },
   {
     id: "torref", name: "Torréfaction du Thabor", type: "cafe", status: "seeking", town: "Rennes", street: "rue de Paris",
     lat: 48.1135, lng: -1.67,
     owner: { firstName: "Henri", age: 69, yearsInShop: 30, quote: "I've roasted coffee for 30 years. My nose is still good, my back isn't." },
     price: 110000, revenue: 240000, ebitda: 29000, staff: 2, rent: 1100,
-    legalForm: "SAS", timelineStep: 1, colors: { awning: "#8A3B2A", facade: "#EFE1D0" },
+    legalForm: "SAS", timelineStep: 1, colors: { awning: P.brown3, facade: P.facade4 },
   },
   {
     id: "ancien-cinema-bar", name: "Bar du Cinéma", type: "bar", status: "closed", town: "Rennes", street: "rue d'Échange",
-    lat: 48.1135, lng: -1.6845, owner: NO_OWNER, closedYear: 2024, colors: { awning: "#A7A7A7", facade: "#E5E5E5" },
+    lat: 48.1135, lng: -1.6845, owner: NO_OWNER, closedYear: 2024, colors: { awning: P.closed, facade: "#E5E5E5" },
   },
   {
     id: "mercerie", name: "Mercerie Saint-Georges", type: "grocery", status: "closed", town: "Rennes", street: "rue Gambetta",
-    lat: 48.112, lng: -1.6745, owner: NO_OWNER, closedYear: 2023, colors: { awning: "#A7A7A7", facade: "#E5E5E5" },
+    lat: 48.112, lng: -1.6745, owner: NO_OWNER, closedYear: 2023, colors: { awning: P.closed, facade: "#E5E5E5" },
   },
   {
     id: "boucherie-sud", name: "Boucherie du Sud-Gare", type: "butcher", status: "closed", town: "Rennes", street: "boulevard Solférino",
-    lat: 48.1035, lng: -1.673, owner: NO_OWNER, closedYear: 2025, colors: { awning: "#A7A7A7", facade: "#E5E5E5" },
+    lat: 48.1035, lng: -1.673, owner: NO_OWNER, closedYear: 2025, colors: { awning: P.closed, facade: "#E5E5E5" },
   },
 
   // ---------- Vitré ----------
@@ -185,7 +186,7 @@ const CORE: Shop[] = [
     leadBuyer: { firstName: "Kevin", age: 27, role: "employee", yearsExperience: 11, stakePct: 60, contribution: 10000 },
     price: 150000, revenue: 270000, ebitda: 40000, staff: 3, rent: 900,
     raise: { target: 30000, raised: 11700, backers: 102, daysLeft: 28, minTicket: 100, perks: perks("A galette des rois each January") },
-    legalForm: "SAS", timelineStep: 4, colors: { awning: "#C2452D", facade: "#F2E2CC" },
+    legalForm: "SAS", timelineStep: 4, colors: { awning: P.primary, facade: P.facade3 },
     story: [
       "In a town of 18,000, the bakery on rue Baudrairie is more than a shop. It is where Vitré meets, under the half-timbered houses, every morning.",
       "Paulette has run it for 36 years. Kevin walked in at 16 as an apprentice; eleven years later he does the 3am shift and the bread is his. But a young baker in a small town does not get a bank loan on talent alone.",
@@ -198,7 +199,7 @@ const CORE: Shop[] = [
     lat: 48.1247, lng: -1.208,
     owner: { firstName: "Daniel", age: 72, yearsInShop: 41, quote: "This café has seen three generations of the same families." },
     price: 90000, revenue: 170000, ebitda: 22000, staff: 2, rent: 700,
-    legalForm: "SAS", timelineStep: 1, colors: { awning: "#1B2A4A", facade: "#EAE4D6" },
+    legalForm: "SAS", timelineStep: 1, colors: { awning: P.primaryDark, facade: P.facade3 },
   },
   {
     id: "vitre-boucherie", name: "Boucherie Gautier", type: "butcher", status: "taken_over", town: "Vitré", street: "place du Marchix",
@@ -207,15 +208,15 @@ const CORE: Shop[] = [
     leadBuyer: { firstName: "Élodie", age: 38, role: "employee", yearsExperience: 14, stakePct: 58, contribution: 16000 },
     price: 160000, revenue: 410000, ebitda: 50000, staff: 4, rent: 1000,
     raise: { target: 36000, raised: 36000, backers: 227, daysLeft: 0, minTicket: 100, perks: perks("Vote for the sausage of the week") },
-    legalForm: "SAS", timelineStep: 7, colors: { awning: "#8A3B2A", facade: "#F1E0D8" },
+    legalForm: "SAS", timelineStep: 7, colors: { awning: P.brown3, facade: P.facade4 },
   },
   {
     id: "vitre-epicerie", name: "L'Épicerie du Château", type: "grocery", status: "flagged", town: "Vitré", street: "rue d'Embas",
-    lat: 48.1252, lng: -1.2095, owner: NO_OWNER, flaggedBy: 28, timelineStep: 0, colors: { awning: "#34507F", facade: "#EDF0E2" },
+    lat: 48.1252, lng: -1.2095, owner: NO_OWNER, flaggedBy: 28, timelineStep: 0, colors: { awning: P.brown2, facade: P.facade1 },
   },
   {
     id: "vitre-bar", name: "Le Relais des Remparts", type: "bar", status: "closed", town: "Vitré", street: "rue Garengeot",
-    lat: 48.1225, lng: -1.206, owner: NO_OWNER, closedYear: 2024, colors: { awning: "#A7A7A7", facade: "#E5E5E5" },
+    lat: 48.1225, lng: -1.206, owner: NO_OWNER, closedYear: 2024, colors: { awning: P.closed, facade: "#E5E5E5" },
   },
 ];
 
@@ -236,8 +237,8 @@ const FAR: Far[] = [
   ["clermont-quinca", "Quincaillerie de Jaude", "hardware", "seeking", "Clermont-Ferrand", "rue du Port", 45.7790, 3.0870, "Roland", 71, 44, "I know every screw size in the Auvergne."],
   ["dieulefit-epicerie", "Épicerie du Village", "grocery", "seeking", "Dieulefit (Drôme)", "Grand'Rue", 44.5255, 5.0625, "Mireille", 67, 30, "We are the last shop in the village. If we close, the village closes."],
 ];
-const AWNINGS = ["#C2452D", "#1B2A4A", "#34507F", "#E9B949", "#8A3B2A", "#3B5B7A"];
-const FACADES = ["#F3DCC6", "#E6EFE8", "#FBF1D6", "#F1E1DA", "#E4EAF0", "#EDE3D1"];
+const AWNINGS = [P.primary, P.primaryDark, P.brown2, P.warning, P.brown3, P.tan];
+const FACADES = [P.facade2, P.facade1, P.facade1, P.facade3, P.facade2, P.facade4];
 
 const FAR_SHOPS: Shop[] = FAR.map(([id, name, type, status, town, street, lat, lng, owner, age, years, quote], i) => {
   const price = 80000 + (i % 5) * 25000;

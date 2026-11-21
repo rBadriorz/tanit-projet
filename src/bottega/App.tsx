@@ -25,6 +25,7 @@ import Presenter from "./components/Presenter";
 import { AI_PITCH } from "./components/AiTeam";
 import { Celebration } from "./components/CoOwnerCard";
 import { publicOrigin, qrIsLocal } from "./lib/url";
+import { P } from "./theme";
 
 const SCREENS: Record<Screen["name"], ComponentType<{ screen: Screen }>> = {
   home: Home, map: MapScreen, projects: Projects, wall: Wall, services: Services, me: Me,
@@ -75,18 +76,18 @@ function Shell() {
   return (
     <div className="grain fixed inset-0 flex items-center justify-center gap-10 overflow-hidden px-6">
       <aside className="hidden max-w-[300px] lg:block">
-        <h1 className="serif text-6xl font-semibold text-fir">{APP_NAME}</h1>
-        <p className="serif mt-3 text-2xl italic text-terracotta">{APP_TAGLINE}</p>
+        <h1 className="serif text-6xl font-semibold text-primary">{APP_NAME}</h1>
+        <p className="serif mt-3 text-2xl italic text-primary-dark">{APP_TAGLINE}</p>
         <ul className="mt-8 space-y-4 text-lg">
           {["Find the shops about to close", "Take over with your neighbours", AI_PITCH].map((b) => (
-            <li key={b} className="flex gap-3"><span className="mt-2 h-2.5 w-2.5 shrink-0 rounded-full bg-terracotta" />{b}</li>
+            <li key={b} className="flex gap-3"><span className="mt-2 h-2.5 w-2.5 shrink-0 rounded-full bg-primary-dark" />{b}</li>
           ))}
         </ul>
       </aside>
       <div style={{ width: 414 * scale, height: 868 * scale }}>
         <div style={{ transform: `scale(${scale})`, transformOrigin: "top left", width: 414, height: 868 }}
           className="relative rounded-[60px] bg-[#111] p-3 shadow-[0_30px_80px_rgba(0,0,0,0.35)]">
-          <div className="relative h-[844px] w-[390px] overflow-hidden rounded-[48px] bg-cream">
+          <div className="relative h-[844px] w-[390px] overflow-hidden rounded-[48px] bg-page">
             <Screens framed />
             <div className="pointer-events-none absolute left-1/2 top-2.5 z-[60] h-[34px] w-[120px] -translate-x-1/2 rounded-full bg-black" />
             <div className="pointer-events-none absolute bottom-2 left-1/2 z-[60] h-[5px] w-[134px] -translate-x-1/2 rounded-full bg-black/70" />
@@ -94,10 +95,10 @@ function Shell() {
         </div>
       </div>
       <aside className="hidden flex-col items-center text-center xl:flex">
-        <div className="rounded-3xl bg-paper p-5 shadow-md"><QRCodeSVG value={publicOrigin()} size={180} fgColor="#1B2A4A" bgColor="#FFFDF8" /></div>
+        <div className="rounded-3xl bg-surface p-5 shadow-md"><QRCodeSVG value={publicOrigin()} size={180} fgColor={P.primaryDark} bgColor={P.surface} /></div>
         <p className="mt-4 text-lg font-semibold">Scan to try it on your phone</p>
         <p className="text-sm text-muted">{new URL(publicOrigin()).host}</p>
-        {qrIsLocal() && <p className="mt-1 max-w-[220px] text-xs text-terracotta">Local address: set PUBLIC_URL in config.ts for a public QR.</p>}
+        {qrIsLocal() && <p className="mt-1 max-w-[220px] text-xs text-primary-dark">Local address: set PUBLIC_URL in config.ts for a public QR.</p>}
       </aside>
       <button onClick={() => setPresenter(true)} className="no-print fixed bottom-4 right-4 flex items-center gap-2 rounded-full bg-ink/80 px-4 py-2 text-sm text-white">
         <Settings2 size={16} /> Presenter
@@ -145,11 +146,11 @@ function Screens({ framed }: { framed?: boolean | undefined }) {
         </AnimatePresence>
       </div>
       {showTabs && (
-        <nav className={`relative z-30 flex shrink-0 border-t border-line bg-paper/95 ${framed ? "pb-5" : "pb-2"}`}>
+        <nav className={`relative z-30 flex shrink-0 border-t border-line bg-surface/95 ${framed ? "pb-5" : "pb-2"}`}>
           {TABS.map(({ name, label, Icon }) => {
             const on = screen.name === name;
             return (
-              <button key={name} onClick={() => tab({ name } as Screen)} className={`press flex min-h-[54px] flex-1 flex-col items-center justify-center gap-0.5 text-[11px] ${on ? "font-semibold text-fir" : "text-muted"}`}>
+              <button key={name} onClick={() => tab({ name } as Screen)} className={`press flex min-h-[54px] flex-1 flex-col items-center justify-center gap-0.5 text-[11px] ${on ? "font-semibold text-primary" : "text-muted"}`}>
                 <Icon size={22} strokeWidth={on ? 2.4 : 1.8} />{label}
               </button>
             );

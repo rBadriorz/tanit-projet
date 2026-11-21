@@ -93,7 +93,7 @@ export default function PosterEditor({ screen }: { screen: Screen }) {
 
       {interested.length > 0 && (
         <Card className="mt-4">
-          <div className="font-semibold text-fir">{interested.length} people interested</div>
+          <div className="font-semibold text-primary">{interested.length} people interested</div>
           <ul className="mt-2 space-y-1 text-sm text-muted">{interested.map((i) => <li key={i}>· {i}</li>)}</ul>
         </Card>
       )}
@@ -107,7 +107,7 @@ export default function PosterEditor({ screen }: { screen: Screen }) {
       </Section>
       <Section title="Shop">
         <select value={shop.id} onChange={(e) => { setShopId(e.target.value); setHeadline(""); setSubline(""); }}
-          className="min-h-[48px] w-full rounded-2xl border border-line bg-paper px-3">
+          className="min-h-[48px] w-full rounded-2xl border border-line bg-surface px-3">
           {choices.map((c) => <option key={c.id} value={c.id}>{c.name} · {c.town}</option>)}
         </select>
       </Section>
@@ -117,10 +117,10 @@ export default function PosterEditor({ screen }: { screen: Screen }) {
             {presets.map((p) => <Chip key={p} on={h === p} onClick={() => setHeadline(p)}>{p}</Chip>)}
           </div>
         )}
-        <input value={h} onChange={(e) => setHeadline(e.target.value)} className="min-h-[48px] w-full rounded-2xl border border-line bg-paper px-3" aria-label="Headline" />
+        <input value={h} onChange={(e) => setHeadline(e.target.value)} className="min-h-[48px] w-full rounded-2xl border border-line bg-surface px-3" aria-label="Headline" />
       </Section>
       <Section title="Subline">
-        <textarea value={s} onChange={(e) => setSubline(e.target.value)} rows={3} className="w-full rounded-2xl border border-line bg-paper p-3" aria-label="Subline" />
+        <textarea value={s} onChange={(e) => setSubline(e.target.value)} rows={3} className="w-full rounded-2xl border border-line bg-surface p-3" aria-label="Subline" />
       </Section>
       {kind === "successor" && (
         <>
@@ -145,7 +145,7 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 export function Chip({ on, onClick, children }: { on: boolean; onClick: () => void; children: React.ReactNode }) {
   return (
     <button onClick={onClick} aria-pressed={on}
-      className={`press min-h-[44px] rounded-2xl px-3 py-2 text-left text-sm ${on ? "bg-fir text-white" : "border border-line bg-paper text-ink"}`}>
+      className={`press min-h-[44px] rounded-2xl px-3 py-2 text-left text-sm ${on ? "bg-primary text-white" : "border border-line bg-surface text-ink"}`}>
       {children}
     </button>
   );

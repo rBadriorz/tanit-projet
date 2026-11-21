@@ -6,6 +6,7 @@ import { useStore } from "../store";
 import { STATUS_HEX } from "../components/ShopArt";
 import { ShopCard, ME, distanceM } from "../components/ShopCard";
 import type { MapTarget } from "../components/LeafletMap";
+import { P } from "../theme";
 
 const LeafletMap = lazy(() => import("../components/LeafletMap"));
 
@@ -110,7 +111,7 @@ export default function MapScreen(_p: { screen: Screen }) {
   };
 
   return (
-    <div ref={box} className="absolute inset-0 overflow-hidden bg-[#efe9dc]">
+    <div ref={box} className="absolute inset-0 overflow-hidden bg-[var(--surface)]">
       <Suspense fallback={<div className="absolute inset-0 grid place-items-center text-muted">Loading the map…</div>}>
         <LeafletMap shops={filtered} selectedId={selected} target={target} me={me}
           onSelect={(id) => { const s = shops.find((x) => x.id === id); if (s) selectShop(s, false); }} />
@@ -119,24 +120,24 @@ export default function MapScreen(_p: { screen: Screen }) {
       {/* Top controls */}
       <div className="pointer-events-none absolute inset-x-0 top-0 z-[500] space-y-2 p-3">
         <div className="pointer-events-auto flex gap-2">
-          <label className="flex h-12 flex-1 items-center gap-2 rounded-2xl bg-paper px-3 shadow-md">
+          <label className="flex h-12 flex-1 items-center gap-2 rounded-2xl bg-surface px-3 shadow-md">
             <Search size={18} className="text-muted" />
             <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search a street, a shop, a town"
               className="w-full bg-transparent text-sm outline-none" aria-label="Search" />
           </label>
           <select value={town} onChange={(e) => { const t = e.target.value as Town; setTown(t); flyTo(TOWNS[t].lat, TOWNS[t].lng, TOWNS[t].zoom); }}
-            aria-label="Choose a town" className="h-12 rounded-2xl bg-fir px-2 text-sm font-semibold text-white shadow-md">
+            aria-label="Choose a town" className="h-12 rounded-2xl bg-primary px-2 text-sm font-semibold text-white shadow-md">
             {(Object.keys(TOWNS) as Town[]).map((t) => <option key={t}>{t}</option>)}
           </select>
         </div>
         <div className="no-scrollbar pointer-events-auto -mx-3 flex gap-2 overflow-x-auto px-3">
           <button onClick={() => setSeekingOnly((v) => !v)}
-            className={`press h-10 shrink-0 rounded-full px-3 text-sm font-semibold shadow-sm ${seekingOnly ? "bg-terracotta text-white" : "bg-paper text-terracotta"}`}>
+            className={`press h-10 shrink-0 rounded-full px-3 text-sm font-semibold shadow-sm ${seekingOnly ? "bg-primary-dark text-white" : "bg-surface text-primary-dark"}`}>
             Looking for a successor
           </button>
           {CHIPS.map((c, i) => (
             <button key={c.label} onClick={() => setChip(i)}
-              className={`press h-10 shrink-0 rounded-full px-4 text-sm shadow-sm ${chip === i ? "bg-fir text-white" : "bg-paper text-ink"}`}>{c.label}</button>
+              className={`press h-10 shrink-0 rounded-full px-4 text-sm shadow-sm ${chip === i ? "bg-primary text-white" : "bg-surface text-ink"}`}>{c.label}</button>
           ))}
         </div>
       </div>
@@ -144,17 +145,17 @@ export default function MapScreen(_p: { screen: Screen }) {
       {/* Side buttons */}
       <div className="absolute right-3 z-[500] flex flex-col gap-2" style={{ top: 128 }}>
         <button aria-label="Locate me" onClick={() => { setMe(ME); setTown("Rennes"); flyTo(ME.lat, ME.lng, 16); }}
-          className="press grid h-11 w-11 place-items-center rounded-full bg-paper shadow-md"><Crosshair size={20} /></button>
+          className="press grid h-11 w-11 place-items-center rounded-full bg-surface shadow-md"><Crosshair size={20} /></button>
         <button aria-label="Flag a shop" onClick={() => go({ name: "flag" })}
-          className="press grid h-11 w-11 place-items-center rounded-full bg-sun shadow-md"><Plus size={22} /></button>
+          className="press grid h-11 w-11 place-items-center rounded-full bg-warning shadow-md"><Plus size={22} /></button>
         <button aria-label="Legend" onClick={() => setLegend((v) => !v)}
-          className="press grid h-11 w-11 place-items-center rounded-full bg-paper shadow-md"><Layers size={20} /></button>
+          className="press grid h-11 w-11 place-items-center rounded-full bg-surface shadow-md"><Layers size={20} /></button>
       </div>
       {legend && (
-        <div className="absolute right-16 z-[500] rounded-2xl bg-paper p-3 text-xs shadow-lg" style={{ top: 128 }}>
+        <div className="absolute right-16 z-[500] rounded-2xl bg-surface p-3 text-xs shadow-lg" style={{ top: 128 }}>
           {LEGEND.map((l) => (
             <div key={l.s} className="flex items-center gap-2 py-1">
-              <span className="h-3.5 w-3.5 rounded-sm" style={{ background: STATUS_HEX[l.s], border: l.s === "open" ? "2px solid #1B2A4A" : undefined, opacity: l.s === "closed" ? 0.6 : 1 }} />
+              <span className="h-3.5 w-3.5 rounded-sm" style={{ background: STATUS_HEX[l.s], border: l.s === "open" ? `2px solid ${P.primary}` : undefined, opacity: l.s === "closed" ? 0.6 : 1 }} />
               {l.label}
             </div>
           ))}
@@ -170,7 +171,7 @@ export default function MapScreen(_p: { screen: Screen }) {
           setSnap(best);
           animate(y, snaps[best as 0 | 1 | 2], { type: "spring", damping: 30, stiffness: 300 });
         }}
-        className="absolute inset-x-0 top-0 z-[600] flex flex-col rounded-t-[28px] bg-cream shadow-[0_-8px_30px_rgba(0,0,0,0.12)]"
+        className="absolute inset-x-0 top-0 z-[600] flex flex-col rounded-t-[28px] bg-page shadow-[0_-8px_30px_rgba(0,0,0,0.12)]"
       >
         <div className="shrink-0 cursor-grab px-4 pb-2 pt-2" onClick={() => setSnap((s) => (s === 0 ? 1 : s === 1 ? 2 : 0))}>
           <div className="mx-auto h-1.5 w-12 rounded-full bg-line" />

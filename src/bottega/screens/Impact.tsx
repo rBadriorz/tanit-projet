@@ -1,4 +1,4 @@
-﻿import { motion } from "framer-motion";
+import { motion } from "framer-motion";
 import type { Screen } from "../types";
 import { Card, Page } from "../components/ui";
 import { euro, useStore } from "../store";
@@ -20,7 +20,7 @@ export default function Impact(_p: { screen: Screen }) {
       <div className="grid grid-cols-2 gap-3">
         {big.map((b) => (
           <Card key={b.label}>
-            <div className="serif text-[26px] font-semibold text-fir">{b.value}</div>
+            <div className="serif text-[26px] font-semibold text-primary">{b.value}</div>
             <div className="text-xs text-muted">{b.label}</div>
           </Card>
         ))}
@@ -30,14 +30,14 @@ export default function Impact(_p: { screen: Screen }) {
         <div className="mt-3 flex h-32 items-end gap-3">
           {MONTHS.map(([m, v], i) => (
             <div key={m} className="flex flex-1 flex-col items-center gap-1">
-              <span className="text-xs font-semibold text-fir">{v}</span>
-              <motion.div className="w-full rounded-t-lg bg-fir" initial={{ height: 0 }} animate={{ height: `${(v / max) * 88}px` }} transition={{ delay: i * 0.08 }} />
+              <span className="text-xs font-semibold text-primary">{v}</span>
+              <motion.div className="w-full rounded-t-lg bg-primary" initial={{ height: 0 }} animate={{ height: `${(v / max) * 88}px` }} transition={{ delay: i * 0.08 }} />
               <span className="text-[11px] text-muted">{m}</span>
             </div>
           ))}
         </div>
       </Card>
-      <Card className="mt-3 !bg-cream">
+      <Card className="mt-3 !bg-page">
         <p className="serif text-lg leading-snug">More than 500,000 French businesses will need to be handed over within the decade.</p>
         <p className="mt-1 text-xs text-muted">DGE, 2025 · {STATS.seekingInDepartment} shops looking for a successor in Ille-et-Vilaine (demo)</p>
       </Card>

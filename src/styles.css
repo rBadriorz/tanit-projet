@@ -1,6 +1,8 @@
 /*
  * Tailwind v4 entry. Keep every @import in this top block.
  * Web fonts are loaded with <link> in src/routes/__root.tsx.
+ * Colours: the palette lives in src/bottega/theme.ts; its CSS variables (--primary, --surface…)
+ * are injected in the <head> by src/routes/__root.tsx. Only theme tokens are used below.
  */
 @import "tailwindcss";
 @import "tw-animate-css";
@@ -8,55 +10,45 @@
 @import "leaflet.markercluster/dist/MarkerCluster.css";
 @import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 
-/* Bottega palette: swap here. */
-:root {
-  --cream: #f5f1e8;
-  --fir: #1B2A4A;
-  --fir-light: #34507F;
-  --terracotta: #C2452D;
-  --sun: #e9b949;
-  --ink: #1e1e1e;
-  --muted: #6b6b6b;
-  --closed: #a7a7a7;
-  --paper: #fffdf8;
-  --line: #e6dcc8;
-  --radius: 1rem;
-}
+:root { --radius: 1rem; }
 
 @theme inline {
-  --color-cream: var(--cream);
-  --color-fir: var(--fir);
-  --color-fir-light: var(--fir-light);
-  --color-terracotta: var(--terracotta);
-  --color-sun: var(--sun);
-  --color-ink: var(--ink);
-  --color-muted: var(--muted);
+  --color-primary: var(--primary);
+  --color-primary-dark: var(--primary-dark);
+  --color-primary-light: var(--primary-light);
+  --color-page: var(--page);
+  --color-surface: var(--surface);
+  --color-ink: var(--text);
+  --color-muted: var(--text-2);
+  --color-line: var(--border);
+  --color-warning: var(--warning);
+  --color-success: var(--success);
+  --color-danger: var(--danger);
   --color-closed: var(--closed);
-  --color-paper: var(--paper);
-  --color-line: var(--line);
+  --color-desk: var(--desk);
   /* shadcn aliases */
-  --color-background: var(--cream);
-  --color-foreground: var(--ink);
-  --color-primary: var(--fir);
+  --color-background: var(--page);
+  --color-foreground: var(--text);
   --color-primary-foreground: #fff;
-  --color-border: var(--line);
-  --color-muted-foreground: var(--muted);
+  --color-border: var(--border);
+  --color-muted-foreground: var(--text-2);
   --font-serif: "Fraunces", Georgia, serif;
   --font-sans: "Inter", system-ui, sans-serif;
   --radius-lg: var(--radius);
 }
 
 @layer base {
-  * { border-color: var(--color-line); }
-  html, body { background: var(--cream); color: var(--ink); font-family: var(--font-sans); }
+  * { border-color: var(--border); }
+  html, body { background: var(--page); color: var(--text); font-family: var(--font-sans); }
   h1, h2, h3, .serif { font-family: var(--font-serif); }
   button { cursor: pointer; }
-  :focus-visible { outline: 3px solid var(--terracotta); outline-offset: 2px; }
+  :focus-visible { outline: 3px solid var(--primary-dark); outline-offset: 2px; }
 }
 
+/* Desktop background around the phone: soft beige. */
 .grain {
-  background-color: var(--cream);
-  background-image: radial-gradient(rgba(27, 42, 74, 0.05) 1px, transparent 1px);
+  background-color: var(--desk);
+  background-image: radial-gradient(color-mix(in srgb, var(--primary) 7%, transparent) 1px, transparent 1px);
   background-size: 4px 4px;
 }
 .press { transition: transform 0.12s ease; }
@@ -64,15 +56,15 @@
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { scrollbar-width: none; }
 
-.leaflet-container { background: #efe9dc; font-family: var(--font-sans); }
-.leaflet-tile-pane { filter: grayscale(0.85) sepia(0.18) brightness(1.04) contrast(0.92); }
+.leaflet-container { background: var(--surface); font-family: var(--font-sans); }
+.leaflet-tile-pane { filter: grayscale(1) sepia(0.35) brightness(1.05) contrast(0.9); }
 .bt-marker { background: none; border: none; }
 .bt-marker.bounce svg { animation: bt-bounce 0.6s ease; }
 @keyframes bt-bounce { 0%, 100% { transform: translateY(0); } 40% { transform: translateY(-12px); } }
-.bt-pulse::after { content: ""; position: absolute; inset: -6px; border-radius: 999px; border: 2px solid var(--terracotta); animation: bt-pulse 1.6s infinite; }
+.bt-pulse::after { content: ""; position: absolute; inset: -6px; border-radius: 999px; border: 2px solid var(--primary); animation: bt-pulse 1.6s infinite; }
 @keyframes bt-pulse { from { opacity: 0.9; transform: scale(0.8); } to { opacity: 0; transform: scale(1.4); } }
-.marker-cluster-small, .marker-cluster-medium, .marker-cluster-large { background: rgba(27, 42, 74, 0.25) !important; }
-.marker-cluster-small div, .marker-cluster-medium div, .marker-cluster-large div { background: var(--fir) !important; color: #fff; font-weight: 700; font-family: var(--font-sans); }
+.marker-cluster-small, .marker-cluster-medium, .marker-cluster-large { background: color-mix(in srgb, var(--primary) 25%, transparent) !important; }
+.marker-cluster-small div, .marker-cluster-medium div, .marker-cluster-large div { background: var(--primary) !important; color: #fff; font-weight: 700; font-family: var(--font-sans); }
 
 @media print {
   .no-print { display: none !important; }

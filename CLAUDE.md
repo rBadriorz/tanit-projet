@@ -9,6 +9,7 @@ App name: René (constant in src/bottega/config.ts). Pivot from the earlier "Tan
 - Desktop shows the app in a phone frame with a jury QR and a Presenter panel; < 500 px wide = full screen.
 
 ## Rules
+- Colours: palette defined once in `src/bottega/theme.ts` (René brown #8B5A2B primary, white background); use the Tailwind tokens (primary, primary-dark, primary-light, page, surface, ink, muted, line, warning, success, danger) or `P.*`, never raw hex. Green only for success, red only for errors and closed shops.
 - All UI text in English. Everything fictional (the "Demo · fictional data" pill was removed from the interface at the team's request).
 - Never name the crowdfunding platform we talk to; write "our licensed crowdfunding partner". No real bank names.
 - Trust line on every investing screen. Investment is simulated: no payment fields.

@@ -5,6 +5,7 @@ import { ChevronRight } from "lucide-react";
 import type { Screen } from "../types";
 import { Avatar, Btn, Card, Sheet } from "../components/ui";
 import { euro, useStore } from "../store";
+import { P } from "../theme";
 
 const PREFILLED = [
   { shopId: "marche", name: "Café du Marché", amount: 100, share: "#212", note: "Perk: a coffee each Saturday", status: "Raising" },
@@ -29,7 +30,7 @@ export default function Me(_p: { screen: Screen }) {
   return (
     <div className="no-scrollbar absolute inset-0 overflow-y-auto px-4 pb-6">
       <div className="flex items-center gap-3 pt-2">
-        <Avatar name="Léa" size={56} color="#C2452D" />
+        <Avatar name="Léa" size={56} color={P.primary} />
         <div><h1 className="serif text-3xl font-semibold">Léa</h1><p className="text-sm text-muted">rue de Fougères, Rennes</p></div>
       </div>
 
@@ -46,7 +47,7 @@ export default function Me(_p: { screen: Screen }) {
                 </div>
                 <div className="text-right">
                   <div className="font-bold text-ink">{euro(c.amount)}</div>
-                  <span className="mt-1 inline-block rounded-full bg-sun px-2 py-0.5 text-[11px] font-semibold text-ink">Pending validation</span>
+                  <span className="mt-1 inline-block rounded-full bg-warning px-2 py-0.5 text-[11px] font-semibold text-ink">Pending validation</span>
                 </div>
               </Card>
             ))}
@@ -63,14 +64,14 @@ export default function Me(_p: { screen: Screen }) {
               <div className="truncate font-semibold">{w.name}</div>
               <div className="truncate text-xs text-muted">Share {w.share} · {w.note}</div>
             </div>
-            <div className="text-right"><div className="font-bold text-fir">{euro(w.amount)}</div><div className="text-[11px] text-muted">{w.c ? "Approved · view card" : w.status}</div></div>
+            <div className="text-right"><div className="font-bold text-primary">{euro(w.amount)}</div><div className={`text-[11px] ${w.c ? "font-semibold text-success" : "text-muted"}`}>{w.c ? "Approved · view card" : w.status}</div></div>
           </Card>
         ))}
       </div>
 
       <h2 className="serif mt-6 text-xl font-semibold">Badges</h2>
       <div className="mt-2 flex flex-wrap gap-2">
-        {badges.map((b) => <span key={b} className="rounded-full bg-sun px-3 py-1.5 text-sm font-semibold">★ {b}</span>)}
+        {badges.map((b) => <span key={b} className="rounded-full bg-warning px-3 py-1.5 text-sm font-semibold">★ {b}</span>)}
       </div>
 
       <h2 className="serif mt-6 text-xl font-semibold">Settings</h2>
@@ -87,7 +88,7 @@ export default function Me(_p: { screen: Screen }) {
       <Sheet open={!!card && !!cardShop} onClose={() => setCard(null)}>
         {card && cardShop && (
           <div className="text-center">
-            <h2 className="serif mb-3 text-2xl font-semibold text-fir">Your co-owner card</h2>
+            <h2 className="serif mb-3 text-2xl font-semibold text-primary">Your co-owner card</h2>
             <CoOwnerCard shop={cardShop} c={card} cardRef={cardRef} />
             <Btn kind="accent" className="mt-4 w-full" onClick={() => downloadCard(cardRef.current, cardShop.id)}>Download PNG</Btn>
           </div>
@@ -104,7 +105,7 @@ function Toggle({ label, on, onClick }: { label: string; on: boolean; onClick: (
   return (
     <button role="switch" aria-checked={on} onClick={onClick} className="flex min-h-[52px] w-full items-center justify-between gap-3 px-4 text-left text-sm">
       <span>{label}</span>
-      <span className={`relative h-7 w-12 shrink-0 rounded-full transition ${on ? "bg-fir" : "bg-line"}`}><span className={`absolute top-1 h-5 w-5 rounded-full bg-white transition-all ${on ? "left-6" : "left-1"}`} /></span>
+      <span className={`relative h-7 w-12 shrink-0 rounded-full transition ${on ? "bg-primary" : "bg-line"}`}><span className={`absolute top-1 h-5 w-5 rounded-full bg-white transition-all ${on ? "left-6" : "left-1"}`} /></span>
     </button>
   );
 }

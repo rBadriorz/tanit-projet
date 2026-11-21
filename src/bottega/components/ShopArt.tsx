@@ -1,15 +1,16 @@
 import type { ShopType, Status } from "../types";
+import { P } from "../theme";
 
 export const STATUS_COLOR: Record<Status, string> = {
-  seeking: "var(--terracotta)",
-  raising: "var(--terracotta)",
-  taken_over: "var(--fir)",
-  flagged: "var(--sun)",
-  open: "#ffffff",
+  seeking: "var(--primary-dark)",
+  raising: "var(--primary)",
+  taken_over: "var(--success)",
+  flagged: "var(--warning)",
+  open: "var(--page)",
   closed: "var(--closed)",
 };
 export const STATUS_HEX: Record<Status, string> = {
-  seeking: "#C2452D", raising: "#C2452D", taken_over: "#1B2A4A", flagged: "#E9B949", open: "#FFFFFF", closed: "#A7A7A7",
+  seeking: P.primaryDark, raising: P.primary, taken_over: P.success, flagged: P.warning, open: P.page, closed: P.closed,
 };
 export const STATUS_LABEL: Record<Status, string> = {
   seeking: "Looking for a successor",
@@ -26,7 +27,7 @@ export const TYPE_LABEL: Record<ShopType, string> = {
 };
 
 /** Small pictogram for each shop type, drawn in a 24x24 box. */
-export function TypeIcon({ type, color = "#1E1E1E" }: { type: ShopType; color?: string }) {
+export function TypeIcon({ type, color = P.text }: { type: ShopType; color?: string }) {
   const p = { fill: "none", stroke: color, strokeWidth: 1.8, strokeLinecap: "round" as const, strokeLinejoin: "round" as const };
   switch (type) {
     case "bakery": return <g {...p}><path d="M4 15c0-5 4-8 8-8s8 3 8 8c0 1.5-1 2-2 2H6c-1 0-2-.5-2-2z" /><path d="M9 9l1 5M12 8v6M15 9l-1 5" /></g>;
@@ -46,17 +47,17 @@ export function TypeIcon({ type, color = "#1E1E1E" }: { type: ShopType; color?: 
 /** Marker: a mini shop front (34x34) with an awning in the status colour. */
 export function markerSvg(type: ShopType, status: Status, progress?: number): string {
   const aw = STATUS_HEX[status];
-  const stroke = status === "open" ? "#1B2A4A" : aw;
+  const stroke = status === "open" ? P.primaryDark : aw;
   const op = status === "closed" ? 0.55 : 1;
   const ring = progress != null && status === "raising"
-    ? `<circle cx="17" cy="17" r="16" fill="none" stroke="#e6dcc8" stroke-width="2.5"/><circle cx="17" cy="17" r="16" fill="none" stroke="#1B2A4A" stroke-width="2.5" stroke-dasharray="${(progress / 100) * 100.5} 100.5" transform="rotate(-90 17 17)"/>`
+    ? `<circle cx="17" cy="17" r="16" fill="none" stroke="${P.border}" stroke-width="2.5"/><circle cx="17" cy="17" r="16" fill="none" stroke="${P.primaryDark}" stroke-width="2.5" stroke-dasharray="${(progress / 100) * 100.5} 100.5" transform="rotate(-90 17 17)"/>`
     : "";
   const icon = ICON_PATHS[type];
   return `<svg width="34" height="34" viewBox="0 0 34 34" style="opacity:${op};overflow:visible" xmlns="http://www.w3.org/2000/svg">${ring}
-  <rect x="7" y="11" width="20" height="16" rx="2" fill="#FFFDF8" stroke="${stroke}" stroke-width="1.5"/>
+  <rect x="7" y="11" width="20" height="16" rx="2" fill="${P.surface}" stroke="${stroke}" stroke-width="1.5"/>
   <path d="M5 8h24l-2 5H7z" fill="${aw}" stroke="${stroke}" stroke-width="1.2"/>
-  <path d="M11 8l-1 5M17 8v5M23 8l1 5" stroke="${status === "open" ? "#1B2A4A" : "#fff"}" stroke-width="1" opacity=".7"/>
-  <g transform="translate(11 14) scale(.5)" fill="none" stroke="#1E1E1E" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">${icon}</g>
+  <path d="M11 8l-1 5M17 8v5M23 8l1 5" stroke="${status === "open" ? P.primaryDark : "#fff"}" stroke-width="1" opacity=".7"/>
+  <g transform="translate(11 14) scale(.5)" fill="none" stroke="${P.text}" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">${icon}</g>
   </svg>`;
 }
 const ICON_PATHS: Record<ShopType, string> = {
@@ -78,22 +79,22 @@ const ICON_PATHS: Record<ShopType, string> = {
 export function ShopFront({ type, status, name, colors, className, lit }: {
   type: ShopType; status: Status; name: string; colors: { awning: string; facade: string }; className?: string; lit?: boolean;
 }) {
-  const aw = status === "closed" ? "#A7A7A7" : colors.awning;
+  const aw = status === "closed" ? P.closed : colors.awning;
   const stripes = Array.from({ length: 8 }, (_, i) => i);
   return (
     <svg viewBox="0 0 240 180" className={className} role="img" aria-label={`Illustration of ${name}`}>
-      <rect width="240" height="180" fill={lit ? "#fbe7b5" : "#efe6d3"} />
-      <rect x="20" y="30" width="200" height="150" fill={colors.facade} stroke="#1E1E1E" strokeOpacity=".15" />
-      <rect x="34" y="38" width="172" height="22" rx="3" fill="#1E1E1E" opacity=".85" />
-      <text x="120" y="54" textAnchor="middle" fontFamily="Fraunces, Georgia, serif" fontSize={name.length > 22 ? 10 : 13} fill="#F6F0E4">{name}</text>
+      <rect width="240" height="180" fill={lit ? "#fbe7b5" : P.facade3} />
+      <rect x="20" y="30" width="200" height="150" fill={colors.facade} stroke={P.text} strokeOpacity=".15" />
+      <rect x="34" y="38" width="172" height="22" rx="3" fill={P.text} opacity=".85" />
+      <text x="120" y="54" textAnchor="middle" fontFamily="Fraunces, Georgia, serif" fontSize={name.length > 22 ? 10 : 13} fill={P.surface}>{name}</text>
       <path d="M14 64h212l-10 26H24z" fill={aw} />
       {stripes.map((i) => <path key={i} d={`M${24 + i * 26} 64h13l-2 26h-13z`} fill="#fff" opacity=".35" />)}
       <path d="M24 90q6.5 8 13 0t13 0 13 0 13 0 13 0 13 0 13 0 13 0 13 0 13 0 13 0 13 0 13 0 13 0 13 0 13 0" fill={aw} />
-      <rect x="36" y="104" width="100" height="62" rx="4" fill={lit ? "#ffe9a8" : "#dfe9e4"} stroke="#1E1E1E" strokeOpacity=".2" />
-      <g transform="translate(70 116) scale(1.6)"><TypeIcon type={type} color="#1B2A4A" /></g>
+      <rect x="36" y="104" width="100" height="62" rx="4" fill={lit ? "#ffe9a8" : P.facade4} stroke={P.text} strokeOpacity=".2" />
+      <g transform="translate(70 116) scale(1.6)"><TypeIcon type={type} color={P.primaryDark} /></g>
       <rect x="152" y="104" width="50" height="76" rx="3" fill="#2b2b2b" opacity=".8" />
-      <circle cx="194" cy="144" r="2.5" fill="#E9B949" />
-      {lit && <g><rect x="44" y="96" width="44" height="14" rx="3" fill="#1B2A4A" /><text x="66" y="106" textAnchor="middle" fontSize="9" fontWeight="700" fill="#fff" fontFamily="Inter, sans-serif">OPEN</text></g>}
+      <circle cx="194" cy="144" r="2.5" fill={P.warning} />
+      {lit && <g><rect x="44" y="96" width="44" height="14" rx="3" fill={P.primaryDark} /><text x="66" y="106" textAnchor="middle" fontSize="9" fontWeight="700" fill="#fff" fontFamily="Inter, sans-serif">OPEN</text></g>}
     </svg>
   );
 }

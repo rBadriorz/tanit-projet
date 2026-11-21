@@ -24,7 +24,7 @@ export function ShopCard({ shop, onOpen, compact, selected }: { shop: Shop; onOp
       tabIndex={closed ? undefined : 0}
       onClick={closed ? undefined : onOpen}
       onKeyDown={(e) => { if (!closed && e.key === "Enter") onOpen(); }}
-      className={`press flex gap-3 rounded-3xl bg-paper p-3 shadow-[0_4px_18px_rgba(27, 42, 74,0.08)] ${selected ? "ring-2 ring-terracotta" : ""} ${closed ? "opacity-80" : "cursor-pointer"}`}
+      className={`press flex gap-3 rounded-3xl bg-surface p-3 shadow-[0_4px_18px_color-mix(in_srgb,var(--primary)_8%,transparent)] ${selected ? "ring-2 ring-primary-dark" : ""} ${closed ? "opacity-80" : "cursor-pointer"}`}
     >
       <ShopFront type={shop.type} status={shop.status} name={shop.name} colors={shop.colors} className={`shrink-0 rounded-2xl ${compact ? "h-[84px] w-[100px]" : "h-[96px] w-[120px]"}`} />
       <div className="min-w-0 flex-1">
@@ -32,7 +32,7 @@ export function ShopCard({ shop, onOpen, compact, selected }: { shop: Shop; onOp
         <div className="truncate text-xs text-muted">{TYPE_LABEL[shop.type]} · {shop.street} · {d}</div>
         <div className="mt-1"><Badge status={shop.status} /></div>
         {closed ? (
-          <p className="mt-1 text-xs text-muted">Closed in {shop.closedYear ?? 2024}. We were too late.</p>
+          <p className="mt-1 text-xs text-danger">Closed in {shop.closedYear ?? 2024}. We were too late.</p>
         ) : shop.raise ? (
           <div className="mt-1.5">
             <Progress value={pct(shop)} className="h-2" />

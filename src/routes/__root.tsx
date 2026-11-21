@@ -1,4 +1,4 @@
-﻿import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   Outlet,
   Link,
@@ -12,6 +12,7 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { APP_NAME, APP_TAGLINE } from "../bottega/config";
+import { cssVars, P } from "../bottega/theme";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 
 function NotFoundComponent() {
@@ -111,6 +112,9 @@ function RootShell({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <head>
+        {/* Palette from src/bottega/theme.ts, before the stylesheet uses it. */}
+        <style dangerouslySetInnerHTML={{ __html: cssVars }} />
+        <meta name="theme-color" content={P.page} />
         <HeadContent />
       </head>
       <body>
