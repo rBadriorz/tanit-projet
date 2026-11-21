@@ -20,7 +20,7 @@ export function CoOwnerCard({ shop, c, cardRef }: { shop: Shop; c: Contribution;
       <ShopFront type={shop.type} status={shop.status} name={shop.name} colors={shop.colors} className="block w-full"
         lit={shop.raise ? shop.raise.raised >= shop.raise.target : false} />
       <div className="p-4">
-        <Logo dark height={26} />
+        <Logo dark outlined height={30} />
         <div className="serif mt-2 text-xl font-semibold">{shop.name}</div>
         <div className="mt-1 text-sm">{c.firstName} · co-owner since {fmtDate(c.approvedAt)} · share #{c.share}</div>
       </div>

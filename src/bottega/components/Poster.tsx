@@ -54,7 +54,7 @@ export const Poster = forwardRef<HTMLDivElement, PosterProps>(function Poster(p,
     <div ref={ref} style={{ width: 794, height: 1123, background: t.bg, color: t.fg, fontFamily: "Inter, sans-serif" }}
       className="relative flex flex-col overflow-hidden px-[64px] py-[56px]">
       <div className="flex items-center justify-between">
-        <Logo height={62} dark={p.template !== "minimal"} />
+        <Logo height={72} outlined dark={p.template !== "minimal"} />
         <span className="rounded-full px-4 py-1.5 text-[15px] font-semibold" style={{ background: t.accent, color: p.template === "classic" ? P.text : "#fff" }}>
           {TYPE_LABEL[shop.type]} · {shop.street}, {shop.town}
         </span>

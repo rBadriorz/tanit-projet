@@ -51,6 +51,7 @@
   background-image: radial-gradient(color-mix(in srgb, var(--primary) 7%, transparent) 1px, transparent 1px);
   background-size: 4px 4px;
 }
+.rene-logo svg { display: block; width: 100%; height: 100%; }
 .press { transition: transform 0.12s ease; }
 .press:active { transform: scale(0.96); }
 .no-scrollbar::-webkit-scrollbar { display: none; }

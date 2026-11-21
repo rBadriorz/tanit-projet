@@ -9,7 +9,7 @@ App name: René (constant in src/bottega/config.ts). Pivot from the earlier "Tan
 - Desktop shows the app in a phone frame with a jury QR and a Presenter panel; < 500 px wide = full screen.
 
 ## Rules
-- Logo: `src/assets/rene-logo.svg` (light), `rene-logo-dark.svg` (dark backgrounds), `rene-mark.svg` (beaver only: favicon, pins, chat button); use `<Logo>` / `<Mark>` from `src/bottega/components/Logo.tsx`. The wordmark is a path (Poppins SemiBold), so renaming the app also needs new logo files.
+- Logo: `src/assets/rene-logo.svg` is the logo exactly as supplied by the team (text in Poppins 600, loaded in __root.tsx); `rene-logo-dark.svg` = colour swap for dark brown backgrounds; `rene-mark.svg` = beaver only (favicon, pins, chat button); `*-outlined.svg` = same with the text as a path, for PNG / PDF exports. Use `<Logo>` / `<Mark>` from `src/bottega/components/Logo.tsx`; do not redraw the logo.
 - Colours: palette defined once in `src/bottega/theme.ts` (René brown #8B5A2B primary, white background); use the Tailwind tokens (primary, primary-dark, primary-light, page, surface, ink, muted, line, warning, success, danger) or `P.*`, never raw hex. Green only for success, red only for errors and closed shops.
 - All UI text in English. Everything fictional (the "Demo · fictional data" pill was removed from the interface at the team's request).
 - Never name the crowdfunding platform we talk to; write "our licensed crowdfunding partner". No real bank names.
