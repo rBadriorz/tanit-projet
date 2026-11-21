@@ -9,7 +9,7 @@ export const STATUS_COLOR: Record<Status, string> = {
   closed: "var(--closed)",
 };
 export const STATUS_HEX: Record<Status, string> = {
-  seeking: "#C8623E", raising: "#C8623E", taken_over: "#1F4D3A", flagged: "#E9B949", open: "#FFFFFF", closed: "#A7A7A7",
+  seeking: "#C2452D", raising: "#C2452D", taken_over: "#1B2A4A", flagged: "#E9B949", open: "#FFFFFF", closed: "#A7A7A7",
 };
 export const STATUS_LABEL: Record<Status, string> = {
   seeking: "Looking for a successor",
@@ -46,16 +46,16 @@ export function TypeIcon({ type, color = "#1E1E1E" }: { type: ShopType; color?: 
 /** Marker: a mini shop front (34x34) with an awning in the status colour. */
 export function markerSvg(type: ShopType, status: Status, progress?: number): string {
   const aw = STATUS_HEX[status];
-  const stroke = status === "open" ? "#1F4D3A" : aw;
+  const stroke = status === "open" ? "#1B2A4A" : aw;
   const op = status === "closed" ? 0.55 : 1;
   const ring = progress != null && status === "raising"
-    ? `<circle cx="17" cy="17" r="16" fill="none" stroke="#e6dcc8" stroke-width="2.5"/><circle cx="17" cy="17" r="16" fill="none" stroke="#1F4D3A" stroke-width="2.5" stroke-dasharray="${(progress / 100) * 100.5} 100.5" transform="rotate(-90 17 17)"/>`
+    ? `<circle cx="17" cy="17" r="16" fill="none" stroke="#e6dcc8" stroke-width="2.5"/><circle cx="17" cy="17" r="16" fill="none" stroke="#1B2A4A" stroke-width="2.5" stroke-dasharray="${(progress / 100) * 100.5} 100.5" transform="rotate(-90 17 17)"/>`
     : "";
   const icon = ICON_PATHS[type];
   return `<svg width="34" height="34" viewBox="0 0 34 34" style="opacity:${op};overflow:visible" xmlns="http://www.w3.org/2000/svg">${ring}
   <rect x="7" y="11" width="20" height="16" rx="2" fill="#FFFDF8" stroke="${stroke}" stroke-width="1.5"/>
   <path d="M5 8h24l-2 5H7z" fill="${aw}" stroke="${stroke}" stroke-width="1.2"/>
-  <path d="M11 8l-1 5M17 8v5M23 8l1 5" stroke="${status === "open" ? "#1F4D3A" : "#fff"}" stroke-width="1" opacity=".7"/>
+  <path d="M11 8l-1 5M17 8v5M23 8l1 5" stroke="${status === "open" ? "#1B2A4A" : "#fff"}" stroke-width="1" opacity=".7"/>
   <g transform="translate(11 14) scale(.5)" fill="none" stroke="#1E1E1E" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">${icon}</g>
   </svg>`;
 }
@@ -90,10 +90,10 @@ export function ShopFront({ type, status, name, colors, className, lit }: {
       {stripes.map((i) => <path key={i} d={`M${24 + i * 26} 64h13l-2 26h-13z`} fill="#fff" opacity=".35" />)}
       <path d="M24 90q6.5 8 13 0t13 0 13 0 13 0 13 0 13 0 13 0 13 0 13 0 13 0 13 0 13 0 13 0 13 0 13 0 13 0" fill={aw} />
       <rect x="36" y="104" width="100" height="62" rx="4" fill={lit ? "#ffe9a8" : "#dfe9e4"} stroke="#1E1E1E" strokeOpacity=".2" />
-      <g transform="translate(70 116) scale(1.6)"><TypeIcon type={type} color="#1F4D3A" /></g>
+      <g transform="translate(70 116) scale(1.6)"><TypeIcon type={type} color="#1B2A4A" /></g>
       <rect x="152" y="104" width="50" height="76" rx="3" fill="#2b2b2b" opacity=".8" />
       <circle cx="194" cy="144" r="2.5" fill="#E9B949" />
-      {lit && <g><rect x="44" y="96" width="44" height="14" rx="3" fill="#1F4D3A" /><text x="66" y="106" textAnchor="middle" fontSize="9" fontWeight="700" fill="#fff" fontFamily="Inter, sans-serif">OPEN</text></g>}
+      {lit && <g><rect x="44" y="96" width="44" height="14" rx="3" fill="#1B2A4A" /><text x="66" y="106" textAnchor="middle" fontSize="9" fontWeight="700" fill="#fff" fontFamily="Inter, sans-serif">OPEN</text></g>}
     </svg>
   );
 }

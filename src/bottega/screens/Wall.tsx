@@ -5,7 +5,7 @@ import type { Message, Screen } from "../types";
 import { Avatar } from "../components/ui";
 import { useStore } from "../store";
 
-const KIND_COLOR: Record<Message["kind"], string> = { support: "#2E6B52", owner: "#C8623E", milestone: "#E9B949", success: "#1F4D3A" };
+const KIND_COLOR: Record<Message["kind"], string> = { support: "#34507F", owner: "#C2452D", milestone: "#E9B949", success: "#1B2A4A" };
 
 export default function Wall({ screen }: { screen: Screen }) {
   const st = useStore();
@@ -13,7 +13,7 @@ export default function Wall({ screen }: { screen: Screen }) {
   const [text, setText] = useState("");
   const withPosts = Array.from(new Set(st.messages.map((m) => m.shopId)));
   const list = st.messages.filter((m) => !filter || m.shopId === filter);
-  const target = st.shop(filter ?? "rene");
+  const target = st.shop(filter ?? "marcel");
 
   const post = () => {
     if (!text.trim() || !target) return;
@@ -64,7 +64,7 @@ function Post({ m }: { m: Message }) {
   };
   return (
     <motion.div layout initial={{ opacity: 0, y: -16, scale: 0.97 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0 }}
-      className={`rounded-3xl p-4 shadow-[0_4px_18px_rgba(31,77,58,0.08)] ${highlight ? "border-2" : "bg-paper"}`}
+      className={`rounded-3xl p-4 shadow-[0_4px_18px_rgba(27, 42, 74,0.08)] ${highlight ? "border-2" : "bg-paper"}`}
       style={highlight ? { borderColor: KIND_COLOR[m.kind], background: m.kind === "success" ? "#e9f1ec" : "#fdf3d8" } : {}}>
       <div className="flex items-center gap-3">
         <Avatar name={m.author} size={38} color={KIND_COLOR[m.kind]} />

@@ -30,7 +30,7 @@ export function JoinSheet({ shop, open, onClose }: { shop: Shop; open: boolean; 
   const confirm = () => {
     const c = contribute(shop.id, name.trim() || "Léa", amount);
     setDone(c);
-    confetti({ particleCount: 90, spread: 70, origin: { y: 0.7 }, colors: ["#C8623E", "#1F4D3A", "#E9B949", "#F6F0E4"], scalar: 0.8 });
+    confetti({ particleCount: 90, spread: 70, origin: { y: 0.7 }, colors: ["#C2452D", "#1B2A4A", "#E9B949", "#F6F0E4"], scalar: 0.8 });
   };
 
   const download = async () => {
@@ -96,7 +96,7 @@ export function JoinSheet({ shop, open, onClose }: { shop: Shop; open: boolean; 
               </label>
               <label className="mt-4 flex min-h-[48px] items-center justify-between rounded-2xl bg-paper px-4 text-sm">
                 I live nearby
-                <input type="checkbox" checked={nearby} onChange={(e) => setNearby(e.target.checked)} className="h-6 w-6 accent-[#1F4D3A]" />
+                <input type="checkbox" checked={nearby} onChange={(e) => setNearby(e.target.checked)} className="h-6 w-6 accent-[#1B2A4A]" />
               </label>
               <p className="mt-2 text-xs text-muted">No personal data is needed for this demo.</p>
               <div className="mt-5 flex gap-2"><Btn kind="light" onClick={() => setStep(0)}>Back</Btn><Btn className="flex-1" onClick={() => setStep(2)}>Continue</Btn></div>
@@ -111,7 +111,7 @@ export function JoinSheet({ shop, open, onClose }: { shop: Shop; open: boolean; 
                 <li className="rounded-2xl bg-paper p-3">Funds are held by {PARTNER}, not by {APP_NAME}.</li>
               </ul>
               <label className="mt-4 flex min-h-[48px] items-center gap-3 text-sm font-semibold">
-                <input type="checkbox" checked={ok} onChange={(e) => setOk(e.target.checked)} className="h-6 w-6 accent-[#1F4D3A]" /> I understand
+                <input type="checkbox" checked={ok} onChange={(e) => setOk(e.target.checked)} className="h-6 w-6 accent-[#1B2A4A]" /> I understand
               </label>
               <div className="mt-4 flex gap-2"><Btn kind="light" onClick={() => setStep(1)}>Back</Btn><Btn className="flex-1" disabled={!ok} onClick={() => setStep(3)}>Continue</Btn></div>
             </div>

@@ -154,7 +154,7 @@ export default function MapScreen(_p: { screen: Screen }) {
         <div className="absolute right-16 z-[500] rounded-2xl bg-paper p-3 text-xs shadow-lg" style={{ top: 128 }}>
           {LEGEND.map((l) => (
             <div key={l.s} className="flex items-center gap-2 py-1">
-              <span className="h-3.5 w-3.5 rounded-sm" style={{ background: STATUS_HEX[l.s], border: l.s === "open" ? "2px solid #1F4D3A" : undefined, opacity: l.s === "closed" ? 0.6 : 1 }} />
+              <span className="h-3.5 w-3.5 rounded-sm" style={{ background: STATUS_HEX[l.s], border: l.s === "open" ? "2px solid #1B2A4A" : undefined, opacity: l.s === "closed" ? 0.6 : 1 }} />
               {l.label}
             </div>
           ))}

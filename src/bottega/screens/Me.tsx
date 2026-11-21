@@ -23,7 +23,7 @@ export default function Me(_p: { screen: Screen }) {
   return (
     <div className="no-scrollbar absolute inset-0 overflow-y-auto px-4 pb-6">
       <div className="flex items-center gap-3 pt-2">
-        <Avatar name="Léa" size={56} color="#C8623E" />
+        <Avatar name="Léa" size={56} color="#C2452D" />
         <div><h1 className="serif text-3xl font-semibold">Léa</h1><p className="text-sm text-muted">rue de Fougères, Rennes</p></div>
       </div>
 

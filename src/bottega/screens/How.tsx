@@ -5,8 +5,8 @@ import { useStore } from "../store";
 import { PARTNER } from "../config";
 
 const CARDS = [
-  { n: "1", title: "Find the shops about to close", text: "The map shows shops whose owners are retiring with no successor, and the ones neighbours have flagged.", color: "#C8623E" },
-  { n: "2", title: "Take over with your neighbours", text: `A lead buyer keeps the majority and runs the shop. Residents join the capital from €100 through ${PARTNER}. One company per shop, not a fund.`, color: "#1F4D3A" },
+  { n: "1", title: "Find the shops about to close", text: "The map shows shops whose owners are retiring with no successor, and the ones neighbours have flagged.", color: "#C2452D" },
+  { n: "2", title: "Take over with your neighbours", text: `A lead buyer keeps the majority and runs the shop. Residents join the capital from €100 through ${PARTNER}. One company per shop, not a fund.`, color: "#1B2A4A" },
   { n: "3", title: "AI builds the bank file", text: "Our co-pilot values the shop, builds the financing plan, finds grants and writes the file the bank needs.", color: "#E9B949" },
 ];
 

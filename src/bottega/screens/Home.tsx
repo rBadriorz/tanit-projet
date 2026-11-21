@@ -54,7 +54,7 @@ export default function Home(_p: { screen: Screen }) {
         <button onClick={() => go({ name: "how" })} className="press min-h-[44px] rounded-full bg-paper px-4 shadow-sm">How it works</button>
         <button onClick={() => go({ name: "flag" })} className="press min-h-[44px] rounded-full bg-paper px-4 shadow-sm">Flag a shop</button>
         <button onClick={() => go({ name: "poster", shopId: "martin", kind: "successor" })} className="press min-h-[44px] rounded-full bg-paper px-4 shadow-sm">Posters</button>
-        <button onClick={() => go({ name: "takeover", shopId: "rene" })} className="press min-h-[44px] rounded-full bg-paper px-4 shadow-sm">Start a takeover</button>
+        <button onClick={() => go({ name: "takeover", shopId: "marcel" })} className="press min-h-[44px] rounded-full bg-paper px-4 shadow-sm">Start a takeover</button>
       </div>
     </div>
   );
@@ -62,7 +62,7 @@ export default function Home(_p: { screen: Screen }) {
 
 function Street() {
   const fronts = [
-    { a: "#C8623E", f: "#f3d9c4" }, { a: "#1F4D3A", f: "#e7efe9" }, { a: "#E9B949", f: "#fbf0d2" }, { a: "#2E6B52", f: "#f0e6d8" },
+    { a: "#C2452D", f: "#f3d9c4" }, { a: "#1B2A4A", f: "#e7efe9" }, { a: "#E9B949", f: "#fbf0d2" }, { a: "#34507F", f: "#f0e6d8" },
   ];
   return (
     <svg viewBox="0 0 350 150" className="mt-3 w-full" role="img" aria-label="A street of small shops">

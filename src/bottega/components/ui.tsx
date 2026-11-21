@@ -26,7 +26,7 @@ export function Btn({ children, onClick, kind = "primary", className = "", disab
 export function Card({ children, className = "", onClick }: { children: ReactNode; className?: string; onClick?: () => void }) {
   return (
     <motion.div {...(onClick ? { whileTap: { scale: 0.98, y: -2 }, onClick } : {})}
-      className={`rounded-3xl bg-paper p-4 shadow-[0_4px_18px_rgba(31,77,58,0.08)] ${onClick ? "cursor-pointer" : ""} ${className}`}>
+      className={`rounded-3xl bg-paper p-4 shadow-[0_4px_18px_rgba(27, 42, 74,0.08)] ${onClick ? "cursor-pointer" : ""} ${className}`}>
       {children}
     </motion.div>
   );
@@ -37,7 +37,7 @@ export function Badge({ status }: { status: Status }) {
   const light = status === "open" || status === "flagged";
   return (
     <span className="inline-flex items-center rounded-full px-2.5 py-1 text-[11px] font-semibold"
-      style={{ background: status === "open" ? "#fff" : c, color: light ? "#1E1E1E" : "#fff", border: status === "open" ? "1.5px solid #1F4D3A" : undefined }}>
+      style={{ background: status === "open" ? "#fff" : c, color: light ? "#1E1E1E" : "#fff", border: status === "open" ? "1.5px solid #1B2A4A" : undefined }}>
       {STATUS_LABEL[status]}
     </span>
   );
@@ -86,7 +86,7 @@ export function Sheet({ open, onClose, children }: { open: boolean; onClose: () 
   );
 }
 
-export function Avatar({ name, size = 40, color = "#2E6B52" }: { name: string; size?: number; color?: string }) {
+export function Avatar({ name, size = 40, color = "#34507F" }: { name: string; size?: number; color?: string }) {
   const ini = name.replace(/^(Mme|M\.)\s+/, "").split(/[\s&]+/).filter(Boolean).slice(0, 2).map((w) => w[0]).join("").toUpperCase();
   return (
     <div className="grid shrink-0 place-items-center rounded-full font-semibold text-white" style={{ width: size, height: size, background: color, fontSize: size * 0.38 }} aria-hidden>

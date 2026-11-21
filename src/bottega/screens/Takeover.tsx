@@ -17,11 +17,11 @@ const STEPS = [
   "Writing the executive summary",
   "Formatting for the bank",
 ];
-const COLORS = ["#1F4D3A", "#C8623E", "#E9B949", "#2E6B52", "#6B6B6B", "#A7A7A7", "#8a5a44"];
+const COLORS = ["#1B2A4A", "#C2452D", "#E9B949", "#34507F", "#6B6B6B", "#A7A7A7", "#8a5a44"];
 export const planColor = (i: number): string => COLORS[i % COLORS.length] ?? "#6B6B6B";
 
 export function DscrGauge({ value }: { value: number }) {
-  const color = value >= 1.5 ? "#1F4D3A" : value >= 1.2 ? "#E9B949" : "#C8623E";
+  const color = value >= 1.5 ? "#1B2A4A" : value >= 1.2 ? "#E9B949" : "#C2452D";
   const label = value >= 1.5 ? "Comfortable" : value >= 1.2 ? "Tight" : "Too low";
   const w = Math.min(100, (value / 2.5) * 100);
   return (
@@ -30,7 +30,7 @@ export function DscrGauge({ value }: { value: number }) {
         <span className="text-sm text-muted">Debt service coverage</span>
         <span className="serif text-2xl font-semibold" style={{ color }}>{value.toFixed(1)}</span>
       </div>
-      <div className="relative mt-2 h-3 rounded-full" style={{ background: "linear-gradient(90deg,#C8623E 0 48%,#E9B949 48% 60%,#1F4D3A 60%)" }}>
+      <div className="relative mt-2 h-3 rounded-full" style={{ background: "linear-gradient(90deg,#C2452D 0 48%,#E9B949 48% 60%,#1B2A4A 60%)" }}>
         <motion.div className="absolute -top-1 h-5 w-1.5 rounded bg-ink" initial={{ left: 0 }} animate={{ left: `${w}%` }} transition={{ duration: 0.9 }} />
       </div>
       <p className="mt-1 text-xs font-semibold" style={{ color }}>{label} · banks usually want 1.2 or more</p>
@@ -50,7 +50,7 @@ function Field({ label, value, onChange, step = 1000 }: { label: string; value: 
 
 export default function Takeover({ screen }: { screen: Screen }) {
   const store = useStore();
-  const initialId = screen.name === "takeover" && screen.shopId ? screen.shopId : "rene";
+  const initialId = screen.name === "takeover" && screen.shopId ? screen.shopId : "marcel";
   const [step, setStep] = useState(0);
   const [shopId, setShopId] = useState(initialId);
   const shop = store.shop(shopId) ?? store.shops.find((s) => s.price);
@@ -136,7 +136,7 @@ export default function Takeover({ screen }: { screen: Screen }) {
           <Field label="Years of experience in the trade" value={years} onChange={setYears} step={1} />
           <label className="block">
             <span className="text-sm text-muted">Personal contribution: <b className="text-ink">{euro(contribution)}</b></span>
-            <input type="range" min={0} max={80000} step={1000} value={contribution} onChange={(e) => setContribution(Number(e.target.value))} className="mt-2 w-full accent-[#1F4D3A]" />
+            <input type="range" min={0} max={80000} step={1000} value={contribution} onChange={(e) => setContribution(Number(e.target.value))} className="mt-2 w-full accent-[#1B2A4A]" />
           </label>
           <Field label="Monthly salary target (net, €)" value={salary} onChange={setSalary} step={100} />
         </div>

@@ -60,8 +60,8 @@ export function scriptedValuation(shop: Shop, o: BankFileOpts = {}): ValuationRe
   const price = o.price ?? shop.price ?? r1000(ebitda * 3.6);
   const ebitdaVal = r1000(ebitda * 3.5);
   const revVal = r1000(revenue * 0.6);
-  const assetVal = shop.id === "rene" ? 182000 : r1000((ebitdaVal + revVal) / 2 * 0.98);
-  const rec = shop.id === "rene" ? 180000 : r1000((ebitdaVal + revVal + assetVal) / 3);
+  const assetVal = shop.id === "marcel" ? 182000 : r1000((ebitdaVal + revVal) / 2 * 0.98);
+  const rec = shop.id === "marcel" ? 180000 : r1000((ebitdaVal + revVal + assetVal) / 3);
   return {
     methods: [
       { name: "EBITDA multiple", value: ebitdaVal, explanation: `${Math.round(ebitda / 1000)}k EBITDA × 3.5, a usual multiple for a profitable local ${shop.type === "bakery" ? "bakery" : "shop"}.` },
@@ -134,7 +134,7 @@ export function scriptedBankFile(shop: Shop, o: BankFileOpts = {}): BankFileResu
 export const LEGAL_QUESTIONS = [
   "SAS or cooperative (SCIC) for my bakery?",
   "Can the landlord refuse the lease transfer?",
-  "What happens to René's employees?",
+  "What happens to Marcel's employees?",
   "How do neighbours get their money back if it fails?",
 ] as const;
 
@@ -146,7 +146,7 @@ const LEGAL: Record<string, string> = {
   [LEGAL_QUESTIONS[1]]:
     "When you buy the business (fonds de commerce), the commercial lease transfers with it, and a clause that bans the transfer is not valid in that case. The landlord cannot simply refuse. But the lease may require the landlord's approval, a formal notice, or the seller staying jointly liable for the rent for up to three years. Read the lease early, ask for the landlord's agreement in writing, and use the sale to negotiate a fresh 9-year lease. If the lease is close to its end, renewal terms matter for the bank file.",
   [LEGAL_QUESTIONS[2]]:
-    "When a business is transferred as a going concern, the employment contracts transfer automatically to the new owner (article L1224-1 of the French Labour Code). René's employees keep their jobs, their seniority, their pay and their contract terms. The buyer cannot use the sale as a reason to dismiss them. In businesses with fewer than 50 staff, employees must also be told about the planned sale at least two months before, so they can make their own offer to buy. Karim, as an employee, can use that right.",
+    "When a business is transferred as a going concern, the employment contracts transfer automatically to the new owner (article L1224-1 of the French Labour Code). Marcel's employees keep their jobs, their seniority, their pay and their contract terms. The buyer cannot use the sale as a reason to dismiss them. In businesses with fewer than 50 staff, employees must also be told about the planned sale at least two months before, so they can make their own offer to buy. Karim, as an employee, can use that right.",
   [LEGAL_QUESTIONS[3]]:
     "Neighbours buy shares, not a loan. If the shop fails, the company is wound up: creditors and the bank are paid first, then shareholders share what is left, which may be nothing. So you may lose what you invest. The raise is run by a licensed crowdfunding platform under the EU ECSP regulation, which requires a clear risk warning, a reflection period of four days for new investors, and a key investment information sheet. Shares are not easy to resell, though the shareholders' agreement can plan buy-backs.",
 };

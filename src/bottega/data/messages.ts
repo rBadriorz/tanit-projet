@@ -5,12 +5,12 @@ type Row = [string, string, string, string, Message["kind"], string, number];
 const NEWS = "Neighbourhood news";
 
 const ROWS: Row[] = [
-  ["rene", "Mme Lefebvre", "rue des Tilleuls", "2h", "support", "I've bought my baguette here since 1987. Count me in for €100. Karim always keeps the well-done one for me.", 84],
-  ["rene", "Léa", "rue de Fougères", "20 min", "support", "New in the neighbourhood, saw the poster on the door. Best croissant in Rennes, honestly. I'm in.", 31],
-  ["rene", "Karim (lead buyer)", "rue des Tilleuls", "1d", "owner", "Bank meeting on Thursday. Your support is our best argument. Thank you, really.", 142],
-  ["rene", "René (owner)", "rue des Tilleuls", "3d", "owner", "I'll stay two mornings a week to teach Karim the rye. Thank you all, I didn't expect this.", 203],
-  ["rene", "Jules, 9 y.o. (posted by his dad)", "rue des Tilleuls", "5h", "support", "Jules emptied his piggy bank. 100 euros for the chocolate croissants.", 167],
-  ["rene", "Paul & Sylvie", "rue Saint-Melaine", "1d", "support", "We had our wedding cake from René in 1994. We'll be co-owners now, how funny is that.", 58],
+  ["marcel", "Mme Lefebvre", "rue des Tilleuls", "2h", "support", "I've bought my baguette here since 1987. Count me in for €100. Karim always keeps the well-done one for me.", 84],
+  ["marcel", "Léa", "rue de Fougères", "20 min", "support", "New in the neighbourhood, saw the poster on the door. Best croissant in Rennes, honestly. I'm in.", 31],
+  ["marcel", "Karim (lead buyer)", "rue des Tilleuls", "1d", "owner", "Bank meeting on Thursday. Your support is our best argument. Thank you, really.", 142],
+  ["marcel", "Marcel (owner)", "rue des Tilleuls", "3d", "owner", "I'll stay two mornings a week to teach Karim the rye. Thank you all, I didn't expect this.", 203],
+  ["marcel", "Jules, 9 y.o. (posted by his dad)", "rue des Tilleuls", "5h", "support", "Jules emptied his piggy bank. 100 euros for the chocolate croissants.", 167],
+  ["marcel", "Paul & Sylvie", "rue Saint-Melaine", "1d", "support", "We had our wedding cake from Marcel in 1994. We'll be co-owners now, how funny is that.", 58],
   ["marche", "Sonia (lead buyer)", "place des Lices", "4h", "owner", "75% reached! The terrace stays, the price of the espresso stays at €1.50. Promise.", 121],
   ["marche", "Bertrand", "place des Lices", "1d", "support", "Saturday market without Michèle's café? Unthinkable. €250 from me.", 47],
   ["marche", "Amina", "rue Le Bastard", "2d", "support", "I wrote my thesis at the table by the window. This café is part of my life.", 39],
@@ -43,9 +43,9 @@ const ROWS: Row[] = [
   ["bistro", NEWS, "rue Hoche", "1y", "milestone", "Le Bistrot d'Alphonse reopened under Nadia, Hugo & 389 neighbours 🍽️", 205],
   ["vitre-pain", NEWS, "rue Baudrairie", "3d", "milestone", "Au Pain de la Baronnie passed 100 neighbours 🥖", 58],
   // More voices
-  ["rene", "Yvette", "rue des Tilleuls", "6h", "support", "René made my daughter's first birthday cake. She's 30 now and she's joining too.", 44],
-  ["rene", "Antoine, firefighter", "rue de Fougères", "9h", "support", "Night shift ends at 5am, René's door is the first light on the street. €250.", 39],
-  ["rene", "Sophie", "rue Saint-Melaine", "2d", "support", "Shared the poster in the school WhatsApp group. 12 parents joined in one evening!", 61],
+  ["marcel", "Yvette", "rue des Tilleuls", "6h", "support", "Marcel made my daughter's first birthday cake. She's 30 now and she's joining too.", 44],
+  ["marcel", "Antoine, firefighter", "rue de Fougères", "9h", "support", "Night shift ends at 5am, Marcel's door is the first light on the street. €250.", 39],
+  ["marcel", "Sophie", "rue Saint-Melaine", "2d", "support", "Shared the poster in the school WhatsApp group. 12 parents joined in one evening!", 61],
   ["marche", "Gaëlle", "rue Saint-Michel", "5h", "support", "My grandmother had her coffee here every Saturday. I'll have mine as a co-owner.", 27],
   ["marche", "Yves", "place des Lices", "3d", "support", "The croque-monsieur alone is worth €100.", 18],
   ["pages", "Léon, 15", "rue de la Monnaie", "4h", "support", "Odile lent me books when I couldn't afford them. Now I can give back.", 69],

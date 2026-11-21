@@ -9,10 +9,10 @@
 
 /* Bottega palette: swap here. */
 :root {
-  --cream: #f6f0e4;
-  --fir: #1f4d3a;
-  --fir-light: #2e6b52;
-  --terracotta: #c8623e;
+  --cream: #f5f1e8;
+  --fir: #1B2A4A;
+  --fir-light: #34507F;
+  --terracotta: #C2452D;
   --sun: #e9b949;
   --ink: #1e1e1e;
   --muted: #6b6b6b;
@@ -55,7 +55,7 @@
 
 .grain {
   background-color: var(--cream);
-  background-image: radial-gradient(rgba(31, 77, 58, 0.05) 1px, transparent 1px);
+  background-image: radial-gradient(rgba(27, 42, 74, 0.05) 1px, transparent 1px);
   background-size: 4px 4px;
 }
 .press { transition: transform 0.12s ease; }
@@ -69,7 +69,7 @@
 @keyframes bt-bounce { 0%, 100% { transform: translateY(0); } 40% { transform: translateY(-12px); } }
 .bt-pulse::after { content: ""; position: absolute; inset: -6px; border-radius: 999px; border: 2px solid var(--terracotta); animation: bt-pulse 1.6s infinite; }
 @keyframes bt-pulse { from { opacity: 0.9; transform: scale(0.8); } to { opacity: 0; transform: scale(1.4); } }
-.marker-cluster-small, .marker-cluster-medium, .marker-cluster-large { background: rgba(31, 77, 58, 0.25) !important; }
+.marker-cluster-small, .marker-cluster-medium, .marker-cluster-large { background: rgba(27, 42, 74, 0.25) !important; }
 .marker-cluster-small div, .marker-cluster-medium div, .marker-cluster-large div { background: var(--fir) !important; color: #fff; font-weight: 700; font-family: var(--font-sans); }
 
 @media print {

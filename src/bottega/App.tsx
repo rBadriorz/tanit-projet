@@ -91,7 +91,7 @@ function Shell() {
         </div>
       </div>
       <aside className="hidden flex-col items-center text-center xl:flex">
-        <div className="rounded-3xl bg-paper p-5 shadow-md"><QRCodeSVG value={window.location.origin} size={180} fgColor="#1F4D3A" bgColor="#FFFDF8" /></div>
+        <div className="rounded-3xl bg-paper p-5 shadow-md"><QRCodeSVG value={window.location.origin} size={180} fgColor="#1B2A4A" bgColor="#FFFDF8" /></div>
         <p className="mt-4 text-lg font-semibold">Scan to try it on your phone</p>
         <p className="text-sm text-muted">{window.location.host}</p>
       </aside>

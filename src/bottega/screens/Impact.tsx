@@ -42,7 +42,7 @@ export default function Impact(_p: { screen: Screen }) {
         <p className="mt-1 text-xs text-muted">DGE, 2025 · {STATS.seekingInDepartment} shops looking for a successor in Ille-et-Vilaine (demo)</p>
       </Card>
       <Card className="mt-3">
-        <div className="font-semibold">Revenue per takeover · Boulangerie de René</div>
+        <div className="font-semibold">Revenue per takeover · Boulangerie de Marcel</div>
         <table className="mt-2 w-full text-sm">
           <tbody>
             <tr className="border-b border-line"><td className="py-2">Raise fee 5% × €40,000</td><td className="text-right font-semibold">€2,000</td></tr>

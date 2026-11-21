@@ -57,7 +57,7 @@ export default function Owner(_p: { screen: Screen }) {
       lat: 48.1131, lng: -1.6772,
       owner: { firstName: "You", age: 67, yearsInShop: years, quote: "I want my shop to stay open after me." },
       ebitda: e, revenue: e * 6, price: Math.round((low + high) / 2), staff: 2,
-      colors: { awning: "#C8623E", facade: "#f3e3cf" }, timelineStep: 1,
+      colors: { awning: "#C2452D", facade: "#f3e3cf" }, timelineStep: 1,
     };
     st.addShop(shop);
     st.notify("Your shop is on the map");

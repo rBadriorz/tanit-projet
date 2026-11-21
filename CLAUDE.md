@@ -1,6 +1,6 @@
-# Bottega (provisional name) — Sciences Po AI Hackathon 2026
+# René (provisional name) — Sciences Po AI Hackathon 2026
 
-Pivot from the earlier "Tanit" idea (removed). Neighbours take over local shops whose owners retire: a lead buyer keeps the majority, residents join from €100 through a licensed crowdfunding partner, an AI co-pilot builds the valuation, bank file and story.
+App name: René (constant in src/bottega/config.ts). Pivot from the earlier "Tanit" idea (removed). Neighbours take over local shops whose owners retire: a lead buyer keeps the majority, residents join from €100 through a licensed crowdfunding partner, an AI co-pilot builds the valuation, bank file and story.
 
 ## Code
 - App: `src/bottega/` (`config.ts` = APP_NAME / tagline / trust line — never hard-code the name; `types.ts`; `data/` fictional seed data + `scripted.ts` AI fallbacks; `components/`; `screens/`; `lib/agent.ts` client agent calls; `store.tsx` state + localStorage + internal navigation).

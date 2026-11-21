@@ -30,7 +30,7 @@ function Toggle({ on, onChange, label }: { on: boolean; onChange: (v: boolean) =
 
 export default function Gap({ screen }: { screen: Screen }) {
   const store = useStore();
-  const shop = store.shop(screen.name === "gap" ? screen.shopId : "rene");
+  const shop = store.shop(screen.name === "gap" ? screen.shopId : "marcel");
   const [bankId, setBankId] = useState("A");
   const [pre, setPre] = useState<Record<string, boolean>>({});
   const [extend, setExtend] = useState(false);

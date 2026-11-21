@@ -8,17 +8,17 @@ const perks = (a: string, b = "Your name on the wall of founders", c = "A vote a
 const CORE: Shop[] = [
   // ---------- Rennes ----------
   {
-    id: "rene", name: "Boulangerie de René", type: "bakery", status: "raising", town: "Rennes", street: "12 rue des Tilleuls",
+    id: "marcel", name: "Boulangerie de Marcel", type: "bakery", status: "raising", town: "Rennes", street: "12 rue des Tilleuls",
     lat: 48.1142, lng: -1.6735,
-    owner: { firstName: "René", age: 71, yearsInShop: 38, quote: "I've kneaded bread here since 1986. I'd rather hand the keys to Karim than to a bank branch." },
+    owner: { firstName: "Marcel", age: 71, yearsInShop: 38, quote: "I've kneaded bread here since 1986. I'd rather hand the keys to Karim than to a bank branch." },
     leadBuyer: { firstName: "Karim", age: 34, role: "employee", yearsExperience: 9, stakePct: 60, contribution: 15000 },
     price: 180000, revenue: 310000, ebitda: 48000, staff: 3, rent: 1400,
     raise: { target: 40000, raised: 23400, backers: 187, daysLeft: 19, minTicket: 100, perks: perks("A coffee each Saturday") },
-    legalForm: "SAS", timelineStep: 4, colors: { awning: "#C8623E", facade: "#F3DCC6" },
+    legalForm: "SAS", timelineStep: 4, colors: { awning: "#C2452D", facade: "#F3DCC6" },
     story: [
-      "Every morning at 3am, the lights go on at 12 rue des Tilleuls. For 38 years, René has made the bread this street wakes up to.",
-      "René is 71. His children chose other lives, and the only offer he received came from a chain that would close the bakery within a year. Karim, his employee for nine years, knows every recipe, every customer, every oven quirk. He has €15,000 of savings. The bank asks for more.",
-      "So the street steps in. Karim takes 60% and runs the shop. Neighbours buy the rest, from €100. René stays two days a week for six months to pass on the secrets. The bakery stays open, and it belongs to the people who love it.",
+      "Every morning at 3am, the lights go on at 12 rue des Tilleuls. For 38 years, Marcel has made the bread this street wakes up to.",
+      "Marcel is 71. His children chose other lives, and the only offer he received came from a chain that would close the bakery within a year. Karim, his employee for nine years, knows every recipe, every customer, every oven quirk. He has €15,000 of savings. The bank asks for more.",
+      "So the street steps in. Karim takes 60% and runs the shop. Neighbours buy the rest, from €100. Marcel stays two days a week for six months to pass on the secrets. The bakery stays open, and it belongs to the people who love it.",
     ],
     pullQuote: "I'd rather hand the keys to Karim than to a bank branch.",
   },
@@ -29,7 +29,7 @@ const CORE: Shop[] = [
     leadBuyer: { firstName: "Sonia", age: 41, role: "resident", yearsExperience: 6, stakePct: 55, contribution: 14000 },
     price: 140000, revenue: 260000, ebitda: 39000, staff: 3, rent: 1600,
     raise: { target: 35000, raised: 26100, backers: 241, daysLeft: 12, minTicket: 100, perks: perks("An espresso on the house every market Saturday") },
-    legalForm: "SAS", timelineStep: 4, colors: { awning: "#1F4D3A", facade: "#E6EFE8" },
+    legalForm: "SAS", timelineStep: 4, colors: { awning: "#1B2A4A", facade: "#E6EFE8" },
     story: [
       "On Saturday mornings, when the market fills the place des Lices, the first stop for half of Rennes is Michèle's counter. Thirty-one years of espresso, croissants and gossip.",
       "Michèle is 68 and tired of the 6am openings. A phone-shop chain has already asked about the lease. Sonia, a customer for fifteen years who now runs the weekend shifts, wants to keep the terrace and the €1.50 espresso.",
@@ -56,7 +56,7 @@ const CORE: Shop[] = [
     leadBuyer: { firstName: "Thomas", age: 29, role: "employee", yearsExperience: 7, stakePct: 51, contribution: 9000 },
     price: 95000, revenue: 190000, ebitda: 27000, staff: 4, rent: 1100,
     raise: { target: 30000, raised: 30000, backers: 212, daysLeft: 0, minTicket: 100, perks: perks("First drink on the house every month") },
-    legalForm: "SAS", timelineStep: 7, colors: { awning: "#2E6B52", facade: "#EDE3D1" },
+    legalForm: "SAS", timelineStep: 7, colors: { awning: "#34507F", facade: "#EDE3D1" },
     story: [
       "Le Petit Zinc has stood on rue de Penhoët since 1962: a copper counter, a jukebox, and Yvonne behind the bar for 33 years.",
       "When Yvonne retired in 2025, the building's owner wanted a vape shop. Thomas, her barman since he was 22, had the regulars, the recipes and the will, but not the money.",
@@ -93,12 +93,12 @@ const CORE: Shop[] = [
     lat: 48.111, lng: -1.683,
     owner: { firstName: "Anne", age: 64, yearsInShop: 27, quote: "My galettes are my grandmother's recipe. I won't sell it to a chain." },
     price: 160000, revenue: 340000, ebitda: 42000, staff: 5, rent: 1700,
-    legalForm: "SAS", timelineStep: 1, colors: { awning: "#C8623E", facade: "#F6E7D6" },
+    legalForm: "SAS", timelineStep: 1, colors: { awning: "#C2452D", facade: "#F6E7D6" },
   },
   {
     id: "primeur", name: "Primeur des Halles", type: "grocery", status: "flagged", town: "Rennes", street: "rue de Nemours",
     lat: 48.1095, lng: -1.6795, owner: NO_OWNER, flaggedBy: 43,
-    timelineStep: 0, colors: { awning: "#2E6B52", facade: "#EAF1E4" },
+    timelineStep: 0, colors: { awning: "#34507F", facade: "#EAF1E4" },
   },
   {
     id: "fleurs", name: "Fleurs de Sainte-Anne", type: "florist", status: "taken_over", town: "Rennes", street: "place Sainte-Anne",
@@ -107,7 +107,7 @@ const CORE: Shop[] = [
     leadBuyer: { firstName: "Chloé", age: 28, role: "employee", yearsExperience: 6, stakePct: 55, contribution: 8000 },
     price: 70000, revenue: 150000, ebitda: 19000, staff: 2, rent: 900,
     raise: { target: 18000, raised: 18000, backers: 134, daysLeft: 0, minTicket: 100, perks: perks("A bouquet on your birthday") },
-    legalForm: "SAS", timelineStep: 7, colors: { awning: "#1F4D3A", facade: "#F5E4EA" },
+    legalForm: "SAS", timelineStep: 7, colors: { awning: "#1B2A4A", facade: "#F5E4EA" },
   },
   {
     id: "coiffure", name: "Salon Jacqueline", type: "hairdresser", status: "raising", town: "Rennes", street: "rue d'Antrain",
@@ -155,7 +155,7 @@ const CORE: Shop[] = [
   {
     id: "patisserie", name: "Pâtisserie Colombier", type: "bakery", status: "flagged", town: "Rennes", street: "rue du Colombier",
     lat: 48.105, lng: -1.682, owner: NO_OWNER, flaggedBy: 61,
-    timelineStep: 0, colors: { awning: "#C8623E", facade: "#F8E3E6" },
+    timelineStep: 0, colors: { awning: "#C2452D", facade: "#F8E3E6" },
   },
   {
     id: "torref", name: "Torréfaction du Thabor", type: "cafe", status: "seeking", town: "Rennes", street: "rue de Paris",
@@ -185,7 +185,7 @@ const CORE: Shop[] = [
     leadBuyer: { firstName: "Kevin", age: 27, role: "employee", yearsExperience: 11, stakePct: 60, contribution: 10000 },
     price: 150000, revenue: 270000, ebitda: 40000, staff: 3, rent: 900,
     raise: { target: 30000, raised: 11700, backers: 102, daysLeft: 28, minTicket: 100, perks: perks("A galette des rois each January") },
-    legalForm: "SAS", timelineStep: 4, colors: { awning: "#C8623E", facade: "#F2E2CC" },
+    legalForm: "SAS", timelineStep: 4, colors: { awning: "#C2452D", facade: "#F2E2CC" },
     story: [
       "In a town of 18,000, the bakery on rue Baudrairie is more than a shop. It is where Vitré meets, under the half-timbered houses, every morning.",
       "Paulette has run it for 36 years. Kevin walked in at 16 as an apprentice; eleven years later he does the 3am shift and the bread is his. But a young baker in a small town does not get a bank loan on talent alone.",
@@ -198,7 +198,7 @@ const CORE: Shop[] = [
     lat: 48.1247, lng: -1.208,
     owner: { firstName: "Daniel", age: 72, yearsInShop: 41, quote: "This café has seen three generations of the same families." },
     price: 90000, revenue: 170000, ebitda: 22000, staff: 2, rent: 700,
-    legalForm: "SAS", timelineStep: 1, colors: { awning: "#1F4D3A", facade: "#EAE4D6" },
+    legalForm: "SAS", timelineStep: 1, colors: { awning: "#1B2A4A", facade: "#EAE4D6" },
   },
   {
     id: "vitre-boucherie", name: "Boucherie Gautier", type: "butcher", status: "taken_over", town: "Vitré", street: "place du Marchix",
@@ -211,7 +211,7 @@ const CORE: Shop[] = [
   },
   {
     id: "vitre-epicerie", name: "L'Épicerie du Château", type: "grocery", status: "flagged", town: "Vitré", street: "rue d'Embas",
-    lat: 48.1252, lng: -1.2095, owner: NO_OWNER, flaggedBy: 28, timelineStep: 0, colors: { awning: "#2E6B52", facade: "#EDF0E2" },
+    lat: 48.1252, lng: -1.2095, owner: NO_OWNER, flaggedBy: 28, timelineStep: 0, colors: { awning: "#34507F", facade: "#EDF0E2" },
   },
   {
     id: "vitre-bar", name: "Le Relais des Remparts", type: "bar", status: "closed", town: "Vitré", street: "rue Garengeot",
@@ -236,7 +236,7 @@ const FAR: Far[] = [
   ["clermont-quinca", "Quincaillerie de Jaude", "hardware", "seeking", "Clermont-Ferrand", "rue du Port", 45.7790, 3.0870, "Roland", 71, 44, "I know every screw size in the Auvergne."],
   ["dieulefit-epicerie", "Épicerie du Village", "grocery", "seeking", "Dieulefit (Drôme)", "Grand'Rue", 44.5255, 5.0625, "Mireille", 67, 30, "We are the last shop in the village. If we close, the village closes."],
 ];
-const AWNINGS = ["#C8623E", "#1F4D3A", "#2E6B52", "#E9B949", "#8A3B2A", "#3B5B7A"];
+const AWNINGS = ["#C2452D", "#1B2A4A", "#34507F", "#E9B949", "#8A3B2A", "#3B5B7A"];
 const FACADES = ["#F3DCC6", "#E6EFE8", "#FBF1D6", "#F1E1DA", "#E4EAF0", "#EDE3D1"];
 
 const FAR_SHOPS: Shop[] = FAR.map(([id, name, type, status, town, street, lat, lng, owner, age, years, quote], i) => {

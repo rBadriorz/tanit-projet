@@ -10,7 +10,7 @@ import { Donut } from "../components/Donut";
 import { Avatar, Badge, Btn, Card, Progress, Sheet, Trust } from "../components/ui";
 
 const STEPS = ["Flagged", "Owner on board", "Valuation", "Bank file", "Raise open", "Bank approved", "Signing", "Reopened under new ownership"];
-const AV_COLORS = ["#2E6B52", "#C8623E", "#1F4D3A", "#b8892a", "#6b6b6b"];
+const AV_COLORS = ["#34507F", "#C2452D", "#1B2A4A", "#b8892a", "#6b6b6b"];
 
 export function financingPlan(shop: Shop) {
   const price = shop.price || 0;
@@ -20,10 +20,10 @@ export function financingPlan(shop: Shop) {
   const publicSupport = 30000;
   const bank = Math.max(0, need - lead - neighbours - publicSupport);
   return [
-    { label: "Lead buyer equity", value: lead, color: "#1F4D3A" },
-    { label: "Neighbours", value: neighbours, color: "#C8623E" },
+    { label: "Lead buyer equity", value: lead, color: "#1B2A4A" },
+    { label: "Neighbours", value: neighbours, color: "#C2452D" },
     { label: "Honour loan & public support", value: publicSupport, color: "#E9B949" },
-    { label: "Bank loan", value: bank, color: "#2E6B52" },
+    { label: "Bank loan", value: bank, color: "#34507F" },
   ];
 }
 
@@ -116,7 +116,7 @@ export default function ShopPage({ screen }: { screen: Screen }) {
               <div className="space-y-3">
                 <Card>
                   <div className="flex gap-3">
-                    <Avatar name={shop.owner.firstName} size={48} color="#C8623E" />
+                    <Avatar name={shop.owner.firstName} size={48} color="#C2452D" />
                     <div className="min-w-0">
                       <div className="font-semibold">{shop.owner.firstName} <span className="font-normal text-muted">· owner</span></div>
                       {shop.owner.age > 0 && <div className="text-xs text-muted">{shop.owner.age}, {shop.owner.yearsInShop} years behind the counter</div>}
@@ -127,7 +127,7 @@ export default function ShopPage({ screen }: { screen: Screen }) {
                 {shop.leadBuyer ? (
                   <Card>
                     <div className="flex items-center gap-3">
-                      <Avatar name={shop.leadBuyer.firstName} size={48} color="#1F4D3A" />
+                      <Avatar name={shop.leadBuyer.firstName} size={48} color="#1B2A4A" />
                       <div>
                         <div className="font-semibold">{shop.leadBuyer.firstName} <span className="font-normal text-muted">· lead buyer</span></div>
                         <div className="text-xs text-muted">{roleLine(shop)} · takes {shop.leadBuyer.stakePct}%</div>
@@ -147,7 +147,7 @@ export default function ShopPage({ screen }: { screen: Screen }) {
                 {shopMsgs.length > 0 && (
                   <div className="flex items-center gap-3 px-1">
                     <div className="flex -space-x-2">
-                      {shopMsgs.slice(0, 5).map((m, i) => <div key={m.id} className="rounded-full ring-2 ring-cream"><Avatar name={m.author} size={34} color={AV_COLORS[i % 5] ?? "#2E6B52"} /></div>)}
+                      {shopMsgs.slice(0, 5).map((m, i) => <div key={m.id} className="rounded-full ring-2 ring-cream"><Avatar name={m.author} size={34} color={AV_COLORS[i % 5] ?? "#34507F"} /></div>)}
                     </div>
                     <p className="text-xs text-muted">
                       {shopMsgs.slice(0, 3).map((m) => m.author.split(/[ ,(]/)[0]).join(", ")}

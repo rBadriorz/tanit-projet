@@ -8,11 +8,11 @@ import { APP_NAME } from "../config";
 const INCLUDED = [
   { Icon: Calculator, title: "Accounting", text: "Monthly close, VAT returns" },
   { Icon: Scale, title: "Legal assistant", text: "AI answers + human lawyer hotline" },
-  { Icon: Users, title: "Mentor network", text: "Retired owners like René coach the new ones" },
+  { Icon: Users, title: "Mentor network", text: "Retired owners like Marcel coach the new ones" },
   { Icon: ShoppingBasket, title: "Group purchasing", text: "Flour, coffee, energy at shared prices" },
   { Icon: Vote, title: "Annual general meeting", text: "Votes for all co-owners, in the app" },
 ];
-const TODO = ["Send Q4 figures to the co-owners", "Order flour (group price ends Friday)", "Prepare the AGM agenda", "Mentor session with René, Tuesday 3pm"];
+const TODO = ["Send Q4 figures to the co-owners", "Order flour (group price ends Friday)", "Prepare the AGM agenda", "Mentor session with Marcel, Tuesday 3pm"];
 
 export default function Services(_p: { screen: Screen }) {
   const st = useStore();
@@ -47,7 +47,7 @@ export default function Services(_p: { screen: Screen }) {
       <Card className="mt-3">
         <svg viewBox="0 0 300 80" className="w-full" role="img" aria-label="Revenue this year versus last year">
           {[22, 24, 23, 25, 26, 24, 27, 26, 25, 27, 28].map((v, i) => (
-            <g key={i}><rect x={i * 27 + 4} y={80 - (v - 15) * 5} width="10" height={(v - 15) * 5} rx="2" fill="#1F4D3A" />
+            <g key={i}><rect x={i * 27 + 4} y={80 - (v - 15) * 5} width="10" height={(v - 15) * 5} rx="2" fill="#1B2A4A" />
               <rect x={i * 27 + 15} y={80 - (v - 16.5) * 5} width="8" height={(v - 16.5) * 5} rx="2" fill="#e6dcc8" /></g>
           ))}
         </svg>

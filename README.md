@@ -1,4 +1,4 @@
-# Bottega (provisional name)
+# René (provisional name)
 
 Your neighbourhood, your shop. Neighbours take over the local shops whose owners retire. Student hackathon prototype, all data fictional.
 
