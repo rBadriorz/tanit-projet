@@ -98,7 +98,6 @@ function Shell() {
       <aside className="hidden flex-col items-center text-center xl:flex">
         <div className="rounded-3xl bg-surface p-5 shadow-md"><QRCodeSVG value={publicOrigin()} size={180} fgColor={P.primaryDark} bgColor={P.surface} /></div>
         <p className="mt-4 text-lg font-semibold">Scan to try it on your phone</p>
-        <p className="text-sm text-muted">{new URL(publicOrigin()).host}</p>
         {qrIsLocal() && <p className="mt-1 max-w-[220px] text-xs text-primary-dark">Local address: set PUBLIC_URL in config.ts for a public QR.</p>}
       </aside>
       <button onClick={() => setPresenter(true)} className="no-print fixed bottom-4 right-4 flex items-center gap-2 rounded-full bg-ink/80 px-4 py-2 text-sm text-white">
