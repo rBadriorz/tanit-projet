@@ -4,9 +4,9 @@ import { Logo } from "./Logo";
 import type { Message, Screen } from "../types";
 
 const SCRIPTED_POSTS: Omit<Message, "id">[] = [
-  { shopId: "marcel", author: "Jurors of the hackathon", street: "Sciences Po", ago: "now", kind: "support", text: "We just scanned the poster. Count us in for the croissants!", reactions: 12 },
+  { shopId: "fournil-de-karim", author: "Jurors of the hackathon", street: "Sciences Po", ago: "now", kind: "support", text: "We just scanned the poster. Count us in for the croissants!", reactions: 12 },
   { shopId: "pages", author: "Librairie Les Pages", street: "", ago: "now", kind: "milestone", text: "Librairie Les Pages: 90% reached! 📚", reactions: 40 },
-  { shopId: "marcel", author: "Karim (lead buyer)", street: "rue des Tilleuls", ago: "now", kind: "owner", text: "The bank said yes in principle. Thank you, neighbours!", reactions: 58 },
+  { shopId: "marche", author: "Sonia (lead buyer)", street: "place des Lices", ago: "now", kind: "owner", text: "The bank said yes in principle. Thank you, neighbours!", reactions: 58 },
 ];
 
 export default function Presenter({ onClose }: { onClose: () => void }) {
@@ -19,8 +19,8 @@ export default function Presenter({ onClose }: { onClose: () => void }) {
     st.notify(`${p.author} posted on the wall`);
   };
   const shutter = () => {
-    jump({ name: "shop", id: "marcel" });
-    [0, 1, 2, 3, 4].forEach((i) => setTimeout(() => st.bump("marcel"), 600 + i * 350));
+    jump({ name: "shop", id: "marche" });
+    [0, 1, 2, 3, 4].forEach((i) => setTimeout(() => st.bump("marche"), 600 + i * 350));
   };
   const pendingCount = st.contributions.filter((c) => c.status === "pending").length;
   const approve = () => {
@@ -49,7 +49,7 @@ export default function Presenter({ onClose }: { onClose: () => void }) {
 
       <div className="mb-1 text-[11px] font-semibold uppercase text-muted">Live moments</div>
       <div className="mb-3 flex flex-wrap gap-2">
-        <B onClick={() => { st.bump("marcel"); st.notify("+1 neighbour joined Boulangerie de Marcel"); }}>+1 neighbour joined</B>
+        <B onClick={() => { st.bump("marche"); st.notify("+1 neighbour joined Café du Marché"); }}>+1 neighbour joined</B>
         <B onClick={shutter}>Trigger shutter</B>
         <B onClick={approve}>Approve pending requests{pendingCount ? ` (${pendingCount})` : ""}</B>
         <B onClick={pushPost}>Push wall message</B>
@@ -61,12 +61,13 @@ export default function Presenter({ onClose }: { onClose: () => void }) {
       <div className="mb-3 flex flex-wrap gap-2">
         <B onClick={() => jump({ name: "home" }, true)}>Home</B>
         <B onClick={() => jump({ name: "map" }, true)}>Map</B>
-        <B onClick={() => jump({ name: "shop", id: "marcel" })}>Marcel's bakery</B>
-        <B onClick={() => jump({ name: "shop", id: "marcel" })}>Join (Marcel)</B>
-        <B onClick={() => jump({ name: "takeover", shopId: "marcel" })}>Takeover / bank file</B>
-        <B onClick={() => jump({ name: "gap", shopId: "marcel" })}>Close the gap</B>
+        <B onClick={() => jump({ name: "shop", id: "fournil-de-karim" })}>Le Fournil de Karim</B>
+        <B onClick={() => jump({ name: "shop", id: "marche" })}>Join (Café du Marché)</B>
+        <B onClick={() => jump({ name: "takeover", shopId: "fournil-de-karim" })}>Takeover / bank file</B>
+        <B onClick={() => jump({ name: "gap", shopId: "marche" })}>Close the gap</B>
         <B onClick={() => jump({ name: "poster", shopId: "martin", kind: "successor" })}>Successor poster</B>
-        <B onClick={() => jump({ name: "poster", shopId: "marcel", kind: "raise" })}>Raise poster</B>
+        <B onClick={() => jump({ name: "poster", shopId: "fournil-de-karim", kind: "successor" })}>Fournil poster</B>
+        <B onClick={() => jump({ name: "poster", shopId: "marche", kind: "raise" })}>Raise poster</B>
         <B onClick={() => jump({ name: "wall" }, true)}>Wall</B>
         <B onClick={() => jump({ name: "services" }, true)}>Services</B>
         <B onClick={() => jump({ name: "legal" })}>Legal assistant</B>
@@ -74,7 +75,7 @@ export default function Presenter({ onClose }: { onClose: () => void }) {
         <B onClick={() => jump({ name: "owner" })}>Owner flow</B>
       </div>
 
-      <div className="mb-1 text-[11px] font-semibold uppercase text-muted">Revenue per takeover (Marcel)</div>
+      <div className="mb-1 text-[11px] font-semibold uppercase text-muted">Revenue per takeover (Le Fournil de Karim)</div>
       <table className="mb-3 w-full text-xs">
         <tbody>
           <tr><td>Raise fee 5% × €40,000</td><td className="text-right font-semibold">€2,000</td></tr>

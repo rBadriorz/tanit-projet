@@ -7,8 +7,8 @@ import { P } from "../theme";
 
 export interface MapTarget { lat: number; lng: number; zoom: number; key: number }
 
-export default function LeafletMap({ shops, selectedId, onSelect, target, me }: {
-  shops: Shop[]; selectedId?: string | undefined; onSelect: (id: string) => void; target: MapTarget; me?: { lat: number; lng: number } | null;
+export default function LeafletMap({ shops, selectedId, featuredId, onSelect, target, me }: {
+  shops: Shop[]; selectedId?: string | undefined; featuredId?: string | undefined; onSelect: (id: string) => void; target: MapTarget; me?: { lat: number; lng: number } | null;
 }) {
   const el = useRef<HTMLDivElement>(null);
   const mapRef = useRef<Leaflet.Map | null>(null);
@@ -68,13 +68,15 @@ export default function LeafletMap({ shops, selectedId, onSelect, target, me }: 
       markers.current.clear();
       const list = shops.map((s) => {
         const p = s.raise ? pct(s) : undefined;
-        const pulse = s.status === "raising" && s.id.startsWith("new-");
+        const featured = s.id === featuredId;
+        const pulse = featured || (s.status === "raising" && s.id.startsWith("new-"));
+        const size = featured ? 50 : 34; // the featured shop's pin is larger so it stands out
         const icon = L.divIcon({
-          className: "bt-marker",
-          html: `<div style="position:relative;width:34px;height:34px" class="${pulse ? "bt-pulse" : ""}" title="${s.name.replace(/"/g, "")}">${markerSvg(s.type, s.status, p, !!s.managerWanted)}</div>`,
-          iconSize: [34, 34], iconAnchor: [17, 30],
+          className: `bt-marker${featured ? " bt-featured" : ""}${s.id === selectedId ? " bt-selected" : ""}`,
+          html: `<div style="position:relative;width:34px;height:34px;transform:scale(${size / 34});transform-origin:0 0" class="${pulse ? "bt-pulse" : ""}" title="${s.name.replace(/"/g, "")}">${markerSvg(s.type, s.status, p, !!s.managerWanted)}</div>`,
+          iconSize: [size, size], iconAnchor: [size / 2, size * 0.88],
         });
-        const m = L.marker([s.lat, s.lng], { icon, title: s.name, alt: s.name, zIndexOffset: s.status === "open" ? 0 : s.status === "closed" ? -100 : 500 });
+        const m = L.marker([s.lat, s.lng], { icon, title: s.name, alt: s.name, zIndexOffset: featured ? 2000 : s.status === "open" ? 0 : s.status === "closed" ? -100 : 500 });
         m.on("click", () => onSelectRef.current(s.id));
         markers.current.set(s.id, m);
         return m;
@@ -94,7 +96,10 @@ export default function LeafletMap({ shops, selectedId, onSelect, target, me }: 
   useEffect(() => {
     if (!selectedId) return;
     void ready.current?.then(() => {
+      // Highlight the selected pin (and only it), then bounce it.
+      markers.current.forEach((mk, id) => mk.getElement()?.classList.toggle("bt-selected", id === selectedId));
       const m = markers.current.get(selectedId);
+      m?.setZIndexOffset(3000);
       const node = m?.getElement();
       if (!node) return;
       node.classList.remove("bounce");

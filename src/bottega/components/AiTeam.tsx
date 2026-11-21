@@ -7,12 +7,13 @@ import { P } from "../theme";
 
 export const AI_PITCH = "AI does the work of a dealmaker, a banker and a lawyer, so a baker can take over a bakery.";
 
-const DEMO_SHOP = "marcel";
+const DEMO_SHOP = "fournil-de-karim";
+const DEMO_RAISE = "marche"; // Close the gap needs a raise in progress
 
 const TEAM: { title: string; line: string; Icon: LucideIcon; color: string; to: Screen }[] = [
   { title: "Valuation", line: "Estimates what the shop is worth and explains the range.", Icon: Calculator, color: P.primaryDark, to: { name: "takeover", shopId: DEMO_SHOP } },
-  { title: "Financing", line: "Builds the plan (own savings, neighbours' raise, honour loans, partner bank) and stress-tests it.", Icon: PiggyBank, color: P.primary, to: { name: "gap", shopId: DEMO_SHOP } },
-  { title: "Grants", line: "Finds the French and EU grants that fit the project.", Icon: BadgeEuro, color: P.warning, to: { name: "gap", shopId: DEMO_SHOP } },
+  { title: "Financing", line: "Builds the plan (own savings, neighbours' raise, honour loans, partner bank) and stress-tests it.", Icon: PiggyBank, color: P.primary, to: { name: "gap", shopId: DEMO_RAISE } },
+  { title: "Grants", line: "Finds the French and EU grants that fit the project.", Icon: BadgeEuro, color: P.warning, to: { name: "gap", shopId: DEMO_RAISE } },
   { title: "Bank file", line: "Writes a bank-ready file in minutes.", Icon: FileText, color: P.brown2, to: { name: "takeover", shopId: DEMO_SHOP } },
   { title: "Legal", line: "Drafts the company statutes and shareholders' agreement, and flags what a professional must check.", Icon: Scale, color: P.primaryDark, to: { name: "legal" } },
   { title: APP_NAME, line: "The friendly assistant who explains the jargon to residents and buyers.", Icon: MessageCircle, color: P.primary, to: { name: "legal" } },

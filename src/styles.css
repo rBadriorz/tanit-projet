@@ -61,6 +61,8 @@
 .leaflet-tile-pane { filter: grayscale(1) sepia(0.35) brightness(1.05) contrast(0.9); }
 .bt-marker { background: none; border: none; }
 .bt-marker.bounce svg { animation: bt-bounce 0.6s ease; }
+.bt-marker.bt-selected svg { filter: drop-shadow(0 0 0 var(--primary-dark)) drop-shadow(0 4px 8px color-mix(in srgb, var(--primary-dark) 55%, transparent)); }
+.bt-marker.bt-selected::after { content: ""; position: absolute; inset: -5px -5px 0 -5px; border: 3px solid var(--primary-dark); border-radius: 999px; pointer-events: none; }
 @keyframes bt-bounce { 0%, 100% { transform: translateY(0); } 40% { transform: translateY(-12px); } }
 .bt-pulse::after { content: ""; position: absolute; inset: -6px; border-radius: 999px; border: 2px solid var(--primary); animation: bt-pulse 1.6s infinite; }
 @keyframes bt-pulse { from { opacity: 0.9; transform: scale(0.8); } to { opacity: 0; transform: scale(1.4); } }

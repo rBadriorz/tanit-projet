@@ -1,9 +1,10 @@
 import { animate, motion, useMotionValue } from "framer-motion";
 import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
-import { Crosshair, Layers, Plus, Search } from "lucide-react";
+import { Crosshair, Layers, Plus, Search, Star, X } from "lucide-react";
 import type { Screen, Shop, ShopType, Status } from "../types";
 import { useStore } from "../store";
-import { STATUS_HEX, MANAGER_BADGE } from "../components/ShopArt";
+import { STATUS_HEX, MANAGER_BADGE, STATUS_LABEL, TYPE_LABEL } from "../components/ShopArt";
+import { CANNES, FEATURED_SHOP_ID } from "../data/shops";
 import { ShopCard, ME, distanceM } from "../components/ShopCard";
 import type { MapTarget } from "../components/LeafletMap";
 import { P } from "../theme";
@@ -22,9 +23,14 @@ const CHIPS: { label: string; types?: ShopType[] }[] = [
 const TOWNS = {
   Rennes: { lat: 48.1115, lng: -1.68, zoom: 15 },
   "Vitré": { lat: 48.124, lng: -1.209, zoom: 16 },
+  "Cannes-sur-Mer": { lat: CANNES.lat, lng: CANNES.lng, zoom: 16 },
   "All France": { lat: 46.8, lng: 2.3, zoom: 5.5 },
 } as const;
 type Town = keyof typeof TOWNS;
+
+/** Accent- and case-insensitive text for search ("cafe" finds "Café", "fournil" finds "Le Fournil de Karim"). */
+const norm = (t: string) => t.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase();
+const haystack = (x: Shop) => norm(`${x.name} ${x.town} ${x.street} ${TYPE_LABEL[x.type]} ${x.type} ${x.owner.firstName}`);
 
 const LEGEND: { s: Status; label: string }[] = [
   { s: "seeking", label: "Looking for a successor" },
@@ -47,23 +53,42 @@ export default function MapScreen(_p: { screen: Screen }) {
 
   const filtered = useMemo(() => {
     const t = CHIPS[chip]?.types;
-    const s = q.trim().toLowerCase();
+    const words = norm(q.trim()).split(" ").filter(Boolean);
     return shops.filter((x) =>
       (!t || t.includes(x.type)) &&
       (!seekingOnly || x.status === "seeking" || x.status === "raising") &&
-      (!s || `${x.name} ${x.street} ${x.town}`.toLowerCase().includes(s)));
+      (!words.length || words.every((w) => haystack(x).includes(w))));
   }, [shops, chip, q, seekingOnly]);
 
   const carousel = useMemo(() => {
-    const ref = town === "Vitré" ? { lat: 48.124, lng: -1.209 } : ME;
+    const ref = town === "Vitré" ? { lat: 48.124, lng: -1.209 } : town === "Cannes-sur-Mer" ? CANNES : ME;
     return filtered
       .filter((x) => x.status !== "open")
-      .map((x) => ({ x, d: distanceM(ref, x) }))
+      .map((x) => ({ x, d: x.id === FEATURED_SHOP_ID ? -1 : distanceM(ref, x) })) // featured shop first
       .sort((a, b) => a.d - b.d)
       .map((e) => e.x);
   }, [filtered, town]);
 
   const flyTo = (lat: number, lng: number, zoom: number) => setTarget((t) => ({ lat, lng, zoom, key: t.key + 1 }));
+
+  const pendingCard = useRef<string | null>(null);
+  const focusShop = (s: Shop) => {
+    setQ(""); setChip(0); setSeekingOnly(false); setSearchOpen(false);
+    if (s.town in TOWNS) setTown(s.town as Town);
+    setSelected(s.id);
+    flyTo(s.lat, s.lng, 17);
+    setSnap(0);
+    pendingCard.current = s.id;
+  };
+  useEffect(() => {
+    if (!pendingCard.current) return;
+    const id = pendingCard.current;
+    const t = setTimeout(() => { scrollToCard(id); pendingCard.current = null; }, 250);
+    return () => clearTimeout(t);
+  }, [carousel]); // eslint-disable-line react-hooks/exhaustive-deps
+  const [searchOpen, setSearchOpen] = useState(false);
+  const results = q.trim() ? filtered.slice(0, 6) : [];
+  const featured = shops.find((x) => x.id === FEATURED_SHOP_ID);
 
   const selectShop = (s: Shop, fromCarousel: boolean) => {
     setSelected(s.id);
@@ -113,7 +138,7 @@ export default function MapScreen(_p: { screen: Screen }) {
   return (
     <div ref={box} className="absolute inset-0 overflow-hidden bg-[var(--surface)]">
       <Suspense fallback={<div className="absolute inset-0 grid place-items-center text-muted">Loading the map…</div>}>
-        <LeafletMap shops={filtered} selectedId={selected} target={target} me={me}
+        <LeafletMap shops={filtered} selectedId={selected} featuredId={FEATURED_SHOP_ID} target={target} me={me}
           onSelect={(id) => { const s = shops.find((x) => x.id === id); if (s) selectShop(s, false); }} />
       </Suspense>
 
@@ -122,15 +147,38 @@ export default function MapScreen(_p: { screen: Screen }) {
         <div className="pointer-events-auto flex gap-2">
           <label className="flex h-12 flex-1 items-center gap-2 rounded-2xl bg-surface px-3 shadow-md">
             <Search size={18} className="text-muted" />
-            <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search a street, a shop, a town"
-              className="w-full bg-transparent text-sm outline-none" aria-label="Search" />
+            <input value={q} onChange={(e) => { setQ(e.target.value); setSearchOpen(true); }} onFocus={() => setSearchOpen(true)}
+              placeholder="Search a shop, a town, a trade" className="w-full bg-transparent text-sm outline-none" aria-label="Search shops by name, town or type" />
+            {q && <button aria-label="Clear the search" onClick={() => { setQ(""); setSearchOpen(false); }} className="grid h-8 w-8 place-items-center text-muted"><X size={16} /></button>}
           </label>
           <select value={town} onChange={(e) => { const t = e.target.value as Town; setTown(t); flyTo(TOWNS[t].lat, TOWNS[t].lng, TOWNS[t].zoom); }}
             aria-label="Choose a town" className="h-12 rounded-2xl bg-primary px-2 text-sm font-semibold text-white shadow-md">
             {(Object.keys(TOWNS) as Town[]).map((t) => <option key={t}>{t}</option>)}
           </select>
         </div>
+        {searchOpen && q.trim() && (
+          <ul className="pointer-events-auto max-h-[300px] overflow-y-auto rounded-2xl bg-page p-1 shadow-lg" role="listbox" aria-label="Search results">
+            {results.length === 0 && <li className="px-3 py-3 text-sm text-muted">No shop found for "{q}".</li>}
+            {results.map((r) => (
+              <li key={r.id}>
+                <button onClick={() => focusShop(r)} className="flex min-h-[48px] w-full items-center gap-3 rounded-xl px-3 py-2 text-left hover:bg-surface">
+                  <span className="h-3 w-3 shrink-0 rounded-full" style={{ background: STATUS_HEX[r.status], border: r.status === "open" ? `2px solid ${P.primary}` : undefined }} />
+                  <span className="min-w-0 flex-1">
+                    <span className="block truncate text-sm font-semibold">{r.name}{r.id === FEATURED_SHOP_ID && <Star size={12} className="ml-1 inline fill-warning text-warning" />}</span>
+                    <span className="block truncate text-xs text-muted">{TYPE_LABEL[r.type]} · {r.town} · {STATUS_LABEL[r.status]}</span>
+                  </span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
         <div className="no-scrollbar pointer-events-auto -mx-3 flex gap-2 overflow-x-auto px-3">
+          {featured && (
+            <button onClick={() => focusShop(featured)}
+              className="press flex h-10 shrink-0 items-center gap-1.5 rounded-full bg-warning px-3 text-sm font-semibold text-white shadow-sm">
+              <Star size={15} className="fill-white" /> Featured: {featured.name}
+            </button>
+          )}
           <button onClick={() => setSeekingOnly((v) => !v)}
             className={`press h-10 shrink-0 rounded-full px-3 text-sm font-semibold shadow-sm ${seekingOnly ? "bg-primary-dark text-white" : "bg-surface text-primary-dark"}`}>
             Looking for a successor
@@ -189,7 +237,7 @@ export default function MapScreen(_p: { screen: Screen }) {
             className="no-scrollbar flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-3">
             {carousel.map((s) => (
               <div key={s.id} className="w-[85%] shrink-0 snap-center">
-                <ShopCard shop={s} compact selected={s.id === selected} onOpen={() => go({ name: "shop", id: s.id })} />
+                <ShopCard shop={s} compact featured={s.id === FEATURED_SHOP_ID} selected={s.id === selected} onOpen={() => go({ name: "shop", id: s.id })} />
               </div>
             ))}
           </div>

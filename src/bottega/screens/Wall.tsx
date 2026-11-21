@@ -14,7 +14,7 @@ export default function Wall({ screen }: { screen: Screen }) {
   const [text, setText] = useState("");
   const withPosts = Array.from(new Set(st.messages.map((m) => m.shopId)));
   const list = st.messages.filter((m) => !filter || m.shopId === filter);
-  const target = st.shop(filter ?? "marcel");
+  const target = st.shop(filter ?? "fournil-de-karim");
 
   const post = () => {
     if (!text.trim() || !target) return;

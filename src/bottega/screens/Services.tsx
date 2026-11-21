@@ -9,11 +9,11 @@ import { P } from "../theme";
 const INCLUDED = [
   { Icon: Calculator, title: "Accounting", text: "Monthly close, VAT returns" },
   { Icon: Scale, title: "Legal assistant", text: "AI answers + human lawyer hotline" },
-  { Icon: Users, title: "Mentor network", text: "Retired owners like Marcel coach the new ones" },
+  { Icon: Users, title: "Mentor network", text: "Retired owners like Yvonne coach the new ones" },
   { Icon: ShoppingBasket, title: "Group purchasing", text: "Flour, coffee, energy at shared prices" },
   { Icon: Vote, title: "Annual general meeting", text: "Votes for all co-owners, in the app" },
 ];
-const TODO = ["Send Q4 figures to the co-owners", "Order flour (group price ends Friday)", "Prepare the AGM agenda", "Mentor session with Marcel, Tuesday 3pm"];
+const TODO = ["Send Q4 figures to the co-owners", "Order coffee beans (group price ends Friday)", "Prepare the AGM agenda", "Mentor session with Yvonne, Tuesday 3pm"];
 
 export default function Services(_p: { screen: Screen }) {
   const st = useStore();
@@ -40,10 +40,10 @@ export default function Services(_p: { screen: Screen }) {
       </div>
       <Btn kind="accent" className="mt-4 w-full" onClick={() => st.go({ name: "legal" })}>Ask the legal assistant</Btn>
 
-      <h2 className="serif mt-7 text-xl font-semibold">Karim's bakery, this month</h2>
+      <h2 className="serif mt-7 text-xl font-semibold">Le Petit Zinc (Thomas), this month</h2>
       <div className="mt-3 grid grid-cols-2 gap-3">
         <Card><div className="text-xs text-muted">Revenue, November</div><div className="text-2xl font-bold text-primary">€27,900</div><div className="text-xs text-primary">+6% vs last year</div></Card>
-        <Card><div className="text-xs text-muted">Co-owners</div><div className="text-2xl font-bold text-primary">188</div><div className="text-xs text-muted">Next AGM 14 Mar 2027</div></Card>
+        <Card><div className="text-xs text-muted">Co-owners</div><div className="text-2xl font-bold text-primary">212</div><div className="text-xs text-muted">Next AGM 14 Mar 2027</div></Card>
       </div>
       <Card className="mt-3">
         <svg viewBox="0 0 300 80" className="w-full" role="img" aria-label="Revenue this year versus last year">

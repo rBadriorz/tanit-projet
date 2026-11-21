@@ -52,7 +52,7 @@ function Field({ label, value, onChange, step = 1000 }: { label: string; value: 
 
 export default function Takeover({ screen }: { screen: Screen }) {
   const store = useStore();
-  const initialId = screen.name === "takeover" && screen.shopId ? screen.shopId : "marcel";
+  const initialId = screen.name === "takeover" && screen.shopId ? screen.shopId : "fournil-de-karim";
   const [step, setStep] = useState(0);
   const [managerReady, setManagerReady] = useState(false);
   const [shopId, setShopId] = useState(initialId);

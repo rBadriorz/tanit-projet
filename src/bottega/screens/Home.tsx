@@ -54,7 +54,7 @@ export default function Home(_p: { screen: Screen }) {
         <button onClick={() => go({ name: "how" })} className="press min-h-[44px] rounded-full bg-surface px-4 shadow-sm">How it works</button>
         <button onClick={() => go({ name: "flag" })} className="press min-h-[44px] rounded-full bg-surface px-4 shadow-sm">Flag a shop</button>
         <button onClick={() => go({ name: "poster", shopId: "martin", kind: "successor" })} className="press min-h-[44px] rounded-full bg-surface px-4 shadow-sm">Posters</button>
-        <button onClick={() => go({ name: "takeover", shopId: "marcel" })} className="press min-h-[44px] rounded-full bg-surface px-4 shadow-sm">Start a takeover</button>
+        <button onClick={() => go({ name: "takeover", shopId: "fournil-de-karim" })} className="press min-h-[44px] rounded-full bg-surface px-4 shadow-sm">Start a takeover</button>
       </div>
       <AiTeam className="mt-6" />
     </div>

@@ -89,7 +89,7 @@ export function ManagerStep({ shop, onReady }: { shop: Shop; onReady: () => void
     return (
       <div className="space-y-3">
         <button onClick={() => setMode("choose")} className="text-sm text-primary underline">Change my answer</button>
-        <Input label="Manager's name" value={m.name} onChange={(name) => { setM({ ...m, name }); setSaved(false); }} placeholder="e.g. Karim" />
+        <Input label="Manager's name" value={m.name} onChange={(name) => { setM({ ...m, name }); setSaved(false); }} placeholder="e.g. Sarah" />
         <div>
           <span className="text-sm text-muted">Role</span>
           <div className="mt-1 flex gap-2">

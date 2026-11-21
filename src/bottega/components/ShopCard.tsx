@@ -15,7 +15,7 @@ export function fmtDist(m: number) {
   return m < 1000 ? `${Math.round(m / 10) * 10} m` : m < 100000 ? `${(m / 1000).toFixed(1)} km` : `${Math.round(m / 1000)} km`;
 }
 
-export function ShopCard({ shop, onOpen, compact, selected }: { shop: Shop; onOpen: () => void; compact?: boolean; selected?: boolean }) {
+export function ShopCard({ shop, onOpen, compact, selected, featured }: { shop: Shop; onOpen: () => void; compact?: boolean; selected?: boolean; featured?: boolean }) {
   const closed = shop.status === "closed";
   const d = fmtDist(distanceM(ME, shop));
   return (
@@ -28,6 +28,7 @@ export function ShopCard({ shop, onOpen, compact, selected }: { shop: Shop; onOp
     >
       <ShopFront type={shop.type} status={shop.status} name={shop.name} colors={shop.colors} className={`shrink-0 rounded-2xl ${compact ? "h-[84px] w-[100px]" : "h-[96px] w-[120px]"}`} />
       <div className="min-w-0 flex-1">
+        {featured && <div className="mb-0.5 inline-flex items-center gap-1 rounded-full bg-warning px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white">★ Featured</div>}
         <div className="truncate font-semibold leading-tight">{shop.name}</div>
         <div className="truncate text-xs text-muted">{TYPE_LABEL[shop.type]} · {shop.street} · {d}</div>
         <div className="mt-1"><Badge status={shop.status} /></div>

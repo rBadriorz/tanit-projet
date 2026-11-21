@@ -9,21 +9,6 @@ const perks = (a: string, b = "Your name on the wall of founders", c = "A vote a
 const CORE: Shop[] = [
   // ---------- Rennes ----------
   {
-    id: "marcel", name: "Boulangerie de Marcel", type: "bakery", status: "raising", town: "Rennes", street: "12 rue des Tilleuls",
-    lat: 48.1142, lng: -1.6735,
-    owner: { firstName: "Marcel", age: 71, yearsInShop: 38, quote: "I've kneaded bread here since 1986. I'd rather hand the keys to Karim than to a bank branch." },
-    leadBuyer: { firstName: "Karim", age: 34, role: "employee", yearsExperience: 9, stakePct: 60, contribution: 15000 },
-    price: 180000, revenue: 310000, ebitda: 48000, staff: 3, rent: 1400,
-    raise: { target: 40000, raised: 23400, backers: 187, daysLeft: 19, minTicket: 100, perks: perks("A coffee each Saturday") },
-    legalForm: "SAS", timelineStep: 4, colors: { awning: P.primary, facade: P.facade2 },
-    story: [
-      "Every morning at 3am, the lights go on at 12 rue des Tilleuls. For 38 years, Marcel has made the bread this street wakes up to.",
-      "Marcel is 71. His children chose other lives, and the only offer he received came from a chain that would close the bakery within a year. Karim, his employee for nine years, knows every recipe, every customer, every oven quirk. He has €15,000 of savings. The bank asks for more.",
-      "So the street steps in. Karim takes 60% and runs the shop. Neighbours buy the rest, from €100. Marcel stays two days a week for six months to pass on the secrets. The bakery stays open, and it belongs to the people who love it.",
-    ],
-    pullQuote: "I'd rather hand the keys to Karim than to a bank branch.",
-  },
-  {
     id: "marche", name: "Café du Marché", type: "cafe", status: "raising", town: "Rennes", street: "place des Lices",
     lat: 48.1128, lng: -1.6826,
     owner: { firstName: "Michèle", age: 68, yearsInShop: 31, quote: "This café is where the street says good morning. It can't become a phone shop." },
@@ -224,7 +209,7 @@ const CORE: Shop[] = [
 type Far = [string, string, ShopType, Status, string, string, number, number, string, number, number, string];
 const FAR: Far[] = [
   ["nantes-pain", "Fournil du Bouffay", "bakery", "seeking", "Nantes", "rue de la Juiverie", 47.2153, -1.5535, "Josette", 68, 33, "My oven is older than my grandchildren."],
-  ["nantes-cafe", "Café Graslin", "cafe", "taken_over", "Nantes", "place Graslin", 47.2128, -1.5627, "Marcel", 74, 40, "The regulars stayed. That's all I wanted."],
+  ["nantes-cafe", "Café Graslin", "cafe", "taken_over", "Nantes", "place Graslin", 47.2128, -1.5627, "Gaston", 74, 40, "The regulars stayed. That's all I wanted."],
   ["brest-poisson", "Marée de Recouvrance", "fishmonger", "seeking", "Brest", "rue de la Porte", 48.3845, -4.4995, "Yann", 66, 31, "The harbour feeds this street. Keep it that way."],
   ["quimper-crepe", "Crêperie du Steir", "restaurant", "taken_over", "Quimper", "rue Kéréon", 47.9960, -4.1030, "Soizic", 70, 34, "Lena flips galettes faster than I ever did."],
   ["stmalo-bar", "Bar de l'Intra-Muros", "bar", "seeking", "Saint-Malo", "rue Saint-Vincent", 48.6490, -2.0255, "Pierre", 69, 37, "Sailors, tourists, locals. Everyone drinks at the same counter."],
@@ -286,10 +271,52 @@ const CONTEXT_SHOPS: Shop[] = CONTEXT.map(([name, type, street, lat, lng], i) =>
   owner: NO_OWNER, colors: { awning: AWNINGS[(i + 2) % AWNINGS.length]!, facade: FACADES[i % FACADES.length]! },
 }));
 
-export const SHOPS: Shop[] = [...CORE, ...FAR_SHOPS, ...CONTEXT_SHOPS];
+// ---------- Cannes-sur-Mer (fictional seaside town; the demo's featured bakery) ----------
+export const FEATURED_SHOP_ID = "fournil-de-karim";
+export const CANNES = { lat: 43.5532, lng: 7.0146 };
+const FOURNIL: Shop = {
+  id: FEATURED_SHOP_ID, name: "Le Fournil de Karim", type: "bakery", status: "seeking", town: "Cannes-sur-Mer", street: "12 place du Marché",
+  lat: CANNES.lat, lng: CANNES.lng,
+  owner: { firstName: "Karim", age: 70, yearsInShop: 35, quote: "I'd rather hand the keys to someone from the street." },
+  price: 180000, revenue: 310000, ebitda: 48000, staff: 3, rent: 1500,
+  legalForm: "SAS", timelineStep: 1, colors: { awning: P.primary, facade: P.facade2 },
+  story: [
+    "Every morning at 3am, the lights go on at 12 place du Marché. For 35 years, Karim has made the bread Cannes-sur-Mer wakes up to.",
+    "Karim is 70. His children chose other lives, and the only offer he received came from a chain that would turn the bakery into a sandwich counter. He would rather hand the keys to someone from the street.",
+    "So the street is looking with him: a baker who wants to take over, neighbours ready to invest from €100, a partner bank and local grants. Karim will stay a few mornings a week to pass on his recipes.",
+  ],
+  pullQuote: "I'd rather hand the keys to someone from the street.",
+  interested: [
+    { name: "Sarah", age: 29, note: "Baker in Nice, wants her own shop" },
+    { name: "Mehdi", age: 38, note: "Pastry chef, career changer" },
+  ],
+};
+const CANNES_ROWS: [string, string, ShopType, Status, string, number, number][] = [
+  ["cannes-cafe", "Café du Port", "cafe", "raising", "quai Saint-Pierre", 43.5521, 7.0158],
+  ["cannes-poisson", "Poissonnerie Forville", "fishmonger", "taken_over", "rue du Marché Forville", 43.5527, 7.0118],
+  ["cannes-fleurs", "Les Fleurs du Suquet", "florist", "seeking", "rue Saint-Antoine", 43.5519, 7.0108],
+  ["cannes-epicerie", "Épicerie de la Place", "grocery", "flagged", "place du Marché", 43.5537, 7.0132],
+  ["cannes-tabac", "Tabac du Marché", "bar", "open", "rue Meynadier", 43.5530, 7.0170],
+  ["cannes-fromage", "Fromagerie Meynadier", "cheese", "open", "rue Meynadier", 43.5534, 7.0182],
+  ["cannes-coiffure", "Salon Riviera", "hairdresser", "open", "rue Hoche", 43.5545, 7.0160],
+  ["cannes-libraire", "Librairie des Allées", "bookshop", "open", "allées de la Liberté", 43.5517, 7.0140],
+  ["cannes-boucherie", "Boucherie Gambetta", "butcher", "open", "rue Gambetta", 43.5552, 7.0130],
+  ["cannes-bar", "Bar de la Marine", "bar", "closed", "rue Félix Faure", 43.5524, 7.0195],
+];
+const CANNES_SHOPS: Shop[] = CANNES_ROWS.map(([id, name, type, status, street, lat, lng], i) => ({
+  id, name, type, status, town: "Cannes-sur-Mer", street, lat, lng,
+  owner: status === "open" || status === "closed" || status === "flagged" ? NO_OWNER : { firstName: ["Gilles", "Nadine", "Hélène"][i % 3]!, age: 66 + i, yearsInShop: 25 + i, quote: "The street deserves to keep its shops." },
+  ...(status === "raising" ? { price: 120000, revenue: 240000, ebitda: 32000, staff: 2, leadBuyer: { firstName: "Inès", age: 33, role: "employee" as const, yearsExperience: 7, stakePct: 55, contribution: 12000 }, raise: { target: 26000, raised: 11800, backers: 96, daysLeft: 24, minTicket: 100 as const, perks: perks("A coffee on the terrace each Sunday") }, timelineStep: 4 } : {}),
+  ...(status === "seeking" ? { price: 70000, revenue: 150000, ebitda: 19000, staff: 2, timelineStep: 1 } : {}),
+  ...(status === "taken_over" ? { price: 150000, revenue: 380000, ebitda: 41000, staff: 4, timelineStep: 7 } : {}),
+  ...(status === "flagged" ? { flaggedBy: 22, timelineStep: 0 } : {}),
+  ...(status === "closed" ? { closedYear: 2024 } : {}),
+  colors: { awning: [P.primary, P.brown2, P.tan, P.brown3][i % 4]!, facade: [P.facade1, P.facade2, P.facade3, P.facade4][i % 4]! },
+}));
 
-// Who runs the shop (demo): Karim runs Marcel's bakery; the crêperie's buyers are looking for a manager.
+export const SHOPS: Shop[] = [FOURNIL, ...CORE, ...CANNES_SHOPS, ...FAR_SHOPS, ...CONTEXT_SHOPS];
+
+// Who runs the shop (demo): the crêperie's buyers are looking for a manager.
 for (const s of SHOPS) {
-  if (s.id === "marcel") s.manager = { name: "Karim", role: "me", years: 9, pitch: "Nine years at this oven. I know every recipe and every regular." };
   if (s.id === "creperie") s.managerWanted = { trade: "Crêpe and galette cook", experience: "2+ years on a billig", hours: "Full time, closed Mondays", salary: "€1,900 – €2,300 net / month", canBeShareholder: true };
 }
